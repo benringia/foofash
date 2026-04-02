@@ -1,15 +1,27 @@
 <!doctype html>
-<html lang="{{ request.locale.iso_code }}" dir="auto">
+<html lang='{{ request.locale.iso_code }}' dir='auto'>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ page_title }}</title>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>
+      {{ page_title }}
+      {% if page_title != blank %} – {% endif %}
+      {{ shop.name }}
+    </title>
     {% render 'vite-assets' %}
     {{ content_for_header }}
   </head>
   <body>
-    <main id="main-content" tabindex="-1">
+    <a
+      href='#main-content'
+      class='sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:text-black'
+    >
+      Skip to content
+    </a>
+    {% section 'header' %}
+    <main id='main-content' tabindex='-1'>
       {{ content_for_layout }}
     </main>
+    {% section 'footer' %}
   </body>
 </html>

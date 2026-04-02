@@ -1,10 +1,7 @@
 export default {
-  content: [
-    './shopify/**/*.liquid',
-    './src/**/*.{js,css}'
-  ],
+  content: ["./shopify/**/*.liquid", "./src/**/*.{js,css}"],
   theme: {
-    extend: {}
+    extend: {},
   },
-  plugins: []
-}
+  plugins: [],
+};

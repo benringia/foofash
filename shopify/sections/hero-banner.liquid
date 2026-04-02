@@ -1,0 +1,140 @@
+<section class='hero-banner {{ section.settings.padding }}'>
+  <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+    <div class='grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-center'>
+      {%- comment -%} Left: text content {%- endcomment -%}
+      <div class='flex flex-col gap-4'>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class='text-sm font-semibold uppercase tracking-widest text-green-600'>
+            {{ section.settings.eyebrow }}
+          </p>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h1 class='text-4xl font-bold leading-tight text-gray-900 sm:text-5xl'>
+            {{ section.settings.heading }}
+          </h1>
+        {%- endif -%}
+
+        {%- if section.settings.subheading != blank -%}
+          <p class='text-lg text-gray-600 sm:text-xl'>
+            {{ section.settings.subheading }}
+          </p>
+        {%- endif -%}
+
+        {%- if section.settings.primary_cta_label != blank -%}
+          <div class='mt-2 flex flex-wrap gap-3'>
+            <a
+              href='{{ section.settings.primary_cta_link | default: '#' }}'
+              class='inline-block rounded-lg bg-green-600 px-6 py-3 font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2'
+            >
+              {{ section.settings.primary_cta_label }}
+            </a>
+
+            {%- if section.settings.secondary_cta_label != blank -%}
+              <a
+                href='{{ section.settings.secondary_cta_link | default: '#' }}'
+                class='inline-block rounded-lg border border-gray-300 bg-white px-6 py-3 font-semibold text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2'
+              >
+                {{ section.settings.secondary_cta_label }}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Right: image {%- endcomment -%}
+      {%- if section.settings.image != blank -%}
+        <div class='relative overflow-hidden rounded-xl'>
+          {{
+            section.settings.image
+            | image_tag:
+              loading: 'eager',
+              fetchpriority: 'high',
+              width: 800,
+              height: 600,
+              class: 'h-full w-full object-cover',
+              alt: section.settings.image.alt
+            | default: section.settings.heading
+          }}
+          {%- if section.settings.overlay_gradient -%}
+            <div class='absolute inset-0 bg-gradient-to-r from-black/20 to-transparent' aria-hidden='true'></div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Your pet's health, our priority"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Vet-approved products and clinic services, delivered with care."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "info": "Optional trust signal above the heading"
+    },
+    {
+      "type": "text",
+      "id": "primary_cta_label",
+      "label": "Primary CTA label",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "primary_cta_link",
+      "label": "Primary CTA link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_label",
+      "label": "Secondary CTA label"
+    },
+    {
+      "type": "url",
+      "id": "secondary_cta_link",
+      "label": "Secondary CTA link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero image"
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay_gradient",
+      "label": "Show image overlay gradient",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "options": [
+        { "value": "py-8", "label": "Small" },
+        { "value": "py-16", "label": "Medium" },
+        { "value": "py-24", "label": "Large" }
+      ],
+      "default": "py-16"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner"
+    }
+  ]
+}
+{% endschema %}

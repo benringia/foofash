@@ -20,32 +20,33 @@
 
 ## File Map
 
-| File | Action | Responsibility |
-|------|--------|----------------|
-| `package.json` | Create | Project metadata, scripts, dependencies |
-| `.gitignore` | Create | Exclude node_modules, .env files |
-| `vite.config.js` | Create | Build config: root=src, outDir=shopify/assets, manifest |
-| `tailwind.config.js` | Create | Content paths pointing to liquid + src files |
-| `postcss.config.js` | Create | Wire Tailwind + Autoprefixer into PostCSS |
-| `src/styles/main.css` | Create | Tailwind directives — imported by main.js |
-| `src/scripts/main.js` | Create | Entry: imports CSS + modules, fires on DOMContentLoaded |
-| `src/scripts/cart.js` | Create | Exported `initCart()` — AJAX cart API stub |
-| `src/scripts/product.js` | Create | Exported `initProduct()` — variant switching stub |
-| `src/scripts/ui/modal.js` | Create | Exported `initModal()` — open/close, ESC, focus trap stub |
-| `src/scripts/ui/accordion.js` | Create | Exported `initAccordion()` — expand/collapse stub |
-| `scripts/generate-liquid-assets.mjs` | Create | Reads manifest.json → writes vite-assets.liquid |
-| `scripts/generate-liquid-assets.test.mjs` | Create | Node built-in test runner tests for generate script |
-| `shopify/config/settings_schema.json` | Create | Empty schema array (`[]`) — required by Shopify CLI |
-| `shopify/layout/theme.liquid` | Create | Root layout: renders vite-assets snippet |
-| `shopify/templates/index.json` | Create | OS 2.0 homepage JSON template |
-| `shopify/sections/main-hero.liquid` | Create | Minimal hero section with schema |
-| `shopify/snippets/vite-assets.liquid` | Create | Placeholder (overwritten by generate script after build) |
+| File                                      | Action | Responsibility                                            |
+| ----------------------------------------- | ------ | --------------------------------------------------------- |
+| `package.json`                            | Create | Project metadata, scripts, dependencies                   |
+| `.gitignore`                              | Create | Exclude node_modules, .env files                          |
+| `vite.config.js`                          | Create | Build config: root=src, outDir=shopify/assets, manifest   |
+| `tailwind.config.js`                      | Create | Content paths pointing to liquid + src files              |
+| `postcss.config.js`                       | Create | Wire Tailwind + Autoprefixer into PostCSS                 |
+| `src/styles/main.css`                     | Create | Tailwind directives — imported by main.js                 |
+| `src/scripts/main.js`                     | Create | Entry: imports CSS + modules, fires on DOMContentLoaded   |
+| `src/scripts/cart.js`                     | Create | Exported `initCart()` — AJAX cart API stub                |
+| `src/scripts/product.js`                  | Create | Exported `initProduct()` — variant switching stub         |
+| `src/scripts/ui/modal.js`                 | Create | Exported `initModal()` — open/close, ESC, focus trap stub |
+| `src/scripts/ui/accordion.js`             | Create | Exported `initAccordion()` — expand/collapse stub         |
+| `scripts/generate-liquid-assets.mjs`      | Create | Reads manifest.json → writes vite-assets.liquid           |
+| `scripts/generate-liquid-assets.test.mjs` | Create | Node built-in test runner tests for generate script       |
+| `shopify/config/settings_schema.json`     | Create | Empty schema array (`[]`) — required by Shopify CLI       |
+| `shopify/layout/theme.liquid`             | Create | Root layout: renders vite-assets snippet                  |
+| `shopify/templates/index.json`            | Create | OS 2.0 homepage JSON template                             |
+| `shopify/sections/main-hero.liquid`       | Create | Minimal hero section with schema                          |
+| `shopify/snippets/vite-assets.liquid`     | Create | Placeholder (overwritten by generate script after build)  |
 
 ---
 
 ## Task 1: Initialize Project + Git
 
 **Files:**
+
 - Create: `package.json`
 - Create: `.gitignore`
 
@@ -115,6 +116,7 @@ git commit -m "chore: initialize project structure"
 ## Task 2: Install Dependencies + Configure Build Tools
 
 **Files:**
+
 - Create: `vite.config.js`
 - Create: `tailwind.config.js`
 - Create: `postcss.config.js`
@@ -131,31 +133,28 @@ Expected: `node_modules/` created, `package-lock.json` generated.
 
 ```js
 export default {
-  root: 'src',
+  root: "src",
   build: {
-    outDir: '../shopify/assets',
+    outDir: "../shopify/assets",
     emptyOutDir: false,
     manifest: true,
     rollupOptions: {
-      input: 'scripts/main.js'
-    }
-  }
-}
+      input: "scripts/main.js",
+    },
+  },
+};
 ```
 
 - [ ] **Step 3: Create `tailwind.config.js`**
 
 ```js
 export default {
-  content: [
-    './shopify/**/*.liquid',
-    './src/**/*.{js,css}'
-  ],
+  content: ["./shopify/**/*.liquid", "./src/**/*.{js,css}"],
   theme: {
-    extend: {}
+    extend: {},
   },
-  plugins: []
-}
+  plugins: [],
+};
 ```
 
 - [ ] **Step 4: Create `postcss.config.js`**
@@ -164,9 +163,9 @@ export default {
 export default {
   plugins: {
     tailwindcss: {},
-    autoprefixer: {}
-  }
-}
+    autoprefixer: {},
+  },
+};
 ```
 
 - [ ] **Step 5: Commit**
@@ -181,6 +180,7 @@ git commit -m "chore: configure vite, tailwind, postcss"
 ## Task 3: Create JavaScript Source Files
 
 **Files:**
+
 - Create: `src/styles/main.css`
 - Create: `src/scripts/main.js`
 - Create: `src/scripts/cart.js`
@@ -200,18 +200,18 @@ git commit -m "chore: configure vite, tailwind, postcss"
 
 ```js
 export function initCart() {
-  const cartForm = document.querySelector('[data-cart-form]')
-  if (!cartForm) return
+  const cartForm = document.querySelector("[data-cart-form]");
+  if (!cartForm) return;
 
-  cartForm.addEventListener('submit', async (e) => {
-    e.preventDefault()
-    const formData = new FormData(cartForm)
-    await fetch('/cart/add.js', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(Object.fromEntries(formData))
-    })
-  })
+  cartForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(cartForm);
+    await fetch("/cart/add.js", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(Object.fromEntries(formData)),
+    });
+  });
 }
 ```
 
@@ -219,16 +219,16 @@ export function initCart() {
 
 ```js
 export function initProduct() {
-  const variantSelector = document.querySelector('[data-variant-selector]')
-  if (!variantSelector) return
+  const variantSelector = document.querySelector("[data-variant-selector]");
+  if (!variantSelector) return;
 
-  variantSelector.addEventListener('change', () => {
-    const selectedVariant = variantSelector.value
-    const addToCartBtn = document.querySelector('[data-add-to-cart]')
+  variantSelector.addEventListener("change", () => {
+    const selectedVariant = variantSelector.value;
+    const addToCartBtn = document.querySelector("[data-add-to-cart]");
     if (addToCartBtn) {
-      addToCartBtn.dataset.variantId = selectedVariant
+      addToCartBtn.dataset.variantId = selectedVariant;
     }
-  })
+  });
 }
 ```
 
@@ -236,24 +236,24 @@ export function initProduct() {
 
 ```js
 export function initModal() {
-  const triggers = document.querySelectorAll('[data-modal-trigger]')
-  if (!triggers.length) return
+  const triggers = document.querySelectorAll("[data-modal-trigger]");
+  if (!triggers.length) return;
 
   triggers.forEach((trigger) => {
-    trigger.addEventListener('click', () => {
-      const targetId = trigger.dataset.modalTrigger
-      const modal = document.getElementById(targetId)
-      if (!modal) return
-      modal.removeAttribute('hidden')
-      modal.focus()
-    })
-  })
+    trigger.addEventListener("click", () => {
+      const targetId = trigger.dataset.modalTrigger;
+      const modal = document.getElementById(targetId);
+      if (!modal) return;
+      modal.removeAttribute("hidden");
+      modal.focus();
+    });
+  });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Escape') return
-    const openModal = document.querySelector('[data-modal]:not([hidden])')
-    if (openModal) openModal.setAttribute('hidden', '')
-  })
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    const openModal = document.querySelector("[data-modal]:not([hidden])");
+    if (openModal) openModal.setAttribute("hidden", "");
+  });
 }
 ```
 
@@ -261,38 +261,38 @@ export function initModal() {
 
 ```js
 export function initAccordion() {
-  const accordions = document.querySelectorAll('[data-accordion]')
-  if (!accordions.length) return
+  const accordions = document.querySelectorAll("[data-accordion]");
+  if (!accordions.length) return;
 
   accordions.forEach((accordion) => {
-    const trigger = accordion.querySelector('[data-accordion-trigger]')
-    const panel = accordion.querySelector('[data-accordion-panel]')
-    if (!trigger || !panel) return
+    const trigger = accordion.querySelector("[data-accordion-trigger]");
+    const panel = accordion.querySelector("[data-accordion-panel]");
+    if (!trigger || !panel) return;
 
-    trigger.addEventListener('click', () => {
-      const isExpanded = trigger.getAttribute('aria-expanded') === 'true'
-      trigger.setAttribute('aria-expanded', String(!isExpanded))
-      panel.hidden = isExpanded
-    })
-  })
+    trigger.addEventListener("click", () => {
+      const isExpanded = trigger.getAttribute("aria-expanded") === "true";
+      trigger.setAttribute("aria-expanded", String(!isExpanded));
+      panel.hidden = isExpanded;
+    });
+  });
 }
 ```
 
 - [ ] **Step 6: Create `src/scripts/main.js`**
 
 ```js
-import '../styles/main.css'
-import { initCart } from './cart.js'
-import { initProduct } from './product.js'
-import { initModal } from './ui/modal.js'
-import { initAccordion } from './ui/accordion.js'
+import "../styles/main.css";
+import { initCart } from "./cart.js";
+import { initProduct } from "./product.js";
+import { initModal } from "./ui/modal.js";
+import { initAccordion } from "./ui/accordion.js";
 
-document.addEventListener('DOMContentLoaded', () => {
-  initCart()
-  initProduct()
-  initModal()
-  initAccordion()
-})
+document.addEventListener("DOMContentLoaded", () => {
+  initCart();
+  initProduct();
+  initModal();
+  initAccordion();
+});
 ```
 
 - [ ] **Step 7: Commit**
@@ -307,6 +307,7 @@ git commit -m "feat: add js source modules and tailwind entry"
 ## Task 4: Create Shopify Theme Files
 
 **Files:**
+
 - Create: `shopify/config/settings_schema.json`
 - Create: `shopify/layout/theme.liquid`
 - Create: `shopify/templates/index.json`
@@ -405,6 +406,7 @@ git commit -m "feat: add base shopify theme files"
 ## Task 5: Build the Asset Generation Script (TDD)
 
 **Files:**
+
 - Create: `scripts/generate-liquid-assets.test.mjs`
 - Create: `scripts/generate-liquid-assets.mjs`
 
@@ -433,75 +435,93 @@ The entry key is `"scripts/main.js"` (relative to the Vite root, which is `src/`
 Create `scripts/generate-liquid-assets.test.mjs`:
 
 ```js
-import { test } from 'node:test'
-import assert from 'node:assert/strict'
-import { mkdirSync, writeFileSync, readFileSync, rmSync, existsSync } from 'node:fs'
-import { join } from 'node:path'
-import { tmpdir } from 'node:os'
-import { generate } from './generate-liquid-assets.mjs'
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import {
+  mkdirSync,
+  writeFileSync,
+  readFileSync,
+  rmSync,
+  existsSync,
+} from "node:fs";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
+import { generate } from "./generate-liquid-assets.mjs";
 
 function makeTempDir() {
-  const dir = join(tmpdir(), `vite-test-${Date.now()}`)
-  mkdirSync(dir, { recursive: true })
-  return dir
+  const dir = join(tmpdir(), `vite-test-${Date.now()}`);
+  mkdirSync(dir, { recursive: true });
+  return dir;
 }
 
-test('writes vite-assets.liquid with correct hashed filenames', () => {
-  const tmp = makeTempDir()
-  const manifestPath = join(tmp, 'manifest.json')
-  const outputPath = join(tmp, 'vite-assets.liquid')
+test("writes vite-assets.liquid with correct hashed filenames", () => {
+  const tmp = makeTempDir();
+  const manifestPath = join(tmp, "manifest.json");
+  const outputPath = join(tmp, "vite-assets.liquid");
 
-  writeFileSync(manifestPath, JSON.stringify({
-    'scripts/main.js': {
-      file: 'main.abc123.js',
-      isEntry: true,
-      css: ['main.def456.css']
-    }
-  }))
+  writeFileSync(
+    manifestPath,
+    JSON.stringify({
+      "scripts/main.js": {
+        file: "main.abc123.js",
+        isEntry: true,
+        css: ["main.def456.css"],
+      },
+    }),
+  );
 
-  generate({ manifestPath, outputPath })
+  generate({ manifestPath, outputPath });
 
-  const output = readFileSync(outputPath, 'utf8')
-  assert.ok(output.includes("'main.abc123.js'"), 'should contain hashed JS filename')
-  assert.ok(output.includes("'main.def456.css'"), 'should contain hashed CSS filename')
-  assert.ok(output.includes('asset_url'), 'should use asset_url filter')
-  assert.ok(output.includes('<script'), 'should include script tag')
-  assert.ok(output.includes('<link'), 'should include link tag')
+  const output = readFileSync(outputPath, "utf8");
+  assert.ok(
+    output.includes("'main.abc123.js'"),
+    "should contain hashed JS filename",
+  );
+  assert.ok(
+    output.includes("'main.def456.css'"),
+    "should contain hashed CSS filename",
+  );
+  assert.ok(output.includes("asset_url"), "should use asset_url filter");
+  assert.ok(output.includes("<script"), "should include script tag");
+  assert.ok(output.includes("<link"), "should include link tag");
 
-  rmSync(tmp, { recursive: true })
-})
+  rmSync(tmp, { recursive: true });
+});
 
-test('throws when manifest file is missing', () => {
-  const tmp = makeTempDir()
-  const manifestPath = join(tmp, 'nonexistent.json')
-  const outputPath = join(tmp, 'vite-assets.liquid')
-
-  assert.throws(
-    () => generate({ manifestPath, outputPath }),
-    /manifest not found/i
-  )
-
-  assert.ok(!existsSync(outputPath), 'should not write output on error')
-
-  rmSync(tmp, { recursive: true })
-})
-
-test('throws when entry key is missing from manifest', () => {
-  const tmp = makeTempDir()
-  const manifestPath = join(tmp, 'manifest.json')
-  const outputPath = join(tmp, 'vite-assets.liquid')
-
-  writeFileSync(manifestPath, JSON.stringify({
-    'some/other/file.js': { file: 'other.js', isEntry: true }
-  }))
+test("throws when manifest file is missing", () => {
+  const tmp = makeTempDir();
+  const manifestPath = join(tmp, "nonexistent.json");
+  const outputPath = join(tmp, "vite-assets.liquid");
 
   assert.throws(
     () => generate({ manifestPath, outputPath }),
-    /entry.*not found/i
-  )
+    /manifest not found/i,
+  );
 
-  rmSync(tmp, { recursive: true })
-})
+  assert.ok(!existsSync(outputPath), "should not write output on error");
+
+  rmSync(tmp, { recursive: true });
+});
+
+test("throws when entry key is missing from manifest", () => {
+  const tmp = makeTempDir();
+  const manifestPath = join(tmp, "manifest.json");
+  const outputPath = join(tmp, "vite-assets.liquid");
+
+  writeFileSync(
+    manifestPath,
+    JSON.stringify({
+      "some/other/file.js": { file: "other.js", isEntry: true },
+    }),
+  );
+
+  assert.throws(
+    () => generate({ manifestPath, outputPath }),
+    /entry.*not found/i,
+  );
+
+  rmSync(tmp, { recursive: true });
+});
 ```
 
 - [ ] **Step 2: Run tests to verify they fail**
@@ -515,30 +535,32 @@ Expected: 3 failures with `generate is not a function` or `Cannot find module`.
 - [ ] **Step 3: Implement `scripts/generate-liquid-assets.mjs`**
 
 ```js
-import { readFileSync, writeFileSync, existsSync } from 'node:fs'
-import { fileURLToPath } from 'node:url'
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
-const MANIFEST_PATH = 'shopify/assets/.vite/manifest.json'
-const OUTPUT_PATH = 'shopify/snippets/vite-assets.liquid'
-const ENTRY_KEY = 'scripts/main.js'
+const MANIFEST_PATH = "shopify/assets/.vite/manifest.json";
+const OUTPUT_PATH = "shopify/snippets/vite-assets.liquid";
+const ENTRY_KEY = "scripts/main.js";
 
 export function generate({ manifestPath, outputPath }) {
   if (!existsSync(manifestPath)) {
-    throw new Error(`Manifest not found at ${manifestPath}`)
+    throw new Error(`Manifest not found at ${manifestPath}`);
   }
 
-  const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
-  const entry = manifest[ENTRY_KEY]
+  const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+  const entry = manifest[ENTRY_KEY];
 
   if (!entry) {
-    throw new Error(`Entry "${ENTRY_KEY}" not found in manifest`)
+    throw new Error(`Entry "${ENTRY_KEY}" not found in manifest`);
   }
 
-  const jsFile = entry.file
-  const cssFile = entry.css?.[0]
+  const jsFile = entry.file;
+  const cssFile = entry.css?.[0];
 
   if (!jsFile || !cssFile) {
-    throw new Error(`Entry "${ENTRY_KEY}" is missing .file or .css in manifest`)
+    throw new Error(
+      `Entry "${ENTRY_KEY}" is missing .file or .css in manifest`,
+    );
   }
 
   const snippet = [
@@ -546,21 +568,21 @@ export function generate({ manifestPath, outputPath }) {
     `{% assign vite_css = '${cssFile}' | asset_url %}`,
     `{% assign vite_js = '${jsFile}' | asset_url %}`,
     `<link rel="stylesheet" href="{{ vite_css }}" type="text/css">`,
-    `<script src="{{ vite_js }}" type="module" defer></script>`
-  ].join('\n')
+    `<script src="{{ vite_js }}" type="module" defer></script>`,
+  ].join("\n");
 
-  writeFileSync(outputPath, snippet)
+  writeFileSync(outputPath, snippet);
 }
 
 // Only execute when run directly (not when imported in tests)
-const isMain = process.argv[1] === fileURLToPath(import.meta.url)
+const isMain = process.argv[1] === fileURLToPath(import.meta.url);
 if (isMain) {
   try {
-    generate({ manifestPath: MANIFEST_PATH, outputPath: OUTPUT_PATH })
-    console.log(`✓ Written ${OUTPUT_PATH}`)
+    generate({ manifestPath: MANIFEST_PATH, outputPath: OUTPUT_PATH });
+    console.log(`✓ Written ${OUTPUT_PATH}`);
   } catch (err) {
-    console.error(`Error: ${err.message}`)
-    process.exit(1)
+    console.error(`Error: ${err.message}`);
+    process.exit(1);
   }
 }
 ```
@@ -572,6 +594,7 @@ npm test
 ```
 
 Expected output:
+
 ```
 ▶ writes vite-assets.liquid with correct hashed filenames
   ✓ writes vite-assets.liquid with correct hashed filenames (Xms)
@@ -602,6 +625,7 @@ npm run build
 ```
 
 Expected:
+
 - Vite compiles `src/scripts/main.js` and Tailwind CSS
 - Output files appear in `shopify/assets/`:
   - `main.[hash].js`
@@ -648,6 +672,7 @@ npm run dev
 ```
 
 Expected:
+
 - Vite starts on `http://localhost:5173`
 - Shopify CLI prompts for store URL on first run (follow the prompts)
 - After auth, `shopify theme dev` starts and outputs a preview URL like `https://your-store.myshopify.com?preview_theme_id=XXXXX`
@@ -655,6 +680,7 @@ Expected:
 - [ ] **Step 2: Open the preview URL in a browser**
 
 Verify:
+
 - Homepage loads without Liquid errors
 - No console errors in browser DevTools
 - Hero section renders with "Welcome" heading
@@ -674,11 +700,11 @@ git checkout shopify/sections/main-hero.liquid
 
 ## Verification Summary (Acceptance Criteria)
 
-| Check | Command / How |
-|-------|--------------|
-| Build outputs hashed assets | `npm run build` → check `shopify/assets/main.*.js` and `main.*.css` |
-| Liquid snippet updated | Check `shopify/snippets/vite-assets.liquid` after build |
-| All tests pass | `npm test` → 3 pass, 0 fail |
+| Check                            | Command / How                                                                                         |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Build outputs hashed assets      | `npm run build` → check `shopify/assets/main.*.js` and `main.*.css`                                   |
+| Liquid snippet updated           | Check `shopify/snippets/vite-assets.liquid` after build                                               |
+| All tests pass                   | `npm test` → 3 pass, 0 fail                                                                           |
 | No hardcoded filenames in Liquid | Grep `shopify/` for hardcoded `.js`/`.css` references (should find none except the generated snippet) |
-| No console errors | Open storefront in browser DevTools |
-| No framework code in bundle | `vite build` → bundle size should be minimal (< 20kb unminified) |
+| No console errors                | Open storefront in browser DevTools                                                                   |
+| No framework code in bundle      | `vite build` → bundle size should be minimal (< 20kb unminified)                                      |
