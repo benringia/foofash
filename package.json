@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"shopify theme dev\"",
-    "build": "vite build && node scripts/generate-liquid-assets.mjs",
-    "push": "shopify theme push",
+    "dev": "concurrently \"vite build --watch\" \"shopify theme dev --path shopify --store foofash.myshopify.com\"",
+    "build": "vite build",
+    "push": "shopify theme push --path shopify --store foofash.myshopify.com",
     "test": "node --test scripts/*.test.mjs"
   },
   "devDependencies": {
