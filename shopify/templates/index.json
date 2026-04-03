@@ -4,10 +4,18 @@
       "type": "hero-banner",
       "settings": {}
     },
+    "trust-bar": {
+      "type": "trust-bar",
+      "settings": {}
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {}
+    },
     "main-hero": {
       "type": "main-hero",
       "settings": {}
     }
   },
-  "order": ["hero-banner", "main-hero"]
+  "order": ["hero-banner", "trust-bar", "featured-collection", "main-hero"]
 }

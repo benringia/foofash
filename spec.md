@@ -1,6 +1,6 @@
 # FOOFASH – Shopify Theme Spec
 
-> Veterinary clinic & pet store portfolio theme built to demonstrate professional Shopify development skills including CRO, performance, and modern theme architecture.
+> Veterinary clinic & pet store theme built to demonstrate professional Shopify development skills including CRO, performance, and modern theme architecture.
 
 ---
 

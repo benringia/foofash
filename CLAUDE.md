@@ -1,6 +1,6 @@
 # FOOFASH – Claude Code Guide
 
-A portfolio Shopify theme for a fictional veterinary clinic and pet store. Built to demonstrate professional Shopify OS 2.0 development: Liquid templating, CRO patterns, performance, and clean component architecture.
+A Shopify theme for a fictional veterinary clinic and pet store. Built to demonstrate professional Shopify OS 2.0 development: Liquid templating, CRO patterns, performance, and clean component architecture.
 
 ---
 

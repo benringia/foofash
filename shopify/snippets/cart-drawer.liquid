@@ -1,0 +1,74 @@
+{%- comment -%}
+  Cart drawer shell. Rendered once in theme.liquid before </body>.
+  JS in cart-drawer.js controls open/close and re-renders items after mutations.
+{%- endcomment -%}
+
+<div
+  data-cart-overlay
+  class='fixed inset-0 z-40 hidden bg-black/50'
+  aria-hidden='true'
+></div>
+
+<div
+  data-cart-drawer
+  role='dialog'
+  aria-modal='true'
+  aria-label='Shopping cart'
+  aria-hidden='true'
+  class='fixed right-0 top-0 z-50 flex h-full w-full max-w-md translate-x-full flex-col bg-white shadow-xl transition-transform duration-300 ease-in-out'
+>
+  <div class='flex items-center justify-between border-b border-gray-200 px-4 py-4'>
+    <h2 class='text-lg font-semibold text-gray-900'>
+      Your Cart (<span data-cart-count>{{ cart.item_count }}</span>)
+    </h2>
+    <button
+      type='button'
+      data-cart-close
+      aria-label='Close cart'
+      class='flex h-8 w-8 items-center justify-center rounded text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300'
+    >
+      <svg
+        xmlns='http://www.w3.org/2000/svg'
+        width='20'
+        height='20'
+        viewBox='0 0 24 24'
+        fill='none'
+        stroke='currentColor'
+        stroke-width='2'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+        aria-hidden='true'
+        focusable='false'
+      >
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class='flex-1 overflow-y-auto px-4 py-4'>
+    <p
+      data-cart-empty
+      class='py-8 text-center text-gray-500 {% if cart.item_count > 0 %}hidden{% endif %}'
+    >
+      Your cart is empty
+    </p>
+    <ul data-cart-items role='list' class='divide-y divide-gray-100'>
+      {%- for item in cart.items -%}
+        {%- render 'cart-item', item: item -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+
+  <div class='border-t border-gray-200 px-4 py-4'>
+    <div class='mb-4 flex items-center justify-between text-sm'>
+      <span class='font-medium text-gray-700'>Subtotal</span>
+      <span data-cart-subtotal class='font-semibold text-gray-900'>{{ cart.total_price | money }}</span>
+    </div>
+    <a
+      href='/checkout'
+      class='block w-full rounded-lg bg-green-600 px-6 py-3 text-center font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2'
+    >
+      Checkout
+    </a>
+  </div>
+</div>

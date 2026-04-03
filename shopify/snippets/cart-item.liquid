@@ -1,0 +1,66 @@
+{%- comment -%}
+  Server-side cart line item. Mirrors the renderCartItem() structure in cart-drawer.js.
+  Usage: {% render 'cart-item', item: item %}
+{%- endcomment -%}
+
+<li class='flex gap-4 border-b border-gray-100 py-4 last:border-0' data-line-item data-item-key='{{ item.key }}'>
+  {%- if item.image != blank -%}
+    {{
+      item.image
+      | image_tag:
+        loading: 'lazy',
+        width: 80,
+        height: 80,
+        class: 'h-20 w-20 rounded-md object-cover bg-gray-100',
+        alt: item.image.alt
+      | default: item.product_title
+    }}
+  {%- else -%}
+    <div class='h-20 w-20 flex-none rounded-md bg-gray-100' aria-hidden='true'></div>
+  {%- endif -%}
+
+  <div class='flex min-w-0 flex-1 flex-col gap-1'>
+    <p class='truncate text-sm font-medium text-gray-800'>{{ item.product_title }}</p>
+
+    {%- unless item.variant_title == 'Default Title' or item.variant_title == blank -%}
+      <p class='text-xs text-gray-500'>{{ item.variant_title }}</p>
+    {%- endunless -%}
+
+    <p class='text-sm font-semibold text-gray-900'>{{ item.final_line_price | money }}</p>
+
+    <div class='mt-1 flex items-center gap-2'>
+      <button
+        type='button'
+        data-quantity-decrease
+        aria-label='Decrease quantity'
+        class='flex h-7 w-7 items-center justify-center rounded border border-gray-300 text-gray-600 hover:bg-gray-50'
+      >
+        &minus;
+      </button>
+      <input
+        type='number'
+        data-quantity-input
+        value='{{ item.quantity }}'
+        min='0'
+        class='w-10 rounded border border-gray-300 py-0.5 text-center text-sm'
+        aria-label='Quantity for {{ item.product_title }}'
+      >
+      <button
+        type='button'
+        data-quantity-increase
+        aria-label='Increase quantity'
+        class='flex h-7 w-7 items-center justify-center rounded border border-gray-300 text-gray-600 hover:bg-gray-50'
+      >
+        +
+      </button>
+      <button
+        type='button'
+        data-remove-item
+        aria-label='Remove {{ item.product_title }}'
+        class='ml-auto text-xs text-gray-400 underline hover:text-red-500'
+      >
+        Remove
+      </button>
+    </div>
+  </div>
+</li>

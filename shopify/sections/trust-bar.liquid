@@ -1,0 +1,134 @@
+{%- if section.blocks.size > 0 -%}
+  <div
+    class='trust-bar {{ section.settings.padding }}'
+    style='background-color: {{ section.settings.background_color }}; color: {{ section.settings.text_color }};'
+  >
+    <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+      <ul
+        class='flex snap-x snap-mandatory gap-6 overflow-x-auto sm:flex-wrap sm:justify-center sm:overflow-visible'
+        role='list'
+      >
+        {%- for block in section.blocks -%}
+          <li
+            class='flex min-w-[160px] flex-none snap-start flex-col items-center gap-2 py-2 text-center sm:min-w-0 sm:flex-1'
+            {{ block.shopify_attributes }}
+          >
+            {%- if block.settings.icon != blank -%}
+              <span class='h-8 w-8' aria-hidden='true'>
+                {%- render 'icon', icon: block.settings.icon -%}
+              </span>
+            {%- endif -%}
+
+            {%- if block.settings.title != blank -%}
+              <p class='text-sm font-semibold leading-tight'>{{ block.settings.title }}</p>
+            {%- endif -%}
+
+            {%- if block.settings.subtitle != blank -%}
+              <p class='text-xs opacity-75'>{{ block.settings.subtitle }}</p>
+            {%- endif -%}
+          </li>
+
+          {%- unless forloop.last -%}
+            <li class='hidden w-px self-stretch bg-current opacity-20 sm:block' aria-hidden='true'></li>
+          {%- endunless -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Trust Bar",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f0fdf4"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#166534"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "options": [
+        { "value": "py-4", "label": "Small" },
+        { "value": "py-6", "label": "Medium" },
+        { "value": "py-10", "label": "Large" }
+      ],
+      "default": "py-6"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust_item",
+      "name": "Trust item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon name",
+          "info": "Supported: vet-approved, shipping, returns, paw, clock, phone"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "info": "Optional supporting text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Bar",
+      "blocks": [
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "vet-approved",
+            "title": "Vet Approved",
+            "subtitle": "Recommended by our clinic"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "shipping",
+            "title": "Free Shipping",
+            "subtitle": "On orders over $50"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "returns",
+            "title": "Easy Returns",
+            "subtitle": "30-day hassle-free returns"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "clock",
+            "title": "Same-Day Dispatch",
+            "subtitle": "Order before 3pm"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,121 @@
+<section class='main-product py-10 lg:py-16'>
+  <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+    <div class='grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start'>
+      {%- comment -%} Left: product media {%- endcomment -%}
+      <div class='product-media'>
+        {%- comment -%} Gallery container — single image now, expandable later {%- endcomment -%}
+        <div class='aspect-square overflow-hidden rounded-xl bg-gray-100'>
+          {%- if product.featured_image != blank -%}
+            {{
+              product.featured_image
+              | image_tag:
+                loading: 'eager',
+                fetchpriority: 'high',
+                width: 800,
+                height: 800,
+                class: 'h-full w-full object-cover',
+                alt: product.featured_image.alt
+              | default: product.title
+            }}
+          {%- else -%}
+            <div class='flex h-full w-full items-center justify-center text-gray-300' aria-hidden='true'>
+              {%- render 'icon', icon: 'paw' -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- comment -%} Right: product info {%- endcomment -%}
+      <div class='product-info flex flex-col gap-6'>
+        <div class='flex flex-col gap-2'>
+          <h1 class='text-3xl font-bold text-gray-900 sm:text-4xl'>{{ product.title }}</h1>
+          <div class='text-xl'>
+            {%- render 'price', product: product -%}
+          </div>
+        </div>
+
+        {%- comment -%} Inventory message — placeholder for low-stock badge later {%- endcomment -%}
+        {%- if product.selected_or_first_available_variant.inventory_management == 'shopify' -%}
+          {%- assign inventory_qty = product.selected_or_first_available_variant.inventory_quantity -%}
+          {%- if inventory_qty <= 5 and inventory_qty > 0 -%}
+            <p class='text-sm font-medium text-orange-600'>Only {{ inventory_qty }} left in stock</p>
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- comment -%} Add-to-cart form {%- endcomment -%}
+        {%- form 'product', product -%}
+          <div class='flex flex-col gap-4'>
+            {%- comment -%} Variant selector — only shown when multiple variants exist {%- endcomment -%}
+            {%- unless product.has_only_default_variant -%}
+              <div class='flex flex-col gap-1'>
+                <label for='variant-select' class='text-sm font-medium text-gray-700'>
+                  {{ product.options.first }}
+                </label>
+                <select
+                  id='variant-select'
+                  name='id'
+                  data-variant-selector
+                  class='rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500'
+                >
+                  {%- for variant in product.variants -%}
+                    <option
+                      value='{{ variant.id }}'
+                      {%- unless variant.available -%}
+                        disabled
+                      {%- endunless -%}
+                    >
+                      {{ variant.title }}
+                      {%- unless variant.available %} – Sold out{%- endunless -%}
+                    </option>
+                  {%- endfor -%}
+                </select>
+              </div>
+            {%- else -%}
+              <input type='hidden' name='id' value='{{ product.selected_or_first_available_variant.id }}'>
+            {%- endunless -%}
+
+            <div class='flex flex-col gap-1'>
+              <label for='quantity' class='text-sm font-medium text-gray-700'>Quantity</label>
+              <input
+                id='quantity'
+                type='number'
+                name='quantity'
+                value='1'
+                min='1'
+                class='w-24 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500'
+              >
+            </div>
+
+            <button
+              type='submit'
+              data-add-to-cart
+              {%- unless product.selected_or_first_available_variant.available -%}
+                disabled aria-disabled='true'
+              {%- endunless -%}
+              class='rounded-lg bg-green-600 px-6 py-3 font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
+            >
+              {%- if product.selected_or_first_available_variant.available -%}
+                Add to cart
+              {%- else -%}
+                Sold out
+              {%- endif -%}
+            </button>
+          </div>
+        {%- endform -%}
+
+        {%- if product.description != blank -%}
+          <div class='prose prose-sm max-w-none border-t border-gray-200 pt-6 text-gray-700'>
+            {{ product.description }}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": []
+}
+{% endschema %}
