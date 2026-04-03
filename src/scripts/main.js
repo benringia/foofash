@@ -6,6 +6,7 @@ import { initProduct } from "./product.js";
 import { initModal } from "./ui/modal.js";
 import { initAccordion } from "./ui/accordion.js";
 import { initPredictiveSearch } from "./predictive-search.js";
+import { initCollection } from "./filters.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   initCartDrawer();
@@ -15,4 +16,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initModal();
   initAccordion();
   initPredictiveSearch();
+  initCollection();
 });

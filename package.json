@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite build --watch\" \"shopify theme dev --path shopify --store foofash.myshopify.com\"",
+    "dev": "concurrently \"vite\" \"shopify theme dev --path shopify --store foofash.myshopify.com\"",
     "build": "vite build",
     "push": "shopify theme push --path shopify --store foofash.myshopify.com",
     "test": "node --test scripts/*.test.mjs"

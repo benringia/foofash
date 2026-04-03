@@ -1,11 +1,9 @@
 {
   "scripts/main.js": {
-    "file": "main-Ciwp16E5.js",
+    "file": "main-9T3DE2c5.js",
     "name": "main",
     "src": "scripts/main.js",
     "isEntry": true,
-    "css": [
-      "main--MczruZy.css"
-    ]
+    "css": ["main-DHzhYOc-.css"]
   }
 }

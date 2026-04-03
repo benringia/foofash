@@ -27,7 +27,7 @@
   <div class='flex flex-col gap-4'>
     <div class='flex flex-col gap-1'>
       <h2 class='text-xl font-bold text-gray-900'>{{ product.title }}</h2>
-      <div class='text-lg'>
+      <div class='text-lg' data-quick-view-price>
         {%- render 'price', product: product -%}
       </div>
     </div>
@@ -62,6 +62,18 @@
           <input type='hidden' name='id' value='{{ product.selected_or_first_available_variant.id }}'>
         {%- endunless -%}
 
+        <div class='flex items-center gap-2'>
+          <label for='qv-quantity' class='text-sm font-medium text-gray-700'>Qty</label>
+          <input
+            id='qv-quantity'
+            type='number'
+            name='quantity'
+            value='1'
+            min='1'
+            class='w-16 rounded-lg border border-gray-300 px-2 py-2 text-center text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500'
+          >
+        </div>
+
         <button
           type='submit'
           data-add-to-cart
@@ -87,6 +99,10 @@
     {%- endform -%}
   </div>
 </div>
+
+<script type='application/json' data-product-variants>
+  {{ product.variants | json }}
+</script>
 
 {% schema %}
 {
