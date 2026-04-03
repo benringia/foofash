@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "quick-view-product": {
+      "type": "quick-view-product",
+      "settings": {}
+    }
+  },
+  "order": ["quick-view-product"]
+}

@@ -1,24 +1,54 @@
-<header class='site-header'>
-  <div class='site-header__inner'>
-    <a href='{{ routes.root_url }}' class='site-header__logo' aria-label='{{ shop.name }} – home'>
+<header class='site-header sticky top-0 z-30 bg-white shadow-sm'>
+  <div class='site-header__inner mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6'>
+    <a href='{{ routes.root_url }}' class='flex-none' aria-label='{{ shop.name }} – home'>
       {%- if section.settings.logo != blank -%}
         {{ section.settings.logo | image_tag: width: 160, alt: shop.name }}
       {%- else -%}
-        <span>{{ shop.name }}</span>
+        <span class='text-lg font-bold text-gray-900'>{{ shop.name }}</span>
       {%- endif -%}
     </a>
 
-    <nav aria-label='Main navigation'>
+    <nav aria-label='Main navigation' class='hidden items-center gap-6 md:flex'>
       {%- for link in linklists[section.settings.menu].links -%}
-        <a href='{{ link.url }}'>{{ link.title }}</a>
+        <a
+          href='{{ link.url }}'
+          class='text-sm font-medium text-gray-700 hover:text-green-700'
+        >
+          {{- link.title -}}
+        </a>
       {%- endfor -%}
     </nav>
+
+    <div class='relative flex-1 max-w-xs' data-predictive-search>
+      <form role='search' action='{{ routes.search_url }}' method='get' data-predictive-search-form>
+        <input type='hidden' name='type' value='product'>
+        <label for='predictive-search-input' class='sr-only'>Search products</label>
+        <input
+          id='predictive-search-input'
+          type='search'
+          name='q'
+          autocomplete='off'
+          autocorrect='off'
+          autocapitalize='off'
+          spellcheck='false'
+          placeholder='Search products…'
+          role='combobox'
+          aria-expanded='false'
+          aria-controls='predictive-search-results'
+          aria-autocomplete='list'
+          aria-haspopup='listbox'
+          data-predictive-search-input
+          class='w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm placeholder-gray-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500'
+        >
+      </form>
+      {%- render 'predictive-search' -%}
+    </div>
 
     <button
       type='button'
       data-cart-toggle
       aria-label='Open cart, {{ cart.item_count }} items'
-      class='flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded'
+      class='flex-none flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded'
     >
       Cart (<span data-cart-count>{{ cart.item_count }}</span>)
     </button>

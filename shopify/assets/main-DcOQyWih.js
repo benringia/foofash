@@ -1,9 +1,9 @@
-async function y() {
+async function m() {
   const t = await fetch("/cart.js");
   if (!t.ok) throw new Error("Failed to fetch cart");
   return t.json();
 }
-async function b(t) {
+async function v(t) {
   const a = await fetch("/cart/add.js", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -12,7 +12,7 @@ async function b(t) {
   if (!a.ok) throw new Error("Failed to add to cart");
   return a.json();
 }
-async function u(t, a) {
+async function y(t, a) {
   const e = await fetch("/cart/change.js", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -21,12 +21,12 @@ async function u(t, a) {
   if (!e.ok) throw new Error("Failed to update cart");
   return e.json();
 }
-async function v(t) {
-  return u(t, 0);
+async function p(t) {
+  return y(t, 0);
 }
-let o = !1,
-  s = null;
-function m(t) {
+let i = !1,
+  l = null;
+function b(t) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
@@ -46,7 +46,7 @@ function h(t) {
       <div class="flex flex-1 flex-col gap-1 min-w-0">
         <p class="text-sm font-medium text-gray-800 truncate">${t.product_title}</p>
         ${e}
-        <p class="text-sm font-semibold text-gray-900">${m(t.final_line_price)}</p>
+        <p class="text-sm font-semibold text-gray-900">${b(t.final_line_price)}</p>
         <div class="flex items-center gap-2 mt-1">
           <button
             type="button"
@@ -79,21 +79,21 @@ function h(t) {
     </li>
   `.trim();
 }
-function d(t) {
+function s(t) {
   const a = document.querySelector("[data-cart-items]"),
     e = document.querySelector("[data-cart-empty]"),
-    r = document.querySelectorAll("[data-cart-subtotal]"),
-    n = document.querySelectorAll("[data-cart-count]");
+    o = document.querySelectorAll("[data-cart-subtotal]"),
+    r = document.querySelectorAll("[data-cart-count]");
   (a && (a.innerHTML = t.items.map(h).join("")),
     e && e.classList.toggle("hidden", t.item_count > 0),
-    r.forEach((i) => {
-      i.textContent = m(t.total_price);
+    o.forEach((c) => {
+      c.textContent = b(t.total_price);
     }),
-    n.forEach((i) => {
-      i.textContent = t.item_count;
+    r.forEach((c) => {
+      c.textContent = t.item_count;
     }));
 }
-function f() {
+function g() {
   const t = document.querySelector("[data-cart-drawer]"),
     a = document.querySelector("[data-cart-overlay]");
   if (!t) return;
@@ -104,7 +104,7 @@ function f() {
   const e = t.querySelector("[data-cart-close]");
   e == null || e.focus();
 }
-function l() {
+function u() {
   const t = document.querySelector("[data-cart-drawer]"),
     a = document.querySelector("[data-cart-overlay]");
   t &&
@@ -112,118 +112,150 @@ function l() {
     t.classList.add("translate-x-full"),
     t.setAttribute("aria-hidden", "true"),
     (document.body.style.overflow = ""),
-    s == null || s.focus());
+    l == null || l.focus());
 }
-function w() {
+function S() {
   (document.addEventListener("click", async (t) => {
     if (
       t.target.closest("[data-cart-toggle]") &&
-      ((s = t.target.closest("[data-cart-toggle]")), !o)
+      ((l = t.target.closest("[data-cart-toggle]")), !i)
     ) {
-      o = !0;
+      i = !0;
       try {
-        const a = await y();
-        (d(a), f());
+        const a = await m();
+        (s(a), g());
       } catch (a) {
         console.error("Cart open failed:", a);
       } finally {
-        o = !1;
+        i = !1;
       }
     }
   }),
     document.addEventListener("click", (t) => {
-      t.target.closest("[data-cart-close]") && l();
+      t.target.closest("[data-cart-close]") && u();
     }),
     document.addEventListener("click", (t) => {
-      t.target.matches("[data-cart-overlay]") && l();
+      t.target.matches("[data-cart-overlay]") && u();
     }),
     document.addEventListener("keydown", (t) => {
       if (t.key === "Escape") {
         const a = document.querySelector("[data-cart-drawer]");
-        a && a.getAttribute("aria-hidden") === "false" && l();
+        a && a.getAttribute("aria-hidden") === "false" && u();
       }
     }),
     document.addEventListener("submit", async (t) => {
-      var n, i;
+      var r, c;
       const a = t.target.closest("[data-cart-form]");
-      if (!a || (t.preventDefault(), o)) return;
-      o = !0;
+      if (!a || (t.preventDefault(), i)) return;
+      i = !0;
       const e = a.querySelector('[type="submit"]'),
-        r = e == null ? void 0 : e.textContent;
+        o = e == null ? void 0 : e.textContent;
       e && (e.textContent = "Adding…");
       try {
-        const c =
-            (n = a.querySelector('[name="id"]')) == null ? void 0 : n.value,
-          g = parseInt(
-            ((i = a.querySelector('[name="quantity"]')) == null
+        const n =
+            (r = a.querySelector('[name="id"]')) == null ? void 0 : r.value,
+          f = parseInt(
+            ((c = a.querySelector('[name="quantity"]')) == null
               ? void 0
-              : i.value) ?? "1",
+              : c.value) ?? "1",
             10,
           );
-        await b([{ id: c, quantity: g }]);
-        const p = await y();
-        (d(p), f());
-      } catch (c) {
-        console.error("Add to cart failed:", c);
+        await v([{ id: n, quantity: f }]);
+        const d = await m();
+        (s(d), g());
+      } catch (n) {
+        console.error("Add to cart failed:", n);
       } finally {
-        (e && (e.textContent = r), (o = !1));
+        (e && (e.textContent = o), (i = !1));
       }
     }),
     document.addEventListener("click", async (t) => {
       const a = t.target.closest("[data-quantity-decrease]");
-      if (!a || o) return;
+      if (!a || i) return;
       const e = a.closest("[data-line-item]"),
-        r = e == null ? void 0 : e.dataset.itemKey,
-        n = e == null ? void 0 : e.querySelector("[data-quantity-input]");
-      if (!r || !n) return;
-      const i = Math.max(0, parseInt(n.value, 10) - 1);
-      o = !0;
+        o = e == null ? void 0 : e.dataset.itemKey,
+        r = e == null ? void 0 : e.querySelector("[data-quantity-input]");
+      if (!o || !r) return;
+      const c = Math.max(0, parseInt(r.value, 10) - 1);
+      i = !0;
       try {
-        const c = await u(r, i);
-        d(c);
-      } catch (c) {
-        console.error("Quantity update failed:", c);
+        const n = await y(o, c);
+        s(n);
+      } catch (n) {
+        console.error("Quantity update failed:", n);
       } finally {
-        o = !1;
+        i = !1;
       }
     }),
     document.addEventListener("click", async (t) => {
       const a = t.target.closest("[data-quantity-increase]");
-      if (!a || o) return;
+      if (!a || i) return;
       const e = a.closest("[data-line-item]"),
-        r = e == null ? void 0 : e.dataset.itemKey,
-        n = e == null ? void 0 : e.querySelector("[data-quantity-input]");
-      if (!r || !n) return;
-      const i = parseInt(n.value, 10) + 1;
-      o = !0;
+        o = e == null ? void 0 : e.dataset.itemKey,
+        r = e == null ? void 0 : e.querySelector("[data-quantity-input]");
+      if (!o || !r) return;
+      const c = parseInt(r.value, 10) + 1;
+      i = !0;
       try {
-        const c = await u(r, i);
-        d(c);
-      } catch (c) {
-        console.error("Quantity update failed:", c);
+        const n = await y(o, c);
+        s(n);
+      } catch (n) {
+        console.error("Quantity update failed:", n);
       } finally {
-        o = !1;
+        i = !1;
       }
     }),
     document.addEventListener("click", async (t) => {
       const a = t.target.closest("[data-remove-item]");
-      if (!a || o) return;
+      if (!a || i) return;
       const e = a.closest("[data-line-item]"),
-        r = e == null ? void 0 : e.dataset.itemKey;
-      if (r) {
-        o = !0;
+        o = e == null ? void 0 : e.dataset.itemKey;
+      if (o) {
+        i = !0;
         try {
-          const n = await v(r);
-          d(n);
-        } catch (n) {
-          console.error("Remove item failed:", n);
+          const r = await p(o);
+          s(r);
+        } catch (r) {
+          console.error("Remove item failed:", r);
         } finally {
-          o = !1;
+          i = !1;
         }
       }
     }));
 }
-function x() {
+function q() {
+  const t = document.querySelector("[data-main-atc]"),
+    a = document.querySelector("[data-sticky-atc]"),
+    e = document.querySelector("[data-sticky-atc-btn]");
+  if (!t || !a || !e) return;
+  (new IntersectionObserver(
+    ([c]) => {
+      const n = c.isIntersecting;
+      (a.classList.toggle("translate-y-full", n),
+        a.setAttribute("aria-hidden", String(n)));
+    },
+    { threshold: 0 },
+  ).observe(t),
+    e.addEventListener("click", () => {
+      const c = t.closest("form");
+      if (!c) return;
+      const n = c.querySelector("[data-variant-selector]");
+      if (n) {
+        const d = n.querySelector("option:not([disabled]):checked") !== null;
+        if (((e.disabled = !d), !d)) return;
+      }
+      c.requestSubmit(t);
+    }));
+  const r = document.querySelector("[data-variant-selector]");
+  r &&
+    r.addEventListener("change", () => {
+      const n = !r.options[r.selectedIndex].disabled;
+      ((e.disabled = !n),
+        e.setAttribute("aria-disabled", String(!n)),
+        (e.textContent = n ? "Add to cart" : "Sold out"));
+    });
+}
+function w() {
   const t = document.querySelector("[data-variant-selector]");
   t &&
     t.addEventListener("change", () => {
@@ -232,14 +264,14 @@ function x() {
       e && (e.dataset.variantId = a);
     });
 }
-function q() {
+function x() {
   const t = document.querySelectorAll("[data-modal-trigger]");
   t.length &&
     (t.forEach((a) => {
       a.addEventListener("click", () => {
         const e = a.dataset.modalTrigger,
-          r = document.getElementById(e);
-        r && (r.removeAttribute("hidden"), r.focus());
+          o = document.getElementById(e);
+        o && (o.removeAttribute("hidden"), o.focus());
       });
     }),
     document.addEventListener("keydown", (a) => {
@@ -248,20 +280,20 @@ function q() {
       e && e.setAttribute("hidden", "");
     }));
 }
-function S() {
+function E() {
   const t = document.querySelectorAll("[data-accordion]");
   t.length &&
     t.forEach((a) => {
       const e = a.querySelector("[data-accordion-trigger]"),
-        r = a.querySelector("[data-accordion-panel]");
+        o = a.querySelector("[data-accordion-panel]");
       !e ||
-        !r ||
+        !o ||
         e.addEventListener("click", () => {
-          const n = e.getAttribute("aria-expanded") === "true";
-          (e.setAttribute("aria-expanded", String(!n)), (r.hidden = n));
+          const r = e.getAttribute("aria-expanded") === "true";
+          (e.setAttribute("aria-expanded", String(!r)), (o.hidden = r));
         });
     });
 }
 document.addEventListener("DOMContentLoaded", () => {
-  (w(), x(), q(), S());
+  (S(), q(), w(), x(), E());
 });

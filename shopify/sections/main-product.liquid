@@ -89,6 +89,7 @@
             <button
               type='submit'
               data-add-to-cart
+              data-main-atc
               {%- unless product.selected_or_first_available_variant.available -%}
                 disabled aria-disabled='true'
               {%- endunless -%}
@@ -112,6 +113,8 @@
     </div>
   </div>
 </section>
+
+{%- render 'sticky-atc', product: product -%}
 
 {% schema %}
 {

@@ -1,0 +1,40 @@
+{%- comment -%}
+  Sticky Add-to-Cart bar. Rendered at the bottom of main-product.liquid.
+  Hidden by default; sticky-atc.js shows it via IntersectionObserver when
+  the main ATC button [data-main-atc] scrolls out of view.
+
+  Usage: {% render 'sticky-atc', product: product %}
+{%- endcomment -%}
+
+{%- assign variant = product.selected_or_first_available_variant -%}
+
+<div
+  data-sticky-atc
+  aria-hidden='true'
+  class='fixed bottom-0 left-0 z-40 w-full translate-y-full border-t border-gray-200 bg-white shadow-lg transition-transform duration-300 ease-in-out'
+>
+  <div class='mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8'>
+    <p class='hidden min-w-0 flex-1 truncate text-sm font-semibold text-gray-900 sm:block'>
+      {{ product.title }}
+    </p>
+
+    <div class='text-sm font-semibold text-gray-900'>
+      {%- render 'price', product: product -%}
+    </div>
+
+    <button
+      type='button'
+      data-sticky-atc-btn
+      {%- unless variant.available -%}
+        disabled aria-disabled='true'
+      {%- endunless -%}
+      class='shrink-0 rounded-lg bg-green-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
+    >
+      {%- if variant.available -%}
+        Add to cart
+      {%- else -%}
+        Sold out
+      {%- endif -%}
+    </button>
+  </div>
+</div>
