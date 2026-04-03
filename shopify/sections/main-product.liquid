@@ -43,7 +43,7 @@
         {%- endif -%}
 
         {%- comment -%} Add-to-cart form {%- endcomment -%}
-        {%- form 'product', product -%}
+        {%- form 'product', product, data-cart-form: '' -%}
           <div class='flex flex-col gap-4'>
             {%- comment -%} Variant selector — only shown when multiple variants exist {%- endcomment -%}
             {%- unless product.has_only_default_variant -%}

@@ -1,10 +1,13 @@
 <footer class='site-footer'>
   <div class='site-footer__inner'>
-    <nav aria-label='Footer navigation'>
-      {%- for link in linklists[section.settings.menu].links -%}
-        <a href='{{ link.url }}'>{{ link.title }}</a>
-      {%- endfor -%}
-    </nav>
+    {%- assign footer_links = linklists[section.settings.menu].links -%}
+    {%- if footer_links.size > 0 -%}
+      <nav aria-label='Footer navigation'>
+        {%- for link in footer_links -%}
+          <a href='{{ link.url }}'>{{ link.title }}</a>
+        {%- endfor -%}
+      </nav>
+    {%- endif -%}
 
     <p>
       &copy; {{ 'now' | date: '%Y' }}

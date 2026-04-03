@@ -11,11 +11,7 @@
     "featured-collection": {
       "type": "featured-collection",
       "settings": {}
-    },
-    "main-hero": {
-      "type": "main-hero",
-      "settings": {}
     }
   },
-  "order": ["hero-banner", "trust-bar", "featured-collection", "main-hero"]
+  "order": ["hero-banner", "trust-bar", "featured-collection"]
 }

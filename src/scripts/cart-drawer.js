@@ -162,6 +162,7 @@ export function initCartDrawer() {
 
     try {
       const variantId = form.querySelector('[name="id"]')?.value;
+      if (!variantId) throw new Error("Add to cart: variant ID not found");
       const quantity = parseInt(
         form.querySelector('[name="quantity"]')?.value ?? "1",
         10,

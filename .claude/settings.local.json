@@ -6,10 +6,10 @@
       "Bash(node --input-type=module)",
       "Bash(npm test:*)",
       "Bash(npm run:*)",
-      "Bash(node -e ':*')",
       "Bash(node --test scripts/*.test.mjs)",
       "Bash(shopify version:*)",
-      "Bash(shopify theme:*)"
+      "Bash(shopify theme:*)",
+      "Bash(grep -E \"\\\\.\\(js|css\\)$\")"
     ]
   },
   "hooks": {

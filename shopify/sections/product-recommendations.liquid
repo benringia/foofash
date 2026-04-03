@@ -1,0 +1,64 @@
+<section
+  class='product-recommendations py-12 lg:py-16 border-t border-gray-100'
+  data-product-recommendations
+  data-product-id='{{ product.id }}'
+  data-url='{{ routes.product_recommendations_url }}'
+  data-limit='{{ section.settings.products_to_show }}'
+>
+  <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+    {%- if recommendations.performed -%}
+      {%- if recommendations.products_count > 0 -%}
+        <div class='mb-8'>
+          <p class='text-sm font-semibold uppercase tracking-widest text-green-600'>You May Also Like</p>
+          <h2 class='mt-1 text-2xl font-bold text-gray-900 sm:text-3xl'>More for Your Pet</h2>
+        </div>
+
+        <div class='grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-4'>
+          {%- for product in recommendations.products -%}
+            {% render 'product-card', product: product %}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      {%- comment -%} Skeleton shown on initial page load before AJAX replaces content {%- endcomment -%}
+      <div class='mb-8'>
+        <div class='animate-pulse h-4 w-32 rounded bg-gray-200'></div>
+        <div class='animate-pulse mt-2 h-8 w-48 rounded bg-gray-200'></div>
+      </div>
+
+      <div class='grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-4'>
+        {%- for i in (1..4) -%}
+          <div>
+            <div class='animate-pulse aspect-square w-full rounded-xl bg-gray-200'></div>
+            <div class='mt-3 space-y-2'>
+              <div class='animate-pulse h-4 w-3/4 rounded bg-gray-200'></div>
+              <div class='animate-pulse h-4 w-1/2 rounded bg-gray-200'></div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Recommendations",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 6,
+      "step": 2,
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Recommendations"
+    }
+  ]
+}
+{% endschema %}

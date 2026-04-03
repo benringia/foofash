@@ -112,6 +112,8 @@ export function initPredictiveSearch() {
   const list = wrapper.querySelector("[data-predictive-search-list]");
   const empty = wrapper.querySelector("[data-predictive-search-empty]");
 
+  if (!input || !results || !list || !empty) return;
+
   input.addEventListener("input", () => {
     clearTimeout(debounceTimer);
     const q = input.value.trim();

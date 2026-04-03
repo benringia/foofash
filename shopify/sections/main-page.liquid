@@ -1,0 +1,30 @@
+<section class='main-page {{ section.settings.padding }}'>
+  <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+    <h1 class='text-3xl font-bold text-gray-900 sm:text-4xl'>{{ page.title }}</h1>
+
+    {%- if page.content != blank -%}
+      <div class='prose prose-sm mt-4 max-w-none text-gray-700'>
+        {{ page.content }}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page",
+  "settings": [
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "options": [
+        { "value": "py-8", "label": "Small" },
+        { "value": "py-10 lg:py-16", "label": "Medium" },
+        { "value": "py-16 lg:py-24", "label": "Large" }
+      ],
+      "default": "py-10 lg:py-16"
+    }
+  ]
+}
+{% endschema %}

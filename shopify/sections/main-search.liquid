@@ -1,0 +1,119 @@
+<section class='main-search py-10 lg:py-16'>
+  <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+    {%- comment -%} Search form — lets the user refine from results page {%- endcomment -%}
+    <form role='search' action='{{ routes.search_url }}' method='get' class='mb-10'>
+      <input type='hidden' name='type' value='product'>
+      <div class='flex gap-2'>
+        <label for='search-input' class='sr-only'>Search products</label>
+        <input
+          id='search-input'
+          type='search'
+          name='q'
+          value='{{ search.terms | escape }}'
+          autocomplete='off'
+          placeholder='Search products…'
+          class='flex-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500'
+        >
+        <button
+          type='submit'
+          class='rounded-lg bg-green-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2'
+        >
+          Search
+        </button>
+      </div>
+    </form>
+
+    {%- if search.performed -%}
+      {%- comment -%} Results heading {%- endcomment -%}
+      <div class='mb-6'>
+        {%- if search.results_count > 0 -%}
+          <h1 class='text-2xl font-bold text-gray-900 sm:text-3xl'>
+            Results for &ldquo;{{ search.terms | escape }}&rdquo;
+          </h1>
+          <p class='mt-1 text-sm text-gray-500'>
+            {{ search.results_count }} product{{ search.results_count | pluralize: '', 's' }} found
+          </p>
+        {%- else -%}
+          <h1 class='text-2xl font-bold text-gray-900 sm:text-3xl'>
+            No results for &ldquo;{{ search.terms | escape }}&rdquo;
+          </h1>
+        {%- endif -%}
+      </div>
+
+      {%- if search.results_count > 0 -%}
+        {%- paginate search.results by 24 -%}
+          <div class='grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-4'>
+            {%- for item in search.results -%}
+              {%- if item.object_type == 'product' -%}
+                {% render 'product-card', product: item %}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          {%- if paginate.pages > 1 -%}
+            <nav aria-label='Search results pagination' class='mt-10 flex justify-center gap-2'>
+              {%- if paginate.previous -%}
+                <a
+                  href='{{ paginate.previous.url }}'
+                  class='rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50'
+                >
+                  Previous
+                </a>
+              {%- endif -%}
+              {%- for part in paginate.parts -%}
+                {%- if part.is_link -%}
+                  <a
+                    href='{{ part.url }}'
+                    class='rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50'
+                  >
+                    {{ part.title }}
+                  </a>
+                {%- else -%}
+                  <span class='rounded-lg border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white'>
+                    {{ part.title }}
+                  </span>
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if paginate.next -%}
+                <a
+                  href='{{ paginate.next.url }}'
+                  class='rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50'
+                >
+                  Next
+                </a>
+              {%- endif -%}
+            </nav>
+          {%- endif -%}
+        {%- endpaginate -%}
+
+      {%- else -%}
+        {%- comment -%} Empty state {%- endcomment -%}
+        <div class='py-16 text-center'>
+          <div class='mx-auto mb-4 flex h-16 w-16 items-center justify-center text-gray-300'>
+            {%- render 'icon', icon: 'paw' -%}
+          </div>
+          <p class='text-base text-gray-500'>Try a different search term, or browse our collections.</p>
+          <a
+            href='{{ routes.root_url }}'
+            class='mt-6 inline-block rounded-lg bg-green-600 px-6 py-3 text-sm font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2'
+          >
+            Back to home
+          </a>
+        </div>
+      {%- endif -%}
+
+    {%- else -%}
+      {%- comment -%} Pre-search state — user hasn't searched yet {%- endcomment -%}
+      <div class='py-16 text-center'>
+        <p class='text-base text-gray-500'>Enter a search term above to find products.</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Search",
+  "settings": []
+}
+{% endschema %}

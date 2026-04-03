@@ -144,7 +144,12 @@ export function initQuickView() {
     const variantsEl = modal.querySelector("[data-product-variants]");
     if (!variantsEl) return;
 
-    const variants = JSON.parse(variantsEl.textContent);
+    let variants;
+    try {
+      variants = JSON.parse(variantsEl.textContent);
+    } catch {
+      return;
+    }
     const variant = variants.find((v) => String(v.id) === select.value);
     if (!variant) return;
 
