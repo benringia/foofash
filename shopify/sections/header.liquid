@@ -17,6 +17,14 @@
           {{- link.title -}}
         </a>
       {%- endfor -%}
+      {%- if section.settings.services_page != blank -%}
+        <a
+          href='{{ section.settings.services_page }}'
+          class='text-sm font-medium text-gray-700 hover:text-green-700'
+        >
+          {{ section.settings.services_label | default: 'Services' }}
+        </a>
+      {%- endif -%}
     </nav>
 
     <div class='relative flex-1 max-w-xs' data-predictive-search>
@@ -69,6 +77,18 @@
       "id": "menu",
       "label": "Navigation menu",
       "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "services_label",
+      "label": "Services link label",
+      "default": "Services"
+    },
+    {
+      "type": "url",
+      "id": "services_page",
+      "label": "Services link URL",
+      "info": "Link to your main service page, e.g. /pages/vet-consultation. Leave blank to hide the link."
     }
   ]
 }
