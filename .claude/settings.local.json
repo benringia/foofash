@@ -11,7 +11,8 @@
       "Bash(shopify theme:*)",
       "Bash(grep -E \"\\\\.\\(js|css\\)$\")",
       "Bash(find shopify/assets -maxdepth 1 \\\\\\( -name \"main-*.js\" -o -name \"main-*.css\" -o -name \"chunk-*.js\" \\\\\\) -delete)",
-      "Bash(rm -rf shopify/assets/.vite)"
+      "Bash(rm -rf shopify/assets/.vite)",
+      "Bash(test -f \"c:\\\\\\\\Users\\\\\\\\Ben\\\\\\\\Documents\\\\\\\\Shopify Projects\\\\\\\\foofash\\\\\\\\shopify\\\\\\\\sections\\\\\\\\service-booking.liquid\")"
     ]
   },
   "hooks": {
