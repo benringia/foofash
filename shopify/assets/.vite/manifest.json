@@ -1,9 +1,11 @@
 {
   "scripts/main.js": {
-    "file": "main-9T3DE2c5.js",
+    "file": "main.js",
     "name": "main",
     "src": "scripts/main.js",
     "isEntry": true,
-    "css": ["main-DHzhYOc-.css"]
+    "css": [
+      "main.css"
+    ]
   }
 }

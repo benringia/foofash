@@ -30,6 +30,11 @@ export default {
       // resolve() gives Rollup an absolute path — required when root:'src' but
       // the config file lives at the project root (Vite 5 CWD vs root ambiguity)
       input: resolve("src/scripts/main.js"),
+      output: {
+        entryFileNames: "main.js",
+        assetFileNames: "main.css",
+        chunkFileNames: "chunk.js",
+      },
     },
   },
 };
