@@ -76,11 +76,9 @@
                   type='date'
                   name='contact[preferred_date]'
                   required
+                  data-date-min-today
                   class='rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500'
                 >
-                <script>
-                  document.getElementById('booking-date').min = new Date().toISOString().split('T')[0];
-                </script>
               </div>
 
               <div class='flex flex-col gap-1'>

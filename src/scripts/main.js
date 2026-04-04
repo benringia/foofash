@@ -19,4 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initPredictiveSearch();
   initCollection();
   initProductRecommendations();
+  document.querySelectorAll("[data-date-min-today]").forEach((el) => {
+    el.min = new Date().toISOString().split("T")[0];
+  });
 });
