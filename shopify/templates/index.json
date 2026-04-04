@@ -8,10 +8,14 @@
       "type": "trust-bar",
       "settings": {}
     },
+    "services": {
+      "type": "services-grid",
+      "settings": {}
+    },
     "featured-collection": {
       "type": "featured-collection",
       "settings": {}
     }
   },
-  "order": ["hero-banner", "trust-bar", "featured-collection"]
+  "order": ["hero-banner", "trust-bar", "services", "featured-collection"]
 }
