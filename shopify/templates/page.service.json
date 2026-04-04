@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-service",
+      "settings": {}
+    },
+    "booking": {
+      "type": "service-booking",
+      "settings": {}
+    }
+  },
+  "order": ["main", "booking"]
+}
