@@ -51,13 +51,24 @@
             "cta_label": "Book Now",
             "cta_url": "/pages/dental-care"
           }
+        },
+        "parasite-control": {
+          "type": "service_card",
+          "settings": {
+            "icon": "stethoscope",
+            "title": "Parasite Control",
+            "description": "Effective flea, tick, and worm prevention and treatment for your pet.",
+            "cta_label": "Book Now",
+            "cta_url": "/pages/parasite-control"
+          }
         }
       },
       "blocks_order": [
         "vet-consultation",
         "grooming",
         "vaccination",
-        "dental-care"
+        "dental-care",
+        "parasite-control"
       ]
     },
     "featured-collection": {
