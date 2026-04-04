@@ -10,7 +10,55 @@
     },
     "services": {
       "type": "services-grid",
-      "settings": {}
+      "settings": {},
+      "blocks": {
+        "vet-consultation": {
+          "type": "service_card",
+          "settings": {
+            "icon": "stethoscope",
+            "title": "Vet Consultation",
+            "description": "Professional health checks and diagnostics for your pet.",
+            "cta_label": "Book Now",
+            "cta_url": "/pages/vet-consultation"
+          }
+        },
+        "grooming": {
+          "type": "service_card",
+          "settings": {
+            "icon": "scissors",
+            "title": "Grooming",
+            "description": "Full grooming services including wash, cut, and nail trim.",
+            "cta_label": "Book Now",
+            "cta_url": "/pages/grooming"
+          }
+        },
+        "vaccination": {
+          "type": "service_card",
+          "settings": {
+            "icon": "syringe",
+            "title": "Vaccination",
+            "description": "Keep your pet protected with up-to-date vaccinations.",
+            "cta_label": "Book Now",
+            "cta_url": "/pages/vaccination"
+          }
+        },
+        "dental-care": {
+          "type": "service_card",
+          "settings": {
+            "icon": "tooth",
+            "title": "Dental Care",
+            "description": "Professional dental cleaning and oral health checks.",
+            "cta_label": "Book Now",
+            "cta_url": "/pages/dental-care"
+          }
+        }
+      },
+      "blocks_order": [
+        "vet-consultation",
+        "grooming",
+        "vaccination",
+        "dental-care"
+      ]
     },
     "featured-collection": {
       "type": "featured-collection",
