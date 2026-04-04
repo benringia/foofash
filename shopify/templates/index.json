@@ -55,7 +55,7 @@
         "parasite-control": {
           "type": "service_card",
           "settings": {
-            "icon": "stethoscope",
+            "icon": "paw",
             "title": "Parasite Control",
             "description": "Effective flea, tick, and worm prevention and treatment for your pet.",
             "cta_label": "Book Now",
