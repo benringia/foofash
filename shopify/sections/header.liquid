@@ -8,24 +8,11 @@
       {%- endif -%}
     </a>
 
-    <nav aria-label='Main navigation' class='hidden items-center gap-6 md:flex'>
-      {%- for link in linklists[section.settings.menu].links -%}
-        <a
-          href='{{ link.url }}'
-          class='text-sm font-medium text-gray-700 hover:text-green-700'
-        >
-          {{- link.title -}}
-        </a>
-      {%- endfor -%}
-      {%- if section.settings.services_page != blank -%}
-        <a
-          href='{{ section.settings.services_page }}'
-          class='text-sm font-medium text-gray-700 hover:text-green-700'
-        >
-          {{ section.settings.services_label | default: 'Services' }}
-        </a>
-      {%- endif -%}
-    </nav>
+    {%- render 'navigation',
+      menu: section.settings.menu,
+      services_page: section.settings.services_page,
+      services_label: section.settings.services_label
+    -%}
 
     <div class='relative flex-1 max-w-xs' data-predictive-search>
       <form role='search' action='{{ routes.search_url }}' method='get' data-predictive-search-form>
@@ -59,6 +46,32 @@
       class='flex-none flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded'
     >
       Cart (<span data-cart-count>{{ cart.item_count }}</span>)
+    </button>
+
+    <button
+      type='button'
+      aria-expanded='false'
+      aria-controls='mobile-nav-drawer'
+      aria-label='Open menu'
+      class='flex-none rounded p-1 text-gray-700 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 md:hidden'
+      data-mobile-toggle
+    >
+      <svg
+        xmlns='http://www.w3.org/2000/svg'
+        width='24'
+        height='24'
+        viewBox='0 0 24 24'
+        fill='none'
+        stroke='currentColor'
+        stroke-width='2'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+        aria-hidden='true'
+      >
+        <line x1='3' y1='6' x2='21' y2='6'></line>
+        <line x1='3' y1='12' x2='21' y2='12'></line>
+        <line x1='3' y1='18' x2='21' y2='18'></line>
+      </svg>
     </button>
   </div>
 </header>

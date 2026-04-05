@@ -1,0 +1,211 @@
+{%- assign nav_links = linklists[menu].links -%}
+
+{%- comment -%} Desktop navigation {%- endcomment -%}
+<nav aria-label='Main navigation' class='hidden items-center gap-6 md:flex'>
+  {%- for link in nav_links -%}
+    {%- if link.links.size > 0 -%}
+      <div class='relative' data-mega-menu>
+        <button
+          type='button'
+          aria-expanded='false'
+          aria-controls='mega-{{ link.handle }}'
+          data-mega-trigger
+          class='flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded transition-colors'
+        >
+          {{- link.title -}}
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            width='16'
+            height='16'
+            viewBox='0 0 24 24'
+            fill='none'
+            stroke='currentColor'
+            stroke-width='2'
+            stroke-linecap='round'
+            stroke-linejoin='round'
+            aria-hidden='true'
+            class='transition-transform duration-200'
+            data-mega-chevron
+          >
+            <polyline points='6 9 12 15 18 9'></polyline>
+          </svg>
+        </button>
+      </div>
+    {%- else -%}
+      <a
+        href='{{ link.url }}'
+        class='text-sm font-medium text-gray-700 hover:text-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded'
+      >
+        {{- link.title -}}
+      </a>
+    {%- endif -%}
+  {%- endfor -%}
+  {%- if services_page != blank -%}
+    <a
+      href='{{ services_page }}'
+      class='text-sm font-medium text-gray-700 hover:text-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded'
+    >
+      {{ services_label | default: 'Services' }}
+    </a>
+  {%- endif -%}
+</nav>
+
+{%- comment -%} Mega menu panels (fixed, JS sets top) {%- endcomment -%}
+{%- for link in nav_links -%}
+  {%- if link.links.size > 0 -%}
+    <div
+      id='mega-{{ link.handle }}'
+      class='fixed left-0 w-full bg-white shadow-lg z-40 opacity-0 pointer-events-none transition-opacity duration-200'
+      aria-hidden='true'
+      data-mega-panel
+    >
+      <div class='max-w-7xl mx-auto px-6 py-8 grid grid-cols-4 gap-8'>
+        {%- for child in link.links -%}
+          <div>
+            <a
+              href='{{ child.url }}'
+              class='block text-sm font-semibold text-gray-900 hover:text-green-700 mb-3 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded'
+            >
+              {{- child.title -}}
+            </a>
+            {%- if child.links.size > 0 -%}
+              <ul class='space-y-2 mt-1'>
+                {%- for grandchild in child.links -%}
+                  <li>
+                    <a
+                      href='{{ grandchild.url }}'
+                      class='text-sm text-gray-500 hover:text-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded'
+                    >
+                      {{- grandchild.title -}}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+{%- endfor -%}
+
+{%- comment -%} Mobile navigation drawer {%- endcomment -%}
+<div
+  id='mobile-nav-drawer'
+  class='fixed inset-y-0 left-0 z-50 w-72 bg-white shadow-xl overflow-y-auto -translate-x-full transition-transform duration-300'
+  aria-label='Mobile navigation'
+  aria-hidden='true'
+  data-mobile-drawer
+>
+  <div class='flex items-center justify-between px-4 py-4 border-b border-gray-200'>
+    <p class='text-sm font-semibold text-gray-900'>Menu</p>
+    <button
+      type='button'
+      class='rounded p-1 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-inset'
+      aria-label='Close menu'
+      data-mobile-close
+    >
+      <svg
+        xmlns='http://www.w3.org/2000/svg'
+        width='20'
+        height='20'
+        viewBox='0 0 24 24'
+        fill='none'
+        stroke='currentColor'
+        stroke-width='2'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+        aria-hidden='true'
+      >
+        <line x1='18' y1='6' x2='6' y2='18'></line>
+        <line x1='6' y1='6' x2='18' y2='18'></line>
+      </svg>
+    </button>
+  </div>
+
+  <nav aria-label='Mobile navigation'>
+    <ul>
+      {%- for link in nav_links -%}
+        <li class='border-b border-gray-100'>
+          {%- if link.links.size > 0 -%}
+            <button
+              type='button'
+              aria-expanded='false'
+              aria-controls='mobile-accordion-{{ link.handle }}'
+              class='flex w-full items-center justify-between px-6 py-4 text-sm font-medium text-gray-700 hover:text-green-700 hover:bg-gray-50 transition-colors'
+              data-mobile-accordion
+            >
+              {{- link.title -}}
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                width='16'
+                height='16'
+                viewBox='0 0 24 24'
+                fill='none'
+                stroke='currentColor'
+                stroke-width='2'
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                aria-hidden='true'
+                class='transition-transform duration-200'
+                data-accordion-chevron
+              >
+                <polyline points='6 9 12 15 18 9'></polyline>
+              </svg>
+            </button>
+            <ul id='mobile-accordion-{{ link.handle }}' class='hidden bg-gray-50'>
+              {%- for child in link.links -%}
+                <li class='border-b border-gray-100'>
+                  <a
+                    href='{{ child.url }}'
+                    class='block px-8 py-3 text-sm text-gray-600 hover:text-green-700 transition-colors focus:outline-none focus:ring-inset focus:ring-2 focus:ring-green-500'
+                  >
+                    {{- child.title -}}
+                  </a>
+                  {%- if child.links.size > 0 -%}
+                    <ul>
+                      {%- for grandchild in child.links -%}
+                        <li class='border-b border-gray-100'>
+                          <a
+                            href='{{ grandchild.url }}'
+                            class='block px-10 py-2 text-sm text-gray-400 hover:text-green-700 transition-colors focus:outline-none focus:ring-inset focus:ring-2 focus:ring-green-500'
+                          >
+                            {{- grandchild.title -}}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- else -%}
+            <a
+              href='{{ link.url }}'
+              class='block px-6 py-4 text-sm font-medium text-gray-700 hover:text-green-700 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-inset focus:ring-2 focus:ring-green-500'
+            >
+              {{- link.title -}}
+            </a>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+      {%- if services_page != blank -%}
+        <li class='border-b border-gray-100'>
+          <a
+            href='{{ services_page }}'
+            class='block px-6 py-4 text-sm font-medium text-gray-700 hover:text-green-700 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-inset focus:ring-2 focus:ring-green-500'
+          >
+            {{ services_label | default: 'Services' }}
+          </a>
+        </li>
+      {%- endif -%}
+    </ul>
+  </nav>
+</div>
+
+{%- comment -%} Mobile backdrop {%- endcomment -%}
+<div
+  class='fixed inset-0 z-40 bg-black/40 hidden'
+  aria-hidden='true'
+  data-mobile-backdrop
+></div>
