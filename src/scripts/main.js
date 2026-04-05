@@ -8,6 +8,7 @@ import { initAccordion } from "./ui/accordion.js";
 import { initPredictiveSearch } from "./predictive-search.js";
 import { initCollection } from "./filters.js";
 import { initProductRecommendations } from "./product-recommendations.js";
+import { initHeader } from "./header.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   initCartDrawer();
@@ -19,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initPredictiveSearch();
   initCollection();
   initProductRecommendations();
+  initHeader();
   document.querySelectorAll("[data-date-min-today]").forEach((el) => {
     el.min = new Date().toISOString().split("T")[0];
   });
