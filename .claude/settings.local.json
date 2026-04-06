@@ -12,7 +12,11 @@
       "Bash(grep -E \"\\\\.\\(js|css\\)$\")",
       "Bash(find shopify/assets -maxdepth 1 \\\\\\( -name \"main-*.js\" -o -name \"main-*.css\" -o -name \"chunk-*.js\" \\\\\\) -delete)",
       "Bash(rm -rf shopify/assets/.vite)",
-      "Bash(test -f \"c:\\\\\\\\Users\\\\\\\\Ben\\\\\\\\Documents\\\\\\\\Shopify Projects\\\\\\\\foofash\\\\\\\\shopify\\\\\\\\sections\\\\\\\\service-booking.liquid\")"
+      "Bash(test -f \"c:\\\\\\\\Users\\\\\\\\Ben\\\\\\\\Documents\\\\\\\\Shopify Projects\\\\\\\\foofash\\\\\\\\shopify\\\\\\\\sections\\\\\\\\service-booking.liquid\")",
+      "Bash(ls shopify/assets/*.css)",
+      "Bash(grep -o 'lg:flex\\\\|\\\\.lg\\\\\\\\\\\\\\\\:flex' shopify/assets/main.css)",
+      "Bash(grep -o '\\\\.md\\\\\\\\\\\\\\\\:flex\\\\b\\\\|\\\\.lg\\\\\\\\\\\\\\\\:flex\\\\b' shopify/assets/main.css)",
+      "Bash(grep -o '\\\\.md\\\\\\\\\\\\\\\\:hidden\\\\b' shopify/assets/main.css)"
     ]
   },
   "hooks": {

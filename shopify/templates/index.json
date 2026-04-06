@@ -1,79 +1,100 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero-banner": {
       "type": "hero-banner",
-      "settings": {}
+      "settings": {
+        "heading": "Your pet's health, our priority",
+        "subheading": "Vet-approved products and clinic services, delivered with care.",
+        "eyebrow": "",
+        "primary_cta_label": "Shop now",
+        "primary_cta_link": "",
+        "secondary_cta_label": "",
+        "secondary_cta_link": "",
+        "overlay_gradient": false,
+        "padding": "py-16"
+      }
     },
     "trust-bar": {
       "type": "trust-bar",
-      "settings": {}
+      "settings": {
+        "background_color": "#f0fdf4",
+        "text_color": "#166534",
+        "padding": "py-6"
+      }
     },
     "services": {
       "type": "services-grid",
-      "settings": {},
       "blocks": {
-        "vet-consultation": {
-          "type": "service_card",
-          "settings": {
-            "icon": "stethoscope",
-            "title": "Vet Consultation",
-            "description": "Professional health checks and diagnostics for your pet.",
-            "cta_label": "Book Now",
-            "cta_url": "/pages/vet-consultation"
-          }
-        },
-        "grooming": {
-          "type": "service_card",
-          "settings": {
-            "icon": "scissors",
-            "title": "Grooming",
-            "description": "Full grooming services including wash, cut, and nail trim.",
-            "cta_label": "Book Now",
-            "cta_url": "/pages/grooming"
-          }
-        },
-        "vaccination": {
-          "type": "service_card",
-          "settings": {
-            "icon": "syringe",
-            "title": "Vaccination",
-            "description": "Keep your pet protected with up-to-date vaccinations.",
-            "cta_label": "Book Now",
-            "cta_url": "/pages/vaccination"
-          }
-        },
-        "dental-care": {
+        "service_card_H3XnN9": {
           "type": "service_card",
           "settings": {
             "icon": "tooth",
             "title": "Dental Care",
-            "description": "Professional dental cleaning and oral health checks.",
+            "description": "Teeth cleaning and oral care for fresher breath and healthier gums.",
             "cta_label": "Book Now",
-            "cta_url": "/pages/dental-care"
+            "cta_url": "shopify://pages/dental-care"
           }
         },
-        "parasite-control": {
+        "service_card_bMbRyN": {
           "type": "service_card",
           "settings": {
-            "icon": "paw",
-            "title": "Parasite Control",
-            "description": "Effective flea, tick, and worm prevention and treatment for your pet.",
+            "icon": "syringe",
+            "title": "Vaccination",
+            "description": "Essential vaccines to protect your pets from common diseases.",
             "cta_label": "Book Now",
-            "cta_url": "/pages/parasite-control"
+            "cta_url": "shopify://pages/vaccination"
+          }
+        },
+        "service_card_wQEtbt": {
+          "type": "service_card",
+          "settings": {
+            "icon": "scissors",
+            "title": "Pet Grooming",
+            "description": "Professional grooming including bathing, trimming, and nail care.",
+            "cta_label": "Book Now",
+            "cta_url": "shopify://pages/grooming"
+          }
+        },
+        "service_card_DACr7V": {
+          "type": "service_card",
+          "settings": {
+            "icon": "stethoscope",
+            "title": "General Checkup",
+            "description": "Routine health exams to keep your pet healthy, active, and disease-free.",
+            "cta_label": "Book Now",
+            "cta_url": "/pages/vet-consultation"
           }
         }
       },
-      "blocks_order": [
-        "vet-consultation",
-        "grooming",
-        "vaccination",
-        "dental-care",
-        "parasite-control"
-      ]
+      "block_order": [
+        "service_card_H3XnN9",
+        "service_card_bMbRyN",
+        "service_card_wQEtbt",
+        "service_card_DACr7V"
+      ],
+      "settings": {
+        "heading": "Our Services",
+        "subheading": "",
+        "padding": "py-10 lg:py-16"
+      }
     },
     "featured-collection": {
       "type": "featured-collection",
-      "settings": {}
+      "settings": {
+        "heading": "Featured Products",
+        "collection": "",
+        "products_to_show": 8,
+        "padding": "py-16"
+      }
     }
   },
   "order": ["hero-banner", "trust-bar", "services", "featured-collection"]

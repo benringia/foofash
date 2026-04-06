@@ -11,7 +11,7 @@
         position:fixed on the panel lets it escape max-w-7xl and span
         the full viewport. JS sets panel.style.top = header.offsetHeight.
       {%- endcomment -%}
-      <div class='relative group' data-mega-menu>
+      <div class='relative' data-mega-menu>
         <button
           type='button'
           aria-expanded='false'
@@ -31,7 +31,7 @@
             stroke-linecap='round'
             stroke-linejoin='round'
             aria-hidden='true'
-            class='transition-transform duration-200 group-hover:rotate-180'
+            class='transition-transform duration-200'
             data-mega-chevron
           >
             <polyline points='6 9 12 15 18 9'></polyline>
@@ -41,12 +41,7 @@
         {%- comment -%} Panel lives inside the group so group-hover works {%- endcomment -%}
         <div
           id='mega-{{ link.handle }}'
-          class='
-            fixed left-0 w-full bg-white shadow-lg border-t border-gray-100 z-40
-            opacity-0 pointer-events-none
-            group-hover:opacity-100 group-hover:pointer-events-auto
-            transition-opacity duration-200
-          '
+          class='fixed left-0 w-full bg-white shadow-lg border-t border-gray-100 z-40 opacity-0 pointer-events-none transition-opacity duration-200'
           aria-hidden='true'
           data-mega-panel
         >

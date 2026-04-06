@@ -10,11 +10,11 @@ function initMegaMenu() {
   const header = document.querySelector(".site-header");
   if (!header) return;
 
-  const panels = document.querySelectorAll("[data-mega-panel]");
+  const panelEls = document.querySelectorAll("[data-mega-panel]");
 
   const positionPanels = () => {
     const top = header.offsetHeight;
-    panels.forEach((panel) => {
+    panelEls.forEach((panel) => {
       panel.style.top = `${top}px`;
     });
   };
@@ -26,14 +26,8 @@ function initMegaMenu() {
   const headerObserver = new ResizeObserver(positionPanels);
   headerObserver.observe(header);
 
-  const openPanel = (trigger, panel) => {
-    panel.classList.remove("opacity-0", "pointer-events-none");
-    panel.classList.add("opacity-100", "pointer-events-auto");
-    panel.setAttribute("aria-hidden", "false");
-    trigger.setAttribute("aria-expanded", "true");
-    const chevron = trigger.querySelector("[data-mega-chevron]");
-    if (chevron) chevron.classList.add("rotate-180");
-  };
+  // Collect all items so openPanel can close siblings.
+  const menuItems = [];
 
   const closePanel = (trigger, panel) => {
     panel.classList.remove("opacity-100", "pointer-events-auto");
@@ -44,12 +38,27 @@ function initMegaMenu() {
     if (chevron) chevron.classList.remove("rotate-180");
   };
 
+  const openPanel = (trigger, panel) => {
+    // Close every other panel before opening this one.
+    menuItems.forEach(({ trigger: t, panel: p }) => {
+      if (p !== panel) closePanel(t, p);
+    });
+    panel.classList.remove("opacity-0", "pointer-events-none");
+    panel.classList.add("opacity-100", "pointer-events-auto");
+    panel.setAttribute("aria-hidden", "false");
+    trigger.setAttribute("aria-expanded", "true");
+    const chevron = trigger.querySelector("[data-mega-chevron]");
+    if (chevron) chevron.classList.add("rotate-180");
+  };
+
   document.querySelectorAll("[data-mega-menu]").forEach((container) => {
     const trigger = container.querySelector("[data-mega-trigger]");
     if (!trigger) return;
     const panelId = trigger.getAttribute("aria-controls");
     const panel = document.getElementById(panelId);
     if (!panel) return;
+
+    menuItems.push({ trigger, panel });
 
     let closeTimer;
 
@@ -58,7 +67,7 @@ function initMegaMenu() {
     };
     const cancelClose = () => clearTimeout(closeTimer);
 
-    // Hover — 100ms close delay lets cursor cross the gap to the panel
+    // Hover — 100ms close delay lets cursor cross the gap to the panel.
     container.addEventListener("mouseenter", () => {
       cancelClose();
       openPanel(trigger, panel);
@@ -67,13 +76,13 @@ function initMegaMenu() {
     panel.addEventListener("mouseenter", cancelClose);
     panel.addEventListener("mouseleave", scheduleClose);
 
-    // Keyboard — focus opens panel; guard prevents Escape re-opening it
+    // Keyboard — focus opens panel; guard prevents Escape re-opening it.
     trigger.addEventListener("focus", () => {
       if (trigger.getAttribute("aria-expanded") === "true") return;
       openPanel(trigger, panel);
     });
 
-    // Cancel close timer when focus enters panel via keyboard Tab
+    // Cancel close timer when focus enters panel via keyboard Tab.
     panel.addEventListener("focusin", cancelClose);
 
     trigger.addEventListener("keydown", (e) => {
@@ -139,7 +148,7 @@ function initMobileDrawer() {
     }
   });
 
-  // Focus trap — cycle Tab/Shift+Tab within the drawer while it is open
+  // Focus trap — cycle Tab/Shift+Tab within the drawer while it is open.
   drawer.addEventListener("keydown", (e) => {
     if (drawer.getAttribute("aria-hidden") === "true") return;
     if (e.key !== "Tab") return;
@@ -168,7 +177,7 @@ function initMobileAccordion() {
 
       const isExpanded = trigger.getAttribute("aria-expanded") === "true";
 
-      // Collapse all sibling accordions in the drawer
+      // Collapse all sibling accordions in the drawer.
       const drawer = trigger.closest("[data-mobile-drawer]");
       if (drawer) {
         drawer.querySelectorAll("[data-mobile-accordion]").forEach((other) => {
@@ -182,7 +191,7 @@ function initMobileAccordion() {
         });
       }
 
-      // Toggle this accordion
+      // Toggle this accordion.
       trigger.setAttribute("aria-expanded", String(!isExpanded));
       const chevron = trigger.querySelector("[data-accordion-chevron]");
       if (chevron) chevron.classList.toggle("rotate-180", !isExpanded);
