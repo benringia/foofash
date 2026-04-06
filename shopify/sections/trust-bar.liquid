@@ -1,36 +1,32 @@
 {%- if section.blocks.size > 0 -%}
-  <div
-    class='trust-bar {{ section.settings.padding }}'
-    style='background-color: {{ section.settings.background_color }}; color: {{ section.settings.text_color }};'
-  >
+  <div class='trust-bar bg-surface-low {{ section.settings.padding }}'>
     <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
       <ul
-        class='flex snap-x snap-mandatory gap-6 overflow-x-auto sm:flex-wrap sm:justify-center sm:overflow-visible'
+        class='grid grid-cols-2 gap-4 md:grid-cols-4 lg:gap-6'
         role='list'
       >
         {%- for block in section.blocks -%}
           <li
-            class='flex min-w-[160px] flex-none snap-start flex-col items-center gap-2 py-2 text-center sm:min-w-0 sm:flex-1'
+            class='flex flex-col items-center gap-3 rounded-3xl bg-surface-lowest p-6 text-center shadow-ambient'
             {{ block.shopify_attributes }}
           >
             {%- if block.settings.icon != blank -%}
-              <span class='h-8 w-8' aria-hidden='true'>
+              <span
+                class='flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary'
+                aria-hidden='true'
+              >
                 {%- render 'icon', icon: block.settings.icon -%}
               </span>
             {%- endif -%}
 
             {%- if block.settings.title != blank -%}
-              <p class='text-sm font-semibold leading-tight'>{{ block.settings.title }}</p>
+              <p class='text-sm font-semibold text-on-surface'>{{ block.settings.title }}</p>
             {%- endif -%}
 
             {%- if block.settings.subtitle != blank -%}
-              <p class='text-xs opacity-75'>{{ block.settings.subtitle }}</p>
+              <p class='text-xs text-on-surface/60'>{{ block.settings.subtitle }}</p>
             {%- endif -%}
           </li>
-
-          {%- unless forloop.last -%}
-            <li class='hidden w-px self-stretch bg-current opacity-20 sm:block' aria-hidden='true'></li>
-          {%- endunless -%}
         {%- endfor -%}
       </ul>
     </div>
@@ -43,18 +39,6 @@
   "max_blocks": 6,
   "settings": [
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color",
-      "default": "#f0fdf4"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color",
-      "default": "#166534"
-    },
-    {
       "type": "select",
       "id": "padding",
       "label": "Section padding",
@@ -63,7 +47,7 @@
         { "value": "py-6", "label": "Medium" },
         { "value": "py-10", "label": "Large" }
       ],
-      "default": "py-6"
+      "default": "py-10"
     }
   ],
   "blocks": [
@@ -100,31 +84,31 @@
           "settings": {
             "icon": "vet-approved",
             "title": "Vet Approved",
-            "subtitle": "Recommended by our clinic"
+            "subtitle": "Clinical recommendations only"
           }
         },
         {
           "type": "trust_item",
           "settings": {
-            "icon": "shipping",
-            "title": "Free Shipping",
-            "subtitle": "On orders over $50"
-          }
-        },
-        {
-          "type": "trust_item",
-          "settings": {
-            "icon": "returns",
-            "title": "Easy Returns",
-            "subtitle": "30-day hassle-free returns"
+            "icon": "stethoscope",
+            "title": "Licensed Vets",
+            "subtitle": "50+ on store"
           }
         },
         {
           "type": "trust_item",
           "settings": {
             "icon": "clock",
-            "title": "Same-Day Dispatch",
-            "subtitle": "Order before 3pm"
+            "title": "24/7 Care",
+            "subtitle": "Always available"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "paw",
+            "title": "Premium Shop",
+            "subtitle": "Handpicked products"
           }
         }
       ]

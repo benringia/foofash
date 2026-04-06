@@ -1,34 +1,157 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "hero-banner": {
       "type": "hero-banner",
       "settings": {
-        "heading": "Your pet's health, our priority",
-        "subheading": "Vet-approved products and clinic services, delivered with care.",
-        "eyebrow": "",
-        "primary_cta_label": "Shop now",
+        "eyebrow": "Premium Clinical Care",
+        "heading": "Happy Paws,",
+        "heading_accent": "Healthy Hearts",
+        "subheading": "Your pet's best life starts here. Combining world-class veterinary expertise with premium boutique care for every furry family member.",
+        "primary_cta_label": "Book Appointment",
         "primary_cta_link": "",
-        "secondary_cta_label": "",
+        "secondary_cta_label": "Explore Services",
         "secondary_cta_link": "",
-        "overlay_gradient": false,
+        "trust_label": "Trusted by 5,000+ Pet Parents",
         "padding": "py-16"
       }
     },
     "trust-bar": {
       "type": "trust-bar",
+      "blocks": {
+        "trust_vet": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "vet-approved",
+            "title": "Vet Approved",
+            "subtitle": "Clinical recommendations only"
+          }
+        },
+        "trust_vets": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "stethoscope",
+            "title": "Licensed Vets",
+            "subtitle": "50+ on store"
+          }
+        },
+        "trust_clock": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "clock",
+            "title": "24/7 Care",
+            "subtitle": "Always available"
+          }
+        },
+        "trust_paw": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "paw",
+            "title": "Premium Shop",
+            "subtitle": "Handpicked products"
+          }
+        }
+      },
+      "block_order": ["trust_vet", "trust_vets", "trust_clock", "trust_paw"],
       "settings": {
-        "background_color": "#f0fdf4",
-        "text_color": "#166534",
-        "padding": "py-6"
+        "padding": "py-10"
+      }
+    },
+    "pet-type-nav": {
+      "type": "pet-type-nav",
+      "blocks": {
+        "pet_dogs": {
+          "type": "pet_category",
+          "settings": {
+            "label": "Dogs",
+            "link": ""
+          }
+        },
+        "pet_cats": {
+          "type": "pet_category",
+          "settings": {
+            "label": "Cats",
+            "link": ""
+          }
+        },
+        "pet_small": {
+          "type": "pet_category",
+          "settings": {
+            "label": "Small Animals",
+            "link": ""
+          }
+        },
+        "pet_fish": {
+          "type": "pet_category",
+          "settings": {
+            "label": "Fish",
+            "link": ""
+          }
+        }
+      },
+      "block_order": ["pet_dogs", "pet_cats", "pet_small", "pet_fish"],
+      "settings": {
+        "heading": "Care for Every Friend",
+        "subheading": "Specialised care and products for all your companions",
+        "padding": "py-16"
+      }
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "Boutique Favorites",
+        "subheading": "Curated essentials for a healthy life",
+        "view_all_label": "View All Products",
+        "view_all_link": "",
+        "collection": "",
+        "products_to_show": 4,
+        "padding": "py-16"
+      }
+    },
+    "clinic-info": {
+      "type": "clinic-info",
+      "settings": {
+        "eyebrow": "Flagship Location",
+        "heading": "Visit Our Modern Wellness Center",
+        "subheading": "Experience a stress-free environment where every detail is designed for your pet's comfort and clinical excellence.",
+        "address": "123 Petal Lane, Furry Heights, New York, NY 10011",
+        "hours": "Open 24/7 for Emergencies\nRegular clinic: 8AM – 8PM",
+        "cta_label": "Get Directions",
+        "cta_link": "",
+        "padding": "py-16"
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonial_1": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "The only clinic where Barnaby feels at home. The staff's care for animals is truly heartwarming.",
+            "author_name": "Sarah Jenkins",
+            "author_meta": "Owner of two rescue kittens"
+          }
+        },
+        "testimonial_2": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Exquisite boutique products and world-class vets. They've helped Bella through so much with such grace.",
+            "author_name": "Mark Thompson",
+            "author_meta": "Labrador dad, since 2019"
+          }
+        },
+        "testimonial_3": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Booking an appointment is seamless. I appreciate the transparency and the joyful energy of the clinic.",
+            "author_name": "Elena Rodriguez",
+            "author_meta": "Cat mum and online shopper"
+          }
+        }
+      },
+      "block_order": ["testimonial_1", "testimonial_2", "testimonial_3"],
+      "settings": {
+        "heading": "Loved by Pets & Parents",
+        "padding": "py-16"
       }
     },
     "services": {
@@ -86,16 +209,14 @@
         "subheading": "",
         "padding": "py-10 lg:py-16"
       }
-    },
-    "featured-collection": {
-      "type": "featured-collection",
-      "settings": {
-        "heading": "Featured Products",
-        "collection": "",
-        "products_to_show": 8,
-        "padding": "py-16"
-      }
     }
   },
-  "order": ["hero-banner", "trust-bar", "services", "featured-collection"]
+  "order": [
+    "hero-banner",
+    "trust-bar",
+    "pet-type-nav",
+    "featured-collection",
+    "clinic-info",
+    "testimonials"
+  ]
 }

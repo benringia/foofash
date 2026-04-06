@@ -4,20 +4,13 @@
 <nav aria-label='Main navigation' class='hidden items-center gap-6 md:flex'>
   {%- for link in nav_links -%}
     {%- if link.links.size > 0 -%}
-      {%- comment -%}
-        Mega menu trigger + panel are siblings inside `group`.
-        CSS group-hover handles open/close as primary mechanism;
-        JS enhances with ARIA state and keyboard support.
-        position:fixed on the panel lets it escape max-w-7xl and span
-        the full viewport. JS sets panel.style.top = header.offsetHeight.
-      {%- endcomment -%}
       <div class='relative' data-mega-menu>
         <button
           type='button'
           aria-expanded='false'
           aria-controls='mega-{{ link.handle }}'
           data-mega-trigger
-          class='flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded transition-colors'
+          class='flex items-center gap-1 text-sm font-medium text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded'
         >
           {{- link.title -}}
           <svg
@@ -38,19 +31,18 @@
           </svg>
         </button>
 
-        {%- comment -%} Panel lives inside the group so group-hover works {%- endcomment -%}
         <div
           id='mega-{{ link.handle }}'
-          class='fixed left-0 w-full bg-white shadow-lg border-t border-gray-100 z-40 opacity-0 pointer-events-none transition-opacity duration-200'
+          class='fixed left-0 z-40 w-full border-t border-surface-high bg-surface opacity-0 shadow-ambient pointer-events-none transition-opacity duration-200'
           aria-hidden='true'
           data-mega-panel
         >
-          <div class='max-w-7xl mx-auto px-6 py-8 grid grid-cols-4 gap-8'>
+          <div class='mx-auto max-w-7xl grid grid-cols-4 gap-8 px-6 py-8'>
             {%- for child in link.links -%}
               <div class='flex flex-col'>
                 <a
                   href='{{ child.url }}'
-                  class='text-sm font-semibold text-gray-900 hover:text-green-700 mb-3 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded'
+                  class='mb-3 text-sm font-semibold text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded'
                 >
                   {{- child.title -}}
                 </a>
@@ -60,7 +52,7 @@
                       <li>
                         <a
                           href='{{ grandchild.url }}'
-                          class='text-sm text-gray-500 hover:text-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded'
+                          class='text-sm text-on-surface/60 transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded'
                         >
                           {{- grandchild.title -}}
                         </a>
@@ -76,7 +68,7 @@
     {%- else -%}
       <a
         href='{{ link.url }}'
-        class='text-sm font-medium text-gray-700 hover:text-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded'
+        class='text-sm font-medium text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded'
       >
         {{- link.title -}}
       </a>
@@ -85,7 +77,7 @@
   {%- if services_page != blank -%}
     <a
       href='{{ services_page }}'
-      class='text-sm font-medium text-gray-700 hover:text-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded'
+      class='text-sm font-medium text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded'
     >
       {{ services_label | default: 'Services' }}
     </a>
@@ -95,16 +87,16 @@
 {%- comment -%} Mobile navigation drawer {%- endcomment -%}
 <div
   id='mobile-nav-drawer'
-  class='fixed inset-y-0 left-0 z-50 w-72 bg-white shadow-xl overflow-y-auto -translate-x-full transition-transform duration-300'
+  class='fixed inset-y-0 left-0 z-50 w-72 overflow-y-auto bg-surface shadow-ambient -translate-x-full transition-transform duration-300'
   aria-hidden='true'
   aria-modal='true'
   data-mobile-drawer
 >
-  <div class='flex items-center justify-between px-4 py-4 border-b border-gray-200'>
-    <h2 id='mobile-nav-heading' class='text-sm font-semibold text-gray-900'>Menu</h2>
+  <div class='flex items-center justify-between border-b border-surface-high px-4 py-4'>
+    <h2 id='mobile-nav-heading' class='text-sm font-semibold text-on-surface'>Menu</h2>
     <button
       type='button'
-      class='rounded p-1 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-inset'
+      class='rounded-full p-1 text-on-surface/60 transition-colors hover:text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:ring-inset'
       aria-label='Close menu'
       data-mobile-close
     >
@@ -129,13 +121,13 @@
   <nav aria-labelledby='mobile-nav-heading'>
     <ul>
       {%- for link in nav_links -%}
-        <li class='border-b border-gray-100'>
+        <li class='border-b border-surface-high'>
           {%- if link.links.size > 0 -%}
             <button
               type='button'
               aria-expanded='false'
               aria-controls='mobile-accordion-{{ link.handle }}'
-              class='flex w-full items-center justify-between px-6 py-4 text-sm font-medium text-gray-700 hover:text-green-700 hover:bg-gray-50 transition-colors'
+              class='flex w-full items-center justify-between px-6 py-4 text-sm font-medium text-on-surface transition-colors hover:bg-surface-low hover:text-primary'
               data-mobile-accordion
             >
               {{- link.title -}}
@@ -156,22 +148,22 @@
                 <polyline points='6 9 12 15 18 9'></polyline>
               </svg>
             </button>
-            <ul id='mobile-accordion-{{ link.handle }}' class='hidden bg-gray-50'>
+            <ul id='mobile-accordion-{{ link.handle }}' class='hidden bg-surface-low'>
               {%- for child in link.links -%}
-                <li class='border-b border-gray-100'>
+                <li class='border-b border-surface-high'>
                   <a
                     href='{{ child.url }}'
-                    class='block px-8 py-3 text-sm text-gray-600 hover:text-green-700 transition-colors focus:outline-none focus:ring-inset focus:ring-2 focus:ring-green-500'
+                    class='block px-8 py-3 text-sm text-on-surface/70 transition-colors hover:text-primary focus:outline-none focus:ring-inset focus:ring-2 focus:ring-primary'
                   >
                     {{- child.title -}}
                   </a>
                   {%- if child.links.size > 0 -%}
                     <ul>
                       {%- for grandchild in child.links -%}
-                        <li class='border-b border-gray-100'>
+                        <li class='border-b border-surface-high'>
                           <a
                             href='{{ grandchild.url }}'
-                            class='block px-10 py-2 text-sm text-gray-400 hover:text-green-700 transition-colors focus:outline-none focus:ring-inset focus:ring-2 focus:ring-green-500'
+                            class='block px-10 py-2 text-sm text-on-surface/50 transition-colors hover:text-primary focus:outline-none focus:ring-inset focus:ring-2 focus:ring-primary'
                           >
                             {{- grandchild.title -}}
                           </a>
@@ -185,7 +177,7 @@
           {%- else -%}
             <a
               href='{{ link.url }}'
-              class='block px-6 py-4 text-sm font-medium text-gray-700 hover:text-green-700 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-inset focus:ring-2 focus:ring-green-500'
+              class='block px-6 py-4 text-sm font-medium text-on-surface transition-colors hover:bg-surface-low hover:text-primary focus:outline-none focus:ring-inset focus:ring-2 focus:ring-primary'
             >
               {{- link.title -}}
             </a>
@@ -193,10 +185,10 @@
         </li>
       {%- endfor -%}
       {%- if services_page != blank -%}
-        <li class='border-b border-gray-100'>
+        <li class='border-b border-surface-high'>
           <a
             href='{{ services_page }}'
-            class='block px-6 py-4 text-sm font-medium text-gray-700 hover:text-green-700 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-inset focus:ring-2 focus:ring-green-500'
+            class='block px-6 py-4 text-sm font-medium text-on-surface transition-colors hover:bg-surface-low hover:text-primary focus:outline-none focus:ring-inset focus:ring-2 focus:ring-primary'
           >
             {{ services_label | default: 'Services' }}
           </a>
@@ -208,7 +200,7 @@
 
 {%- comment -%} Mobile backdrop {%- endcomment -%}
 <div
-  class='fixed inset-0 z-40 bg-black/40 hidden'
+  class='fixed inset-0 z-40 hidden bg-on-surface/40'
   aria-hidden='true'
   data-mobile-backdrop
 ></div>

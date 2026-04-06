@@ -1,21 +1,143 @@
-<footer class='site-footer'>
-  <div class='site-footer__inner'>
-    {%- assign footer_links = linklists[section.settings.menu].links -%}
-    {%- if footer_links.size > 0 -%}
-      <nav aria-label='Footer navigation'>
-        {%- for link in footer_links -%}
-          <a href='{{ link.url }}'>{{ link.title }}</a>
-        {%- endfor -%}
-      </nav>
-    {%- endif -%}
+<footer class='bg-on-surface text-white' role='contentinfo'>
+  <div class='mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8'>
+    {%- comment -%} Top grid: brand + nav columns + newsletter {%- endcomment -%}
+    <div class='grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4'>
+      {%- comment -%} Brand column {%- endcomment -%}
+      <div class='flex flex-col gap-4 lg:col-span-1'>
+        <div class='flex items-center gap-2'>
+          <span class='h-6 w-6 text-primary' aria-hidden='true'>
+            {%- render 'icon', icon: 'paw' -%}
+          </span>
+          <span class='font-display text-lg font-bold text-white'>{{ shop.name }}</span>
+        </div>
+        {%- if section.settings.tagline != blank -%}
+          <p class='text-sm leading-relaxed text-white/60'>{{ section.settings.tagline }}</p>
+        {%- endif -%}
 
-    <p>
-      &copy; {{ 'now' | date: '%Y' }}
-      {{ shop.name }}
-      {%- if section.settings.copyright_text != blank -%}
-        &nbsp;&mdash;&nbsp;{{ section.settings.copyright_text }}
+        {%- comment -%} Social icons {%- endcomment -%}
+        <div class='flex gap-4'>
+          {%- if section.settings.footer_instagram != blank -%}
+            <a
+              href='{{ section.settings.footer_instagram }}'
+              class='text-white/40 transition-colors hover:text-white'
+              aria-label='Instagram'
+            >
+              <span class='h-5 w-5 block' aria-hidden='true'>{%- render 'icon', icon: 'instagram' -%}</span>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.footer_facebook != blank -%}
+            <a
+              href='{{ section.settings.footer_facebook }}'
+              class='text-white/40 transition-colors hover:text-white'
+              aria-label='Facebook'
+            >
+              <span class='h-5 w-5 block' aria-hidden='true'>{%- render 'icon', icon: 'facebook' -%}</span>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.footer_twitter != blank -%}
+            <a
+              href='{{ section.settings.footer_twitter }}'
+              class='text-white/40 transition-colors hover:text-white'
+              aria-label='Twitter / X'
+            >
+              <span class='h-5 w-5 block' aria-hidden='true'>{%- render 'icon', icon: 'twitter' -%}</span>
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- comment -%} Nav column 1 {%- endcomment -%}
+      {%- assign col1_links = linklists[section.settings.footer_col_1_menu].links -%}
+      {%- if col1_links.size > 0 -%}
+        <nav aria-label='{{ section.settings.footer_col_1_label | default: 'Navigation' }}'>
+          {%- if section.settings.footer_col_1_label != blank -%}
+            <p class='mb-4 text-sm font-semibold uppercase tracking-widest text-white/40'>
+              {{ section.settings.footer_col_1_label }}
+            </p>
+          {%- endif -%}
+          <ul class='flex flex-col gap-3' role='list'>
+            {%- for link in col1_links -%}
+              <li>
+                <a href='{{ link.url }}' class='text-sm text-white/60 transition-colors hover:text-white'>
+                  {{ link.title }}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
       {%- endif -%}
-    </p>
+
+      {%- comment -%} Nav column 2 {%- endcomment -%}
+      {%- assign col2_links = linklists[section.settings.footer_col_2_menu].links -%}
+      {%- if col2_links.size > 0 -%}
+        <nav aria-label='{{ section.settings.footer_col_2_label | default: 'Navigation' }}'>
+          {%- if section.settings.footer_col_2_label != blank -%}
+            <p class='mb-4 text-sm font-semibold uppercase tracking-widest text-white/40'>
+              {{ section.settings.footer_col_2_label }}
+            </p>
+          {%- endif -%}
+          <ul class='flex flex-col gap-3' role='list'>
+            {%- for link in col2_links -%}
+              <li>
+                <a href='{{ link.url }}' class='text-sm text-white/60 transition-colors hover:text-white'>
+                  {{ link.title }}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+
+      {%- comment -%} Newsletter column {%- endcomment -%}
+      <div class='flex flex-col gap-4'>
+        {%- if section.settings.newsletter_heading != blank -%}
+          <p class='text-sm font-semibold uppercase tracking-widest text-white/40'>
+            {{ section.settings.newsletter_heading }}
+          </p>
+        {%- endif -%}
+        <p class='text-sm text-white/60'>
+          {{
+            section.settings.newsletter_subtext
+            | default: 'Ask us for our monthly pet health tips and exclusive offers.'
+          }}
+        </p>
+        <form
+          action='/contact#newsletter'
+          method='post'
+          data-newsletter-form
+          class='flex gap-2'
+        >
+          <input type='hidden' name='form_type' value='customer'>
+          <input type='hidden' name='utf8' value='✓'>
+          <label for='footer-newsletter-email' class='sr-only'>Email address</label>
+          <input
+            type='email'
+            id='footer-newsletter-email'
+            name='contact[email]'
+            placeholder='{{ section.settings.newsletter_placeholder | default: 'Your email' }}'
+            required
+            class='min-w-0 flex-1 rounded-full bg-white/10 px-4 py-2 text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-secondary'
+          >
+          <button
+            type='submit'
+            class='flex-shrink-0 rounded-full bg-secondary px-5 py-2 text-sm font-semibold text-white transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-on-surface'
+          >
+            Join the Pack
+          </button>
+        </form>
+      </div>
+    </div>
+
+    {%- comment -%} Bottom bar {%- endcomment -%}
+    <div class='mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row'>
+      <p class='text-xs text-white/40'>
+        &copy; {{ 'now' | date: '%Y' }}
+        {{ shop.name }}
+        {%- if section.settings.copyright_text != blank -%}
+          &nbsp;&mdash;&nbsp;{{ section.settings.copyright_text }}
+        {%- endif -%}
+      </p>
+    </div>
   </div>
 </footer>
 
@@ -24,10 +146,82 @@
   "name": "Footer",
   "settings": [
     {
+      "type": "text",
+      "id": "tagline",
+      "label": "Brand tagline",
+      "default": "Redefining pet wellness through joyful care and premium products. Join our community of healthy, happy pets."
+    },
+    {
+      "type": "header",
+      "content": "Navigation columns"
+    },
+    {
+      "type": "text",
+      "id": "footer_col_1_label",
+      "label": "Column 1 label",
+      "default": "Navigation"
+    },
+    {
       "type": "link_list",
-      "id": "menu",
-      "label": "Footer navigation menu",
+      "id": "footer_col_1_menu",
+      "label": "Column 1 menu",
       "default": "footer"
+    },
+    {
+      "type": "text",
+      "id": "footer_col_2_label",
+      "label": "Column 2 label",
+      "default": "Newsletter"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_col_2_menu",
+      "label": "Column 2 menu"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter heading",
+      "default": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_subtext",
+      "label": "Newsletter subtext",
+      "default": "Ask us for our monthly pet health tips and exclusive offers."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Email placeholder",
+      "default": "Your email"
+    },
+    {
+      "type": "header",
+      "content": "Social links"
+    },
+    {
+      "type": "url",
+      "id": "footer_instagram",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "footer_facebook",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "footer_twitter",
+      "label": "Twitter / X URL"
+    },
+    {
+      "type": "header",
+      "content": "Legal"
     },
     {
       "type": "text",

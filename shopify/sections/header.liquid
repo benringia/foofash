@@ -1,65 +1,107 @@
-<header class='site-header sticky top-0 z-30 bg-white shadow-sm'>
-  <div class='site-header__inner mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6'>
-    <a href='{{ routes.root_url }}' class='flex-none' aria-label='{{ shop.name }} – home'>
+<header
+  class='site-header sticky top-0 z-30 bg-surface/95 backdrop-blur-sm shadow-ambient'
+  data-header
+>
+  <div class='mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6'>
+    {%- comment -%} Left: logo + brand name {%- endcomment -%}
+    <a
+      href='{{ routes.root_url }}'
+      class='flex flex-none items-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded'
+      aria-label='{{ shop.name }} – home'
+    >
       {%- if section.settings.logo != blank -%}
-        {{ section.settings.logo | image_tag: width: 160, alt: shop.name }}
+        {{ section.settings.logo | image_tag: width: 140, loading: 'eager', alt: shop.name, class: 'h-8 w-auto' }}
       {%- else -%}
-        <span class='text-lg font-bold text-gray-900'>{{ shop.name }}</span>
+        <span class='h-6 w-6 text-primary' aria-hidden='true'>
+          {%- render 'icon', icon: 'paw' -%}
+        </span>
+        <span class='font-display text-lg font-bold text-on-surface'>{{ shop.name }}</span>
       {%- endif -%}
     </a>
 
+    {%- comment -%} Desktop nav — rendered by navigation snippet {%- endcomment -%}
     {%- render 'navigation',
       menu: section.settings.menu,
       services_page: section.settings.services_page,
       services_label: section.settings.services_label
     -%}
 
-    <div class='relative flex-1 max-w-xs' data-predictive-search>
-      <form role='search' action='{{ routes.search_url }}' method='get' data-predictive-search-form>
+    {%- comment -%} Center: search {%- endcomment -%}
+    <div class='relative flex-1' data-predictive-search>
+      <form
+        role='search'
+        action='{{ routes.search_url }}'
+        method='get'
+        data-predictive-search-form
+        class='flex items-center'
+      >
         <input type='hidden' name='type' value='product'>
         <label for='predictive-search-input' class='sr-only'>Search products</label>
-        <input
-          id='predictive-search-input'
-          type='search'
-          name='q'
-          autocomplete='off'
-          autocorrect='off'
-          autocapitalize='off'
-          spellcheck='false'
-          placeholder='Search products…'
-          role='combobox'
-          aria-expanded='false'
-          aria-controls='predictive-search-results'
-          aria-autocomplete='list'
-          aria-haspopup='listbox'
-          data-predictive-search-input
-          class='w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm placeholder-gray-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500'
-        >
+        <div class='relative w-full max-w-sm mx-auto'>
+          <span
+            class='pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-on-surface/40'
+            aria-hidden='true'
+          >
+            {%- render 'icon', icon: 'search' -%}
+          </span>
+          <input
+            id='predictive-search-input'
+            type='search'
+            name='q'
+            autocomplete='off'
+            autocorrect='off'
+            autocapitalize='off'
+            spellcheck='false'
+            placeholder='{{ section.settings.search_placeholder | default: 'Search products…' }}'
+            role='combobox'
+            aria-expanded='false'
+            aria-controls='predictive-search-results'
+            aria-autocomplete='list'
+            aria-haspopup='listbox'
+            data-predictive-search-input
+            class='w-full rounded-full bg-surface-low py-2 pl-9 pr-4 text-sm text-on-surface placeholder-on-surface/40 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-shadow'
+          >
+        </div>
       </form>
       {%- render 'predictive-search' -%}
     </div>
 
+    {%- comment -%} Right: cart button {%- endcomment -%}
     <button
       type='button'
       data-cart-toggle
-      aria-label='Open cart, {{ cart.item_count }} items'
-      class='flex-none flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded'
+      aria-label='Open cart, {{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }}'
+      class='relative flex-none rounded-full p-2 text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
     >
-      Cart (<span data-cart-count>{{ cart.item_count }}</span>)
+      <span class='h-6 w-6 block' aria-hidden='true'>
+        {%- render 'icon', icon: 'bag' -%}
+      </span>
+      {%- if cart.item_count > 0 -%}
+        <span
+          class='absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-secondary text-[10px] font-bold text-white'
+          aria-hidden='true'
+          data-cart-count
+        >
+          {{- cart.item_count -}}
+        </span>
+      {%- else -%}
+        <span class='sr-only' data-cart-count>{{ cart.item_count }}</span>
+      {%- endif -%}
     </button>
 
+    {%- comment -%} Mobile: hamburger toggle {%- endcomment -%}
     <button
       type='button'
       aria-expanded='false'
       aria-controls='mobile-nav-drawer'
       aria-label='Open menu'
-      class='flex-none rounded p-1 text-gray-700 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 md:hidden'
+      class='flex-none rounded-full p-2 text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 md:hidden'
       data-mobile-toggle
     >
       <svg
         xmlns='http://www.w3.org/2000/svg'
-        width='24'
-        height='24'
+        width='22'
+        height='22'
         viewBox='0 0 24 24'
         fill='none'
         stroke='currentColor'
@@ -93,6 +135,12 @@
     },
     {
       "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Search products…"
+    },
+    {
+      "type": "text",
       "id": "services_label",
       "label": "Services link label",
       "default": "Services"
@@ -101,7 +149,7 @@
       "type": "url",
       "id": "services_page",
       "label": "Services link URL",
-      "info": "Link to your main service page, e.g. /pages/vet-consultation. Leave blank to hide the link."
+      "info": "Link to your main service page. Leave blank to hide."
     }
   ]
 }
