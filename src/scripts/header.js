@@ -23,7 +23,8 @@ function initMegaMenu() {
 
   // ResizeObserver avoids window resize listener leaks and catches header
   // height changes that don't involve a viewport resize (e.g. promo banners).
-  new ResizeObserver(positionPanels).observe(header);
+  const headerObserver = new ResizeObserver(positionPanels);
+  headerObserver.observe(header);
 
   const openPanel = (trigger, panel) => {
     panel.classList.remove("opacity-0", "pointer-events-none");
@@ -104,7 +105,7 @@ function initMobileDrawer() {
   if (!toggle || !drawer || !backdrop) return;
 
   const focusableSelectors =
-    'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
   const openDrawer = () => {
     drawer.classList.remove("-translate-x-full");
@@ -140,6 +141,7 @@ function initMobileDrawer() {
 
   // Focus trap — cycle Tab/Shift+Tab within the drawer while it is open
   drawer.addEventListener("keydown", (e) => {
+    if (drawer.getAttribute("aria-hidden") === "true") return;
     if (e.key !== "Tab") return;
     const focusable = [...drawer.querySelectorAll(focusableSelectors)];
     if (!focusable.length) return;

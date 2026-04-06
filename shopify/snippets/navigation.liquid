@@ -93,12 +93,12 @@
 <div
   id='mobile-nav-drawer'
   class='fixed inset-y-0 left-0 z-50 w-72 bg-white shadow-xl overflow-y-auto -translate-x-full transition-transform duration-300'
-  aria-label='Mobile navigation'
   aria-hidden='true'
+  aria-modal='true'
   data-mobile-drawer
 >
   <div class='flex items-center justify-between px-4 py-4 border-b border-gray-200'>
-    <p class='text-sm font-semibold text-gray-900'>Menu</p>
+    <h2 id='mobile-nav-heading' class='text-sm font-semibold text-gray-900'>Menu</h2>
     <button
       type='button'
       class='rounded p-1 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-inset'
@@ -123,7 +123,7 @@
     </button>
   </div>
 
-  <nav aria-label='Mobile navigation'>
+  <nav aria-labelledby='mobile-nav-heading'>
     <ul>
       {%- for link in nav_links -%}
         <li class='border-b border-gray-100'>
