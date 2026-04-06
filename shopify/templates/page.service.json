@@ -1,11 +1,11 @@
 {
   "sections": {
     "main": {
-      "type": "main-service",
+      "type": "main_service",
       "settings": {}
     },
     "booking": {
-      "type": "service-booking",
+      "type": "service_booking",
       "settings": {}
     }
   },

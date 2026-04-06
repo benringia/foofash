@@ -32,7 +32,7 @@
       }
     },
     "services": {
-      "type": "services-grid",
+      "type": "services_grid",
       "blocks": {
         "service_card_H3XnN9": {
           "type": "service_card",
