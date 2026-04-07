@@ -1,34 +1,53 @@
 {%- if section.blocks.size > 0 -%}
-  <div class='trust-bar bg-surface-low {{ section.settings.padding }}'>
-    <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
-      <ul
-        class='grid grid-cols-2 gap-4 md:grid-cols-4 lg:gap-6'
-        role='list'
-      >
-        {%- for block in section.blocks -%}
-          <li
-            class='flex flex-col items-center gap-3 rounded-3xl bg-surface-lowest p-6 text-center shadow-ambient'
-            {{ block.shopify_attributes }}
-          >
-            {%- if block.settings.icon != blank -%}
-              <span
-                class='flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary'
-                aria-hidden='true'
-              >
-                {%- render 'icon', icon: block.settings.icon -%}
-              </span>
-            {%- endif -%}
+  <div class='trust-bar -mt-20 relative z-20 py-12'>
+    <div class='mx-auto max-w-7xl px-6'>
+      <div class='bg-white rounded-[3rem] p-8 md:p-12 shadow-bubbly-lg border border-white'>
+        <ul class='grid grid-cols-2 gap-8 md:grid-cols-4' role='list'>
+          {%- for block in section.blocks -%}
+            {%- liquid
+              case block.settings.icon
+                when 'vet-approved'
+                  assign icon_bg = 'bg-medical-green'
+                  assign icon_color = 'text-primary'
+                when 'stethoscope'
+                  assign icon_bg = 'bg-orange-50'
+                  assign icon_color = 'text-secondary'
+                when 'clock'
+                  assign icon_bg = 'bg-medical-blue'
+                  assign icon_color = 'text-primary'
+                else
+                  assign icon_bg = 'bg-slate-50'
+                  assign icon_color = 'text-on-surface-variant'
+              endcase
+            -%}
+            <li
+              class='flex flex-col items-center text-center gap-4 group'
+              {{ block.shopify_attributes }}
+            >
+              {%- if block.settings.icon != blank -%}
+                <div
+                  class='w-20 h-20 {{ icon_bg }} rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500'
+                  aria-hidden='true'
+                >
+                  <span class='h-9 w-9 {{ icon_color }}'>
+                    {%- render 'icon', icon: block.settings.icon -%}
+                  </span>
+                </div>
+              {%- endif -%}
 
-            {%- if block.settings.title != blank -%}
-              <p class='text-sm font-semibold text-on-surface'>{{ block.settings.title }}</p>
-            {%- endif -%}
+              {%- if block.settings.title != blank -%}
+                <p class='font-bold text-primary text-lg'>{{ block.settings.title }}</p>
+              {%- endif -%}
 
-            {%- if block.settings.subtitle != blank -%}
-              <p class='text-xs text-on-surface/60'>{{ block.settings.subtitle }}</p>
-            {%- endif -%}
-          </li>
-        {%- endfor -%}
-      </ul>
+              {%- if block.settings.subtitle != blank -%}
+                <p class='text-xs font-semibold text-on-surface-variant/70 uppercase tracking-tighter'>
+                  {{ block.settings.subtitle }}
+                </p>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
     </div>
   </div>
 {%- endif -%}
@@ -37,19 +56,7 @@
 {
   "name": "Trust Bar",
   "max_blocks": 6,
-  "settings": [
-    {
-      "type": "select",
-      "id": "padding",
-      "label": "Section padding",
-      "options": [
-        { "value": "py-4", "label": "Small" },
-        { "value": "py-6", "label": "Medium" },
-        { "value": "py-10", "label": "Large" }
-      ],
-      "default": "py-10"
-    }
-  ],
+  "settings": [],
   "blocks": [
     {
       "type": "trust_item",
@@ -59,7 +66,7 @@
           "type": "text",
           "id": "icon",
           "label": "Icon name",
-          "info": "Supported: vet-approved, shipping, returns, paw, clock, phone"
+          "info": "Supported: vet-approved, stethoscope, clock, paw, phone, shipping"
         },
         {
           "type": "text",

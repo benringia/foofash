@@ -1,0 +1,97 @@
+<section class='cta isolate relative overflow-hidden bg-primary {{ section.settings.padding }}'>
+  {%- comment -%} Decorative blob — purely visual {%- endcomment -%}
+
+  <div class='relative z-10 mx-auto max-w-2xl px-4 text-center sm:px-6'>
+    {%- if section.settings.heading != blank -%}
+      <h2 class='font-display text-3xl font-bold tracking-tight text-white lg:text-4xl'>
+        {{ section.settings.heading }}
+      </h2>
+    {%- endif -%}
+
+    {%- if section.settings.subheading != blank -%}
+      <p class='mt-4 text-base leading-relaxed text-white/70'>
+        {{ section.settings.subheading }}
+      </p>
+    {%- endif -%}
+
+    {%- if section.settings.primary_cta_label != blank or section.settings.secondary_cta_label != blank -%}
+      <div class='mt-8 flex flex-wrap justify-center gap-4'>
+        {%- if section.settings.primary_cta_label != blank -%}
+          <a
+            href='{{ section.settings.primary_cta_link | default: '#' }}'
+            class='inline-block cursor-pointer rounded-full bg-secondary px-8 py-3 font-semibold text-white shadow-ambient transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-primary'
+          >
+            {{ section.settings.primary_cta_label }}
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.secondary_cta_label != blank -%}
+          <a
+            href='{{ section.settings.secondary_cta_link | default: '#' }}'
+            class='inline-block cursor-pointer rounded-full bg-white/15 px-8 py-3 font-semibold text-white transition-colors hover:bg-white/25 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-primary'
+          >
+            {{ section.settings.secondary_cta_label }}
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "CTA Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Ready to give your pet the best?"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Book a visit or explore our curated boutique."
+    },
+    {
+      "type": "text",
+      "id": "primary_cta_label",
+      "label": "Primary CTA label",
+      "default": "Book Appointment"
+    },
+    {
+      "type": "url",
+      "id": "primary_cta_link",
+      "label": "Primary CTA link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_label",
+      "label": "Secondary CTA label",
+      "default": "Shop Products"
+    },
+    {
+      "type": "url",
+      "id": "secondary_cta_link",
+      "label": "Secondary CTA link"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "options": [
+        { "value": "py-16", "label": "Medium" },
+        { "value": "py-24", "label": "Large" },
+        { "value": "py-32", "label": "X-Large" }
+      ],
+      "default": "py-16"
+    }
+  ],
+  "presets": [
+    {
+      "name": "CTA Banner"
+    }
+  ]
+}
+{% endschema %}

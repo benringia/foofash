@@ -1,17 +1,16 @@
-<footer class='bg-on-surface text-white' role='contentinfo'>
-  <div class='mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8'>
-    {%- comment -%} Top grid: brand + nav columns + newsletter {%- endcomment -%}
-    <div class='grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4'>
-      {%- comment -%} Brand column {%- endcomment -%}
-      <div class='flex flex-col gap-4 lg:col-span-1'>
-        <div class='flex items-center gap-2'>
-          <span class='h-6 w-6 text-primary' aria-hidden='true'>
+<footer class='bg-primary-dim rounded-t-[5rem] pt-20' role='contentinfo'>
+  <div class='mx-auto max-w-7xl px-12 pb-20'>
+    <div class='grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-4'>
+      {%- comment -%} Brand column — spans 2 cols on lg {%- endcomment -%}
+      <div class='col-span-1 lg:col-span-2'>
+        <h2 class='mb-6 flex items-center gap-2 text-4xl font-extrabold text-white'>
+          <span class='h-10 w-10 text-secondary' aria-hidden='true'>
             {%- render 'icon', icon: 'paw' -%}
           </span>
-          <span class='font-display text-lg font-bold text-white'>{{ shop.name }}</span>
-        </div>
+          {{ shop.name }}
+        </h2>
         {%- if section.settings.tagline != blank -%}
-          <p class='text-sm leading-relaxed text-white/60'>{{ section.settings.tagline }}</p>
+          <p class='mb-10 max-w-sm text-lg leading-relaxed text-white/60'>{{ section.settings.tagline }}</p>
         {%- endif -%}
 
         {%- comment -%} Social icons {%- endcomment -%}
@@ -19,7 +18,7 @@
           {%- if section.settings.footer_instagram != blank -%}
             <a
               href='{{ section.settings.footer_instagram }}'
-              class='text-white/40 transition-colors hover:text-white'
+              class='flex h-12 w-12 cursor-pointer items-center justify-center rounded-2xl bg-white/5 text-white transition-all hover:bg-secondary'
               aria-label='Instagram'
             >
               <span class='h-5 w-5 block' aria-hidden='true'>{%- render 'icon', icon: 'instagram' -%}</span>
@@ -28,7 +27,7 @@
           {%- if section.settings.footer_facebook != blank -%}
             <a
               href='{{ section.settings.footer_facebook }}'
-              class='text-white/40 transition-colors hover:text-white'
+              class='flex h-12 w-12 cursor-pointer items-center justify-center rounded-2xl bg-white/5 text-white transition-all hover:bg-secondary'
               aria-label='Facebook'
             >
               <span class='h-5 w-5 block' aria-hidden='true'>{%- render 'icon', icon: 'facebook' -%}</span>
@@ -37,7 +36,7 @@
           {%- if section.settings.footer_twitter != blank -%}
             <a
               href='{{ section.settings.footer_twitter }}'
-              class='text-white/40 transition-colors hover:text-white'
+              class='flex h-12 w-12 cursor-pointer items-center justify-center rounded-2xl bg-white/5 text-white transition-all hover:bg-secondary'
               aria-label='Twitter / X'
             >
               <span class='h-5 w-5 block' aria-hidden='true'>{%- render 'icon', icon: 'twitter' -%}</span>
@@ -51,35 +50,14 @@
       {%- if col1_links.size > 0 -%}
         <nav aria-label='{{ section.settings.footer_col_1_label | default: 'Navigation' }}'>
           {%- if section.settings.footer_col_1_label != blank -%}
-            <p class='mb-4 text-sm font-semibold uppercase tracking-widest text-white/40'>
+            <p class='mb-8 text-sm font-black uppercase tracking-widest text-secondary'>
               {{ section.settings.footer_col_1_label }}
             </p>
           {%- endif -%}
-          <ul class='flex flex-col gap-3' role='list'>
+          <ul class='flex flex-col gap-4' role='list'>
             {%- for link in col1_links -%}
               <li>
-                <a href='{{ link.url }}' class='text-sm text-white/60 transition-colors hover:text-white'>
-                  {{ link.title }}
-                </a>
-              </li>
-            {%- endfor -%}
-          </ul>
-        </nav>
-      {%- endif -%}
-
-      {%- comment -%} Nav column 2 {%- endcomment -%}
-      {%- assign col2_links = linklists[section.settings.footer_col_2_menu].links -%}
-      {%- if col2_links.size > 0 -%}
-        <nav aria-label='{{ section.settings.footer_col_2_label | default: 'Navigation' }}'>
-          {%- if section.settings.footer_col_2_label != blank -%}
-            <p class='mb-4 text-sm font-semibold uppercase tracking-widest text-white/40'>
-              {{ section.settings.footer_col_2_label }}
-            </p>
-          {%- endif -%}
-          <ul class='flex flex-col gap-3' role='list'>
-            {%- for link in col2_links -%}
-              <li>
-                <a href='{{ link.url }}' class='text-sm text-white/60 transition-colors hover:text-white'>
+                <a href='{{ link.url }}' class='block font-medium text-white/60 transition-colors hover:text-white'>
                   {{ link.title }}
                 </a>
               </li>
@@ -91,21 +69,21 @@
       {%- comment -%} Newsletter column {%- endcomment -%}
       <div class='flex flex-col gap-4'>
         {%- if section.settings.newsletter_heading != blank -%}
-          <p class='text-sm font-semibold uppercase tracking-widest text-white/40'>
+          <p class='mb-4 text-sm font-black uppercase tracking-widest text-secondary'>
             {{ section.settings.newsletter_heading }}
           </p>
         {%- endif -%}
-        <p class='text-sm text-white/60'>
+        <p class='text-sm font-medium text-white/60'>
           {{
             section.settings.newsletter_subtext
-            | default: 'Ask us for our monthly pet health tips and exclusive offers.'
+            | default: 'Join our pack for monthly pet health tips and exclusive offers.'
           }}
         </p>
         <form
           action='/contact#newsletter'
           method='post'
           data-newsletter-form
-          class='flex gap-2'
+          class='flex flex-col gap-3'
         >
           <input type='hidden' name='form_type' value='customer'>
           <input type='hidden' name='utf8' value='✓'>
@@ -114,13 +92,13 @@
             type='email'
             id='footer-newsletter-email'
             name='contact[email]'
-            placeholder='{{ section.settings.newsletter_placeholder | default: 'Your email' }}'
+            placeholder='{{ section.settings.newsletter_placeholder | default: 'Your email address' }}'
             required
-            class='min-w-0 flex-1 rounded-full bg-white/10 px-4 py-2 text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-secondary'
+            class='w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-secondary'
           >
           <button
             type='submit'
-            class='flex-shrink-0 rounded-full bg-secondary px-5 py-2 text-sm font-semibold text-white transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-on-surface'
+            class='w-full rounded-2xl bg-secondary py-4 text-sm font-bold text-white transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-primary-dim'
           >
             Join the Pack
           </button>
@@ -129,8 +107,8 @@
     </div>
 
     {%- comment -%} Bottom bar {%- endcomment -%}
-    <div class='mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row'>
-      <p class='text-xs text-white/40'>
+    <div class='mt-20 flex flex-col items-center justify-between gap-8 border-t border-white/5 pt-10 md:flex-row'>
+      <p class='text-sm font-medium text-white/40'>
         &copy; {{ 'now' | date: '%Y' }}
         {{ shop.name }}
         {%- if section.settings.copyright_text != blank -%}
@@ -168,17 +146,6 @@
       "default": "footer"
     },
     {
-      "type": "text",
-      "id": "footer_col_2_label",
-      "label": "Column 2 label",
-      "default": "Newsletter"
-    },
-    {
-      "type": "link_list",
-      "id": "footer_col_2_menu",
-      "label": "Column 2 menu"
-    },
-    {
       "type": "header",
       "content": "Newsletter"
     },
@@ -192,13 +159,13 @@
       "type": "text",
       "id": "newsletter_subtext",
       "label": "Newsletter subtext",
-      "default": "Ask us for our monthly pet health tips and exclusive offers."
+      "default": "Join our pack for monthly pet health tips and exclusive offers."
     },
     {
       "type": "text",
       "id": "newsletter_placeholder",
       "label": "Email placeholder",
-      "default": "Your email"
+      "default": "Your email address"
     },
     {
       "type": "header",

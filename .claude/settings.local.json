@@ -16,7 +16,8 @@
       "Bash(ls shopify/assets/*.css)",
       "Bash(grep -o 'lg:flex\\\\|\\\\.lg\\\\\\\\\\\\\\\\:flex' shopify/assets/main.css)",
       "Bash(grep -o '\\\\.md\\\\\\\\\\\\\\\\:flex\\\\b\\\\|\\\\.lg\\\\\\\\\\\\\\\\:flex\\\\b' shopify/assets/main.css)",
-      "Bash(grep -o '\\\\.md\\\\\\\\\\\\\\\\:hidden\\\\b' shopify/assets/main.css)"
+      "Bash(grep -o '\\\\.md\\\\\\\\\\\\\\\\:hidden\\\\b' shopify/assets/main.css)",
+      "Bash(python .claude/skills/ui-ux-pro-max/scripts/search.py \"pet clinic boutique ecommerce card hover layout CTA conversion\" --domain ux -n 8)"
     ]
   },
   "hooks": {

@@ -1,10 +1,10 @@
 {%- if section.blocks.size > 0 -%}
   <section class='testimonials bg-surface {{ section.settings.padding }}'>
-    <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+    <div class='mx-auto max-w-7xl px-6 lg:px-8'>
       {%- if section.settings.heading != blank -%}
-        <div class='mb-10 text-center'>
-          <h2 class='font-display text-3xl font-bold text-on-surface'>{{ section.settings.heading }}</h2>
-          <div class='mt-2 flex justify-center gap-1 text-secondary' aria-label='5 out of 5 stars'>
+        <div class='mb-16 text-center space-y-4'>
+          <h2 class='font-display text-4xl font-extrabold text-primary'>{{ section.settings.heading }}</h2>
+          <div class='flex justify-center gap-1 text-secondary' aria-label='5 out of 5 stars'>
             {%- for i in (1..5) -%}
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -20,26 +20,26 @@
         </div>
       {%- endif -%}
 
-      <ul class='grid grid-cols-1 gap-6 md:grid-cols-3' role='list'>
+      <ul class='grid grid-cols-1 gap-8 md:grid-cols-3' role='list'>
         {%- for block in section.blocks -%}
           <li
-            class='flex flex-col gap-4 rounded-3xl bg-surface-lowest p-8 shadow-ambient'
+            class='flex flex-col bg-white p-10 rounded-[2.5rem] shadow-bubbly border border-primary/5'
             {{ block.shopify_attributes }}
           >
             {%- if block.settings.quote != blank -%}
-              <blockquote class='flex-1 text-base italic leading-relaxed text-on-surface/80'>
+              <blockquote class='flex-1 text-on-surface-variant text-lg font-medium italic leading-relaxed mb-8'>
                 &ldquo;{{ block.settings.quote }}&rdquo;
               </blockquote>
             {%- endif -%}
 
-            <div class='flex items-center gap-3'>
+            <div class='flex items-center gap-4 mt-auto'>
               {%- if block.settings.author_image != blank -%}
-                <div class='h-10 w-10 flex-shrink-0 overflow-hidden rounded-full'>
+                <div class='h-14 w-14 flex-shrink-0 overflow-hidden rounded-full border-2 border-primary/10'>
                   {{
                     block.settings.author_image
                     | image_tag:
-                      width: 80,
-                      height: 80,
+                      width: 112,
+                      height: 112,
                       loading: 'lazy',
                       class: 'h-full w-full object-cover',
                       alt: block.settings.author_name
@@ -48,7 +48,7 @@
                 </div>
               {%- else -%}
                 <div
-                  class='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-bold'
+                  class='flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-bold border-2 border-primary/10'
                   aria-hidden='true'
                 >
                   {{- block.settings.author_name | slice: 0, 1 | upcase -}}
@@ -57,10 +57,10 @@
 
               <div>
                 {%- if block.settings.author_name != blank -%}
-                  <p class='text-sm font-semibold text-on-surface'>{{ block.settings.author_name }}</p>
+                  <p class='font-bold text-primary'>{{ block.settings.author_name }}</p>
                 {%- endif -%}
                 {%- if block.settings.author_meta != blank -%}
-                  <p class='text-xs text-on-surface/50'>{{ block.settings.author_meta }}</p>
+                  <p class='text-xs font-bold text-on-surface-variant/60 uppercase'>{{ block.settings.author_meta }}</p>
                 {%- endif -%}
               </div>
             </div>
@@ -91,7 +91,7 @@
         { "value": "py-16", "label": "Medium" },
         { "value": "py-24", "label": "Large" }
       ],
-      "default": "py-16"
+      "default": "py-24"
     }
   ],
   "blocks": [

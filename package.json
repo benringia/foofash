@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "concurrently \"vite\" \"shopify theme dev --path shopify --store foofash.myshopify.com\"",
     "build": "vite build",
+    "clean": "rimraf shopify/assets/main.css shopify/assets/main.js shopify/assets/.vite",
     "push": "shopify theme push --path shopify --store foofash.myshopify.com",
     "test": "node --test scripts/*.test.mjs"
   },
@@ -13,6 +14,7 @@
     "@shopify/prettier-plugin-liquid": "^1.10.2",
     "autoprefixer": "^10.4.21",
     "concurrently": "^9.1.2",
+    "rimraf": "^6.0.1",
     "postcss": "^8.5.3",
     "prettier": "^3.8.1",
     "tailwindcss": "^3.4.17",

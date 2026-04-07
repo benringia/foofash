@@ -16,16 +16,16 @@
 
 <div class='price'>
   {%- if on_sale -%}
-    <span class='price__sale text-red-600 font-semibold'>
+    <span class='price__sale font-semibold text-secondary'>
       <span class='sr-only'>Sale price</span>
       {{ price | money }}
     </span>
-    <s class='price__compare text-gray-400 text-sm ml-1'>
+    <s class='price__compare ml-1 text-sm text-on-surface/50'>
       <span class='sr-only'>Regular price</span>
       {{ compare_price | money }}
     </s>
   {%- else -%}
-    <span class='price__regular font-semibold text-gray-900'>
+    <span class='price__regular font-semibold text-on-surface'>
       {{ price | money }}
     </span>
   {%- endif -%}

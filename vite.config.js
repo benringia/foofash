@@ -21,6 +21,12 @@ const generateLiquidAssets = {
 export default {
   root: "src",
   plugins: [generateLiquidAssets],
+  server: {
+    watch: {
+      usePolling: true,
+      interval: 100,
+    },
+  },
   build: {
     outDir: "../shopify/assets",
     emptyOutDir: false,

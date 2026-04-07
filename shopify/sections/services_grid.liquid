@@ -1,13 +1,13 @@
 {%- if section.blocks.size > 0 -%}
-  <section class='services-grid {{ section.settings.padding }}'>
+  <section class='services-grid bg-background {{ section.settings.padding }}'>
     <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
       {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
-        <div class='mb-10 text-center'>
+        <div class='mb-12 text-center'>
           {%- if section.settings.heading != blank -%}
-            <h2 class='text-3xl font-bold text-gray-900 sm:text-4xl'>{{ section.settings.heading }}</h2>
+            <h2 class='font-display text-4xl font-extrabold text-primary'>{{ section.settings.heading }}</h2>
           {%- endif -%}
           {%- if section.settings.subheading != blank -%}
-            <p class='mt-3 text-lg text-gray-600'>{{ section.settings.subheading }}</p>
+            <p class='mt-3 text-lg font-medium text-on-surface-variant'>{{ section.settings.subheading }}</p>
           {%- endif -%}
         </div>
       {%- endif -%}
@@ -15,12 +15,12 @@
       <ul class='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4' role='list'>
         {%- for block in section.blocks -%}
           <li
-            class='flex flex-col rounded-xl bg-white p-6 shadow-sm'
+            class='flex flex-col rounded-3xl border border-transparent bg-white p-6 shadow-bubbly transition-all duration-300 hover:-translate-y-1 hover:border-primary/10'
             {{ block.shopify_attributes }}
           >
             {%- if block.settings.icon != blank -%}
               <span
-                class='mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-700'
+                class='mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary'
                 aria-hidden='true'
               >
                 <span class='h-6 w-6'>
@@ -30,17 +30,17 @@
             {%- endif -%}
 
             {%- if block.settings.title != blank -%}
-              <h3 class='text-base font-semibold text-gray-900'>{{ block.settings.title }}</h3>
+              <h3 class='text-base font-semibold text-on-surface'>{{ block.settings.title }}</h3>
             {%- endif -%}
 
             {%- if block.settings.description != blank -%}
-              <p class='mt-2 flex-1 text-sm text-gray-600'>{{ block.settings.description }}</p>
+              <p class='mt-2 flex-1 text-sm text-on-surface/60'>{{ block.settings.description }}</p>
             {%- endif -%}
 
             {%- if block.settings.cta_url != blank -%}
               <a
                 href='{{ block.settings.cta_url }}'
-                class='mt-5 inline-block rounded-lg border border-green-600 px-4 py-2 text-center text-sm font-semibold text-green-700 hover:bg-green-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2'
+                class='mt-5 inline-block cursor-pointer rounded-full bg-primary/10 px-5 py-2.5 text-center text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
               >
                 {{ block.settings.cta_label | default: 'Book Now' }}
               </a>
@@ -51,9 +51,9 @@
     </div>
   </section>
 {%- else -%}
-  <section class='services-grid {{ section.settings.padding }}'>
+  <section class='services-grid bg-background {{ section.settings.padding }}'>
     <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
-      <p class='text-center text-sm text-gray-400'>Add service cards using the theme editor.</p>
+      <p class='text-center text-sm text-on-surface/40'>Add service cards using the theme editor.</p>
     </div>
   </section>
 {%- endif -%}

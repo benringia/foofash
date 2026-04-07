@@ -1,13 +1,30 @@
 export default {
-  content: ["./shopify/**/*.liquid", "./src/**/*.{js,css}"],
+  content: [
+    "./shopify/**/*.liquid",
+    "./shopify/**/*.json",
+    "./src/**/*.{js,ts,css}",
+  ],
   safelist: [
+    // Layout — toggled by JS or Liquid conditionals
+    "hidden",
+    "block",
+    "flex",
+    "grid",
     // Mega menu — toggled by JS only, not present in initial HTML
+    "opacity-0",
     "opacity-100",
+    "pointer-events-none",
     "pointer-events-auto",
     "rotate-180",
+    // Transitions/transforms used in JS-driven interactions
+    "transition-all",
+    "duration-300",
+    "scale-100",
+    "scale-105",
     // Responsive visibility — only in .liquid, not in src/ files
     "md:hidden",
     "md:flex",
+    "lg:grid-cols-2",
     // Design token classes used in Liquid conditionals or dynamic contexts
     "font-display",
     "font-body",
@@ -18,24 +35,39 @@ export default {
     "bg-surface-low",
     "rounded-full",
     "rounded-4xl",
+    // New tokens from code.html design system
+    "bg-background",
+    "bg-surface-container",
+    "bg-surface-container-low",
+    "bg-medical-green",
+    "bg-medical-blue",
+    "text-on-surface-variant",
+    "shadow-bubbly",
+    "shadow-bubbly-lg",
   ],
   theme: {
     extend: {
       colors: {
-        primary: "#336f54",
-        "primary-dim": "#256348",
-        secondary: "#e8833a",
+        primary: "#2D6A4F",
+        "primary-dim": "#1B4332",
+        secondary: "#F4A261",
         tertiary: "#4a9d8f",
-        surface: "#fffcf5",
+        background: "#FAFAF8",
+        surface: "#FFFFFF",
         "surface-low": "#fcf9f2",
         "surface-lowest": "#ffffff",
         "surface-high": "#f5f1e8",
-        "on-surface": "#383833",
+        "surface-container": "#F2F4F0",
+        "surface-container-low": "#F7F9F5",
+        "on-surface": "#1A1C1E",
+        "on-surface-variant": "#44474E",
         "on-primary": "#ffffff",
+        "medical-green": "#E8F5E9",
+        "medical-blue": "#E0F2F1",
       },
       fontFamily: {
         display: ['"Plus Jakarta Sans"', "sans-serif"],
-        body: ['"Be Vietnam Pro"', "sans-serif"],
+        body: ['"Plus Jakarta Sans"', "sans-serif"],
       },
       borderRadius: {
         "2xl": "1rem",
@@ -44,9 +76,11 @@ export default {
       },
       boxShadow: {
         ambient: "0 0 50px -5px rgba(56,56,51,0.05)",
+        bubbly: "0 20px 40px -15px rgba(45,106,79,0.08)",
+        "bubbly-lg": "0 30px 60px -20px rgba(45,106,79,0.12)",
       },
       backgroundImage: {
-        "primary-gradient": "linear-gradient(135deg, #336f54, #256348)",
+        "primary-gradient": "linear-gradient(135deg, #2D6A4F, #1B4332)",
       },
     },
   },

@@ -11,8 +11,7 @@
         "primary_cta_link": "",
         "secondary_cta_label": "Explore Services",
         "secondary_cta_link": "",
-        "trust_label": "Trusted by 5,000+ Pet Parents",
-        "padding": "py-16"
+        "trust_label": "Trusted by 5,000+ Pet Parents"
       }
     },
     "trust-bar": {
@@ -23,7 +22,7 @@
           "settings": {
             "icon": "vet-approved",
             "title": "Vet Approved",
-            "subtitle": "Clinical recommendations only"
+            "subtitle": "Clinical Standard"
           }
         },
         "trust_vets": {
@@ -31,7 +30,7 @@
           "settings": {
             "icon": "stethoscope",
             "title": "Licensed Vets",
-            "subtitle": "50+ on store"
+            "subtitle": "Expert Staff"
           }
         },
         "trust_clock": {
@@ -39,7 +38,7 @@
           "settings": {
             "icon": "clock",
             "title": "24/7 Care",
-            "subtitle": "Always available"
+            "subtitle": "Always Available"
           }
         },
         "trust_paw": {
@@ -47,14 +46,12 @@
           "settings": {
             "icon": "paw",
             "title": "Premium Shop",
-            "subtitle": "Handpicked products"
+            "subtitle": "Handpicked Goods"
           }
         }
       },
       "block_order": ["trust_vet", "trust_vets", "trust_clock", "trust_paw"],
-      "settings": {
-        "padding": "py-10"
-      }
+      "settings": {}
     },
     "pet-type-nav": {
       "type": "pet-type-nav",
@@ -91,8 +88,7 @@
       "block_order": ["pet_dogs", "pet_cats", "pet_small", "pet_fish"],
       "settings": {
         "heading": "Care for Every Friend",
-        "subheading": "Specialised care and products for all your companions",
-        "padding": "py-16"
+        "subheading": "Specialized care and products for all your companions"
       }
     },
     "featured-collection": {
@@ -103,8 +99,58 @@
         "view_all_label": "View All Products",
         "view_all_link": "",
         "collection": "",
-        "products_to_show": 4,
-        "padding": "py-16"
+        "products_to_show": 4
+      }
+    },
+    "services-grid": {
+      "type": "services_grid",
+      "blocks": {
+        "svc_consult": {
+          "type": "service_card",
+          "settings": {
+            "icon": "stethoscope",
+            "title": "Vet Consultation",
+            "description": "Professional health checks and diagnostics for your pet.",
+            "cta_label": "Book Now",
+            "cta_url": "/pages/vet-consultation"
+          }
+        },
+        "svc_groom": {
+          "type": "service_card",
+          "settings": {
+            "icon": "scissors",
+            "title": "Grooming",
+            "description": "Full grooming services including wash, cut, and nail trim.",
+            "cta_label": "Book Now",
+            "cta_url": "/pages/grooming"
+          }
+        },
+        "svc_vaccine": {
+          "type": "service_card",
+          "settings": {
+            "icon": "syringe",
+            "title": "Vaccination",
+            "description": "Keep your pet protected with up-to-date vaccinations.",
+            "cta_label": "Book Now",
+            "cta_url": "/pages/vaccination"
+          }
+        },
+        "svc_dental": {
+          "type": "service_card",
+          "settings": {
+            "icon": "tooth",
+            "title": "Dental Care",
+            "description": "Professional dental cleaning and oral health checks.",
+            "cta_label": "Book Now",
+            "cta_url": "/pages/dental-care"
+          }
+        }
+      },
+      "block_order": ["svc_consult", "svc_groom", "svc_vaccine", "svc_dental"],
+      "settings": {
+        "heading": "Our Services",
+        "subheading": "Expert care for every pet, every need",
+        "padding": "py-10 lg:py-16"
       }
     },
     "clinic-info": {
@@ -117,7 +163,7 @@
         "hours": "Open 24/7 for Emergencies\nRegular clinic: 8AM – 8PM",
         "cta_label": "Get Directions",
         "cta_link": "",
-        "padding": "py-16"
+        "padding": "py-24"
       }
     },
     "testimonials": {
@@ -151,63 +197,7 @@
       "block_order": ["testimonial_1", "testimonial_2", "testimonial_3"],
       "settings": {
         "heading": "Loved by Pets & Parents",
-        "padding": "py-16"
-      }
-    },
-    "services": {
-      "type": "services_grid",
-      "blocks": {
-        "service_card_H3XnN9": {
-          "type": "service_card",
-          "settings": {
-            "icon": "tooth",
-            "title": "Dental Care",
-            "description": "Teeth cleaning and oral care for fresher breath and healthier gums.",
-            "cta_label": "Book Now",
-            "cta_url": "shopify://pages/dental-care"
-          }
-        },
-        "service_card_bMbRyN": {
-          "type": "service_card",
-          "settings": {
-            "icon": "syringe",
-            "title": "Vaccination",
-            "description": "Essential vaccines to protect your pets from common diseases.",
-            "cta_label": "Book Now",
-            "cta_url": "shopify://pages/vaccination"
-          }
-        },
-        "service_card_wQEtbt": {
-          "type": "service_card",
-          "settings": {
-            "icon": "scissors",
-            "title": "Pet Grooming",
-            "description": "Professional grooming including bathing, trimming, and nail care.",
-            "cta_label": "Book Now",
-            "cta_url": "shopify://pages/grooming"
-          }
-        },
-        "service_card_DACr7V": {
-          "type": "service_card",
-          "settings": {
-            "icon": "stethoscope",
-            "title": "General Checkup",
-            "description": "Routine health exams to keep your pet healthy, active, and disease-free.",
-            "cta_label": "Book Now",
-            "cta_url": "/pages/vet-consultation"
-          }
-        }
-      },
-      "block_order": [
-        "service_card_H3XnN9",
-        "service_card_bMbRyN",
-        "service_card_wQEtbt",
-        "service_card_DACr7V"
-      ],
-      "settings": {
-        "heading": "Our Services",
-        "subheading": "",
-        "padding": "py-10 lg:py-16"
+        "padding": "py-24"
       }
     }
   },
@@ -216,6 +206,7 @@
     "trust-bar",
     "pet-type-nav",
     "featured-collection",
+    "services-grid",
     "clinic-info",
     "testimonials"
   ]

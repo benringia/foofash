@@ -1,42 +1,45 @@
-<section class='hero-banner {{ section.settings.padding }} bg-surface'>
-  <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+<section class='hero-banner hero-gradient relative flex min-h-screen items-center pt-20'>
+  <div class='mx-auto max-w-7xl px-6 w-full'>
     <div class='grid grid-cols-1 items-center gap-12 lg:grid-cols-2'>
       {%- comment -%} Left: text content {%- endcomment -%}
-      <div class='flex flex-col gap-6'>
+      <div class='flex flex-col gap-10 z-10 text-center lg:text-left'>
         {%- if section.settings.eyebrow != blank -%}
-          <p class='text-xs font-semibold uppercase tracking-[0.1em] text-primary'>
-            {{ section.settings.eyebrow }}
-          </p>
+          <div class='inline-flex items-center gap-3 self-center lg:self-start bg-white px-5 py-2 rounded-full shadow-bubbly border border-primary/5'>
+            <span class='flex h-2 w-2 rounded-full bg-secondary animate-pulse' aria-hidden='true'></span>
+            <span class='text-primary font-bold text-xs uppercase tracking-widest'>{{ section.settings.eyebrow }}</span>
+          </div>
         {%- endif -%}
 
         {%- if section.settings.heading != blank -%}
-          <h1 class='font-display text-5xl font-extrabold leading-tight text-on-surface lg:text-6xl'>
+          <h1 class='font-display text-6xl font-extrabold text-primary leading-[1.05] tracking-tight lg:text-8xl'>
             {{ section.settings.heading }}
             {%- if section.settings.heading_accent != blank -%}
+              <br>
               <span class='text-secondary'>{{ section.settings.heading_accent }}</span>
             {%- endif -%}
           </h1>
         {%- endif -%}
 
         {%- if section.settings.subheading != blank -%}
-          <p class='font-body text-lg leading-relaxed text-on-surface/70'>
+          <p class='text-xl text-on-surface-variant max-w-lg leading-relaxed font-medium mx-auto lg:mx-0'>
             {{ section.settings.subheading }}
           </p>
         {%- endif -%}
 
-        {%- if section.settings.primary_cta_label != blank -%}
-          <div class='flex flex-wrap items-center gap-3'>
-            <a
-              href='{{ section.settings.primary_cta_link | default: '#' }}'
-              class='inline-block rounded-full bg-primary-gradient px-8 py-3 font-semibold text-white shadow-ambient transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
-            >
-              {{ section.settings.primary_cta_label }}
-            </a>
-
+        {%- if section.settings.primary_cta_label != blank or section.settings.secondary_cta_label != blank -%}
+          <div class='flex flex-wrap items-center gap-4 justify-center lg:justify-start'>
+            {%- if section.settings.primary_cta_label != blank -%}
+              <a
+                href='{{ section.settings.primary_cta_link | default: '#' }}'
+                class='inline-block cursor-pointer rounded-full bg-primary px-10 py-5 font-bold text-lg text-white shadow-bubbly-lg transition-all hover:bg-primary-dim hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
+              >
+                {{ section.settings.primary_cta_label }}
+              </a>
+            {%- endif -%}
             {%- if section.settings.secondary_cta_label != blank -%}
               <a
                 href='{{ section.settings.secondary_cta_link | default: '#' }}'
-                class='inline-block rounded-full bg-surface-high px-8 py-3 font-semibold text-on-surface transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-on-surface/20 focus:ring-offset-2'
+                class='inline-block cursor-pointer rounded-full bg-white text-primary border-2 border-primary/10 px-10 py-5 font-bold text-lg transition-all hover:bg-surface-container focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2'
               >
                 {{ section.settings.secondary_cta_label }}
               </a>
@@ -45,25 +48,28 @@
         {%- endif -%}
 
         {%- if section.settings.trust_label != blank -%}
-          <p class='text-sm text-on-surface/50'>{{ section.settings.trust_label }}</p>
+          <div class='flex items-center gap-8 justify-center lg:justify-start pt-4'>
+            <div class='flex -space-x-4' aria-hidden='true'>
+              <div class='w-12 h-12 rounded-full border-4 border-white bg-medical-green flex items-center justify-center'>
+                <span class='h-5 w-5 text-primary'>{%- render 'icon', icon: 'vet-approved' -%}</span>
+              </div>
+              <div class='w-12 h-12 rounded-full border-4 border-white bg-medical-blue flex items-center justify-center'>
+                <span class='h-5 w-5 text-primary'>{%- render 'icon', icon: 'stethoscope' -%}</span>
+              </div>
+              <div class='w-12 h-12 rounded-full border-4 border-white bg-surface-container-low flex items-center justify-center'>
+                <span class='h-5 w-5 text-primary'>{%- render 'icon', icon: 'paw' -%}</span>
+              </div>
+            </div>
+            <p class='text-sm font-semibold text-on-surface-variant'>{{ section.settings.trust_label }}</p>
+          </div>
         {%- endif -%}
       </div>
 
-      {%- comment -%} Right: image with blob background {%- endcomment -%}
-      {%- if section.settings.image != blank -%}
-        <div class='relative flex items-center justify-center'>
-          <div
-            class='absolute inset-0 -z-0 scale-110 opacity-30'
-            aria-hidden='true'
-          >
-            <svg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg' class='h-full w-full'>
-              <path
-                fill='#336f54'
-                d='M320.5,280.5Q270,361,180,360.5Q90,360,50,280Q10,200,55,120Q100,40,185,35Q270,30,322.5,115Q375,200,320.5,280.5Z'
-              />
-            </svg>
-          </div>
-          <div class='relative z-10 overflow-hidden rounded-3xl shadow-ambient'>
+      {%- comment -%} Right: image {%- endcomment -%}
+      <div class='relative flex items-center justify-center'>
+        <div class='absolute w-[120%] h-[120%] bg-white/40 blur-3xl rounded-full' aria-hidden='true'></div>
+        {%- if section.settings.image != blank -%}
+          <div class='relative z-10 w-full max-w-[700px]'>
             {{
               section.settings.image
               | image_tag:
@@ -71,13 +77,27 @@
                 fetchpriority: 'high',
                 width: 800,
                 height: 700,
-                class: 'h-full w-full object-cover',
+                class: 'w-full h-auto pointer-events-none',
                 alt: section.settings.image.alt
               | default: section.settings.heading
             }}
           </div>
-        </div>
-      {%- endif -%}
+        {%- else -%}
+          <div class='relative z-10 flex items-center justify-center py-16'>
+            <div class='absolute inset-0 scale-110 opacity-20' aria-hidden='true'>
+              <svg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg' class='h-full w-full'>
+                <path
+                  fill='#2D6A4F'
+                  d='M320.5,280.5Q270,361,180,360.5Q90,360,50,280Q10,200,55,120Q100,40,185,35Q270,30,322.5,115Q375,200,320.5,280.5Z'
+                />
+              </svg>
+            </div>
+            <span class='relative z-10 h-40 w-40 text-primary/30' aria-hidden='true'>
+              {%- render 'icon', icon: 'paw' -%}
+            </span>
+          </div>
+        {%- endif -%}
+      </div>
     </div>
   </div>
 </section>
@@ -144,17 +164,6 @@
       "type": "image_picker",
       "id": "image",
       "label": "Hero image"
-    },
-    {
-      "type": "select",
-      "id": "padding",
-      "label": "Section padding",
-      "options": [
-        { "value": "py-8", "label": "Small" },
-        { "value": "py-16", "label": "Medium" },
-        { "value": "py-24", "label": "Large" }
-      ],
-      "default": "py-16"
     }
   ],
   "presets": [

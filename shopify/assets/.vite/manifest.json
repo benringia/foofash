@@ -4,6 +4,8 @@
     "name": "main",
     "src": "scripts/main.js",
     "isEntry": true,
-    "css": ["main.css"]
+    "css": [
+      "main.css"
+    ]
   }
 }

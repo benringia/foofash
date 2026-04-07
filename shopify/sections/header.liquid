@@ -1,120 +1,121 @@
 <header
-  class='site-header sticky top-0 z-30 bg-surface/95 backdrop-blur-sm shadow-ambient'
+  class='site-header sticky top-4 z-30 px-4 sm:px-6'
   data-header
 >
-  <div class='mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6'>
-    {%- comment -%} Left: logo + brand name {%- endcomment -%}
-    <a
-      href='{{ routes.root_url }}'
-      class='flex flex-none items-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded'
-      aria-label='{{ shop.name }} – home'
-    >
-      {%- if section.settings.logo != blank -%}
-        {{ section.settings.logo | image_tag: width: 140, loading: 'eager', alt: shop.name, class: 'h-8 w-auto' }}
-      {%- else -%}
-        <span class='h-6 w-6 text-primary' aria-hidden='true'>
-          {%- render 'icon', icon: 'paw' -%}
-        </span>
-        <span class='font-display text-lg font-bold text-on-surface'>{{ shop.name }}</span>
-      {%- endif -%}
-    </a>
+  <div class='mx-auto max-w-7xl'>
+    <div class='flex items-center justify-between rounded-full bg-white/80 px-8 py-4 shadow-bubbly backdrop-blur-xl border border-white/50'>
+      {%- comment -%} LEFT: logo + nav {%- endcomment -%}
+      <div class='flex min-w-0 shrink items-center gap-8'>
+        <a
+          href='{{ routes.root_url }}'
+          class='flex shrink-0 items-center gap-2 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
+          aria-label='{{ shop.name }} – home'
+        >
+          {%- if section.settings.logo != blank -%}
+            {{ section.settings.logo | image_tag: width: 120, loading: 'eager', alt: shop.name, class: 'h-7 w-auto' }}
+          {%- else -%}
+            <span class='h-6 w-6 shrink-0 text-primary' aria-hidden='true'>
+              {%- render 'icon', icon: 'paw' -%}
+            </span>
+            <span class='font-display text-base font-bold tracking-wide text-on-surface'>
+              {{- shop.name | upcase -}}
+            </span>
+          {%- endif -%}
+        </a>
 
-    {%- comment -%} Desktop nav — rendered by navigation snippet {%- endcomment -%}
-    {%- render 'navigation',
-      menu: section.settings.menu,
-      services_page: section.settings.services_page,
-      services_label: section.settings.services_label
-    -%}
+        {%- render 'navigation',
+          menu: section.settings.menu,
+          services_page: section.settings.services_page,
+          services_label: section.settings.services_label
+        -%}
+      </div>
 
-    {%- comment -%} Center: search {%- endcomment -%}
-    <div class='relative flex-1' data-predictive-search>
-      <form
-        role='search'
-        action='{{ routes.search_url }}'
-        method='get'
-        data-predictive-search-form
-        class='flex items-center'
-      >
-        <input type='hidden' name='type' value='product'>
-        <label for='predictive-search-input' class='sr-only'>Search products</label>
-        <div class='relative w-full max-w-sm mx-auto'>
+      {%- comment -%} RIGHT: search + cart {%- endcomment -%}
+      <div class='flex shrink-0 items-center gap-3'>
+        {%- comment -%} Search pill — hidden on mobile {%- endcomment -%}
+        <div class='relative hidden shrink-0 lg:block' data-predictive-search>
+          <form
+            role='search'
+            action='{{ routes.search_url }}'
+            method='get'
+            data-predictive-search-form
+          >
+            <input type='hidden' name='type' value='product'>
+            <label for='predictive-search-input' class='sr-only'>Search products</label>
+            <span
+              class='pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-on-surface/40'
+              aria-hidden='true'
+            >
+              {%- render 'icon', icon: 'search' -%}
+            </span>
+            <input
+              id='predictive-search-input'
+              type='search'
+              name='q'
+              autocomplete='off'
+              autocorrect='off'
+              autocapitalize='off'
+              spellcheck='false'
+              placeholder='{{ section.settings.search_placeholder | default: 'Search products…' }}'
+              role='combobox'
+              aria-expanded='false'
+              aria-controls='predictive-search-results'
+              aria-autocomplete='list'
+              aria-haspopup='listbox'
+              data-predictive-search-input
+              class='h-9 w-[220px] rounded-full bg-surface-container pl-9 pr-4 text-sm text-on-surface placeholder-on-surface/40 transition-[width] duration-200 focus:w-[280px] focus:outline-none focus:ring-2 focus:ring-primary/40 lg:w-[260px] lg:focus:w-[320px]'
+            >
+          </form>
+          {%- render 'predictive-search' -%}
+        </div>
+
+        {%- comment -%} Cart button {%- endcomment -%}
+        <button
+          type='button'
+          data-cart-toggle
+          aria-label='Open cart, {{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }}'
+          class='relative flex h-12 w-12 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white shadow-bubbly border border-surface-container text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
+        >
+          <span class='block h-6 w-6' aria-hidden='true'>
+            {%- render 'icon', icon: 'bag' -%}
+          </span>
           <span
-            class='pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-on-surface/40'
+            class='{% unless cart.item_count > 0 %}hidden {% endunless %}absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-secondary text-[10px] font-bold leading-none text-white'
+            aria-hidden='true'
+            data-cart-count
+          >
+            {{- cart.item_count -}}
+          </span>
+        </button>
+
+        {%- comment -%} Mobile hamburger {%- endcomment -%}
+        <button
+          type='button'
+          aria-expanded='false'
+          aria-controls='mobile-nav-drawer'
+          aria-label='Open menu'
+          class='flex h-9 w-9 cursor-pointer items-center justify-center rounded-full text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 md:hidden'
+          data-mobile-toggle
+        >
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            width='20'
+            height='20'
+            viewBox='0 0 24 24'
+            fill='none'
+            stroke='currentColor'
+            stroke-width='2'
+            stroke-linecap='round'
+            stroke-linejoin='round'
             aria-hidden='true'
           >
-            {%- render 'icon', icon: 'search' -%}
-          </span>
-          <input
-            id='predictive-search-input'
-            type='search'
-            name='q'
-            autocomplete='off'
-            autocorrect='off'
-            autocapitalize='off'
-            spellcheck='false'
-            placeholder='{{ section.settings.search_placeholder | default: 'Search products…' }}'
-            role='combobox'
-            aria-expanded='false'
-            aria-controls='predictive-search-results'
-            aria-autocomplete='list'
-            aria-haspopup='listbox'
-            data-predictive-search-input
-            class='w-full rounded-full bg-surface-low py-2 pl-9 pr-4 text-sm text-on-surface placeholder-on-surface/40 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-shadow'
-          >
-        </div>
-      </form>
-      {%- render 'predictive-search' -%}
+            <line x1='3' y1='6' x2='21' y2='6'></line>
+            <line x1='3' y1='12' x2='21' y2='12'></line>
+            <line x1='3' y1='18' x2='21' y2='18'></line>
+          </svg>
+        </button>
+      </div>
     </div>
-
-    {%- comment -%} Right: cart button {%- endcomment -%}
-    <button
-      type='button'
-      data-cart-toggle
-      aria-label='Open cart, {{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }}'
-      class='relative flex-none rounded-full p-2 text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
-    >
-      <span class='h-6 w-6 block' aria-hidden='true'>
-        {%- render 'icon', icon: 'bag' -%}
-      </span>
-      {%- if cart.item_count > 0 -%}
-        <span
-          class='absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-secondary text-[10px] font-bold text-white'
-          aria-hidden='true'
-          data-cart-count
-        >
-          {{- cart.item_count -}}
-        </span>
-      {%- else -%}
-        <span class='sr-only' data-cart-count>{{ cart.item_count }}</span>
-      {%- endif -%}
-    </button>
-
-    {%- comment -%} Mobile: hamburger toggle {%- endcomment -%}
-    <button
-      type='button'
-      aria-expanded='false'
-      aria-controls='mobile-nav-drawer'
-      aria-label='Open menu'
-      class='flex-none rounded-full p-2 text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 md:hidden'
-      data-mobile-toggle
-    >
-      <svg
-        xmlns='http://www.w3.org/2000/svg'
-        width='22'
-        height='22'
-        viewBox='0 0 24 24'
-        fill='none'
-        stroke='currentColor'
-        stroke-width='2'
-        stroke-linecap='round'
-        stroke-linejoin='round'
-        aria-hidden='true'
-      >
-        <line x1='3' y1='6' x2='21' y2='6'></line>
-        <line x1='3' y1='12' x2='21' y2='12'></line>
-        <line x1='3' y1='18' x2='21' y2='18'></line>
-      </svg>
-    </button>
   </div>
 </header>
 

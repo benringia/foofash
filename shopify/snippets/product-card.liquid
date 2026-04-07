@@ -3,18 +3,16 @@
   Usage: {% render 'product-card', product: product %}
 {%- endcomment -%}
 
-<article class='product-card group flex flex-col'>
-  <a href='{{ product.url }}' class='flex flex-col flex-1 gap-3' aria-label='{{ product.title }}'>
-    <div class='relative aspect-square overflow-hidden rounded-lg bg-gray-100'>
-      <button
-        type='button'
-        data-quick-view-trigger
-        data-product-handle='{{ product.handle }}'
-        aria-label='Quick view {{ product.title }}'
-        class='absolute bottom-2 left-1/2 z-10 -translate-x-1/2 translate-y-2 rounded-md bg-white px-3 py-1.5 text-xs font-semibold text-gray-800 opacity-0 shadow transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-green-500'
-      >
-        Quick view
-      </button>
+{%- liquid
+  assign product_subtitle = product.type
+  if product_subtitle == blank
+    assign product_subtitle = product.description | strip_html | truncatewords: 8
+  endif
+-%}
+
+<article class='product-card group bg-background rounded-3xl p-6 transition-all duration-500 hover:-translate-y-2 border border-transparent hover:border-primary/10'>
+  <a href='{{ product.url }}' class='flex flex-col' aria-label='{{ product.title }}'>
+    <div class='aspect-square bg-white rounded-2xl mb-6 relative overflow-hidden flex items-center justify-center p-4'>
       {%- if product.featured_image != blank -%}
         {{
           product.featured_image
@@ -22,22 +20,39 @@
             loading: 'lazy',
             width: 600,
             height: 600,
-            class: 'h-full w-full object-cover transition-transform duration-300 group-hover:scale-105',
+            class: 'w-full h-full object-contain group-hover:scale-110 transition-transform duration-700',
             alt: product.featured_image.alt
           | default: product.title
         }}
       {%- else -%}
-        <div class='flex h-full w-full items-center justify-center text-gray-300' aria-hidden='true'>
+        <div class='flex h-full w-full items-center justify-center text-on-surface/20' aria-hidden='true'>
           {%- render 'icon', icon: 'paw' -%}
         </div>
       {%- endif -%}
     </div>
 
-    <div class='flex flex-col gap-1 px-1'>
-      <p class='line-clamp-2 text-sm font-medium text-gray-800 group-hover:text-green-700'>
-        {{ product.title }}
-      </p>
-      {%- render 'price', product: product -%}
-    </div>
+    <h3 class='font-bold text-lg text-primary mb-1'>{{ product.title }}</h3>
+    {%- if product_subtitle != blank -%}
+      <p class='text-sm text-on-surface-variant mb-6'>{{ product_subtitle }}</p>
+    {%- else -%}
+      <div class='mb-6'></div>
+    {%- endif -%}
   </a>
+
+  <div class='flex justify-between items-center'>
+    <span class='text-2xl font-extrabold text-primary'>
+      {{- product.price | money -}}
+    </span>
+    <button
+      type='button'
+      data-quick-view-trigger
+      data-product-handle='{{ product.handle }}'
+      aria-label='Quick view {{ product.title }}'
+      class='w-12 h-12 bg-white text-primary rounded-2xl flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-bubbly border border-primary/5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary'
+    >
+      <span class='block h-5 w-5' aria-hidden='true'>
+        {%- render 'icon', icon: 'cart-add' -%}
+      </span>
+    </button>
+  </div>
 </article>

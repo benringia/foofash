@@ -1,44 +1,46 @@
-<section class='pet-type-nav bg-surface {{ section.settings.padding }}'>
-  <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+<section class='pet-type-nav bg-surface py-24'>
+  <div class='mx-auto max-w-7xl px-6 lg:px-8'>
     {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
-      <div class='mb-10 text-center'>
+      <div class='mb-16 text-center'>
         {%- if section.settings.heading != blank -%}
-          <h2 class='font-display text-3xl font-bold text-on-surface'>{{ section.settings.heading }}</h2>
+          <h2 class='font-display text-4xl font-extrabold text-primary mb-4'>{{ section.settings.heading }}</h2>
         {%- endif -%}
         {%- if section.settings.subheading != blank -%}
-          <p class='mt-2 text-base text-on-surface/60'>{{ section.settings.subheading }}</p>
+          <p class='text-on-surface-variant font-medium'>{{ section.settings.subheading }}</p>
         {%- endif -%}
       </div>
     {%- endif -%}
 
     {%- if section.blocks.size > 0 -%}
-      <ul class='flex flex-wrap justify-center gap-8 lg:gap-12' role='list'>
+      <ul class='flex flex-wrap justify-center gap-12' role='list'>
         {%- for block in section.blocks -%}
           <li {{ block.shopify_attributes }}>
             <a
               href='{{ block.settings.link | default: '#' }}'
-              class='group flex flex-col items-center gap-3'
+              class='group flex flex-col items-center cursor-pointer'
             >
-              <div class='h-20 w-20 overflow-hidden rounded-full shadow-ambient ring-4 ring-primary/10 transition-all duration-300 group-hover:scale-110 group-hover:ring-primary/40'>
-                {%- if block.settings.image != blank -%}
-                  {{
-                    block.settings.image
-                    | image_tag:
-                      width: 160,
-                      height: 160,
-                      loading: 'lazy',
-                      class: 'h-full w-full object-cover',
-                      alt: block.settings.label
-                    | default: block.settings.image.alt
-                  }}
-                {%- else -%}
-                  <div class='flex h-full w-full items-center justify-center bg-surface-high text-primary'>
-                    {%- render 'icon', icon: 'paw' -%}
-                  </div>
-                {%- endif -%}
+              <div class='w-36 h-36 rounded-full bg-white p-2 shadow-bubbly border-2 border-transparent group-hover:border-primary/20 group-hover:scale-110 transition-all duration-500'>
+                <div class='w-full h-full rounded-full overflow-hidden'>
+                  {%- if block.settings.image != blank -%}
+                    {{
+                      block.settings.image
+                      | image_tag:
+                        width: 288,
+                        height: 288,
+                        loading: 'lazy',
+                        class: 'h-full w-full object-cover',
+                        alt: block.settings.label
+                      | default: block.settings.image.alt
+                    }}
+                  {%- else -%}
+                    <div class='flex h-full w-full items-center justify-center bg-surface-high text-primary'>
+                      {%- render 'icon', icon: 'paw' -%}
+                    </div>
+                  {%- endif -%}
+                </div>
               </div>
               {%- if block.settings.label != blank -%}
-                <span class='text-sm font-semibold text-on-surface'>{{ block.settings.label }}</span>
+                <span class='mt-4 font-bold text-primary'>{{ block.settings.label }}</span>
               {%- endif -%}
             </a>
           </li>
@@ -64,17 +66,6 @@
       "id": "subheading",
       "label": "Subheading",
       "default": "Specialised care and products for all your companions"
-    },
-    {
-      "type": "select",
-      "id": "padding",
-      "label": "Section padding",
-      "options": [
-        { "value": "py-8", "label": "Small" },
-        { "value": "py-16", "label": "Medium" },
-        { "value": "py-24", "label": "Large" }
-      ],
-      "default": "py-16"
     }
   ],
   "blocks": [

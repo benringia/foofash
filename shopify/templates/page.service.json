@@ -2,11 +2,23 @@
   "sections": {
     "main": {
       "type": "main_service",
-      "settings": {}
+      "settings": {
+        "eyebrow": "Veterinary Services",
+        "price": "From $45",
+        "duration": "30–60 mins",
+        "benefit_1": "Performed by licensed veterinary professionals",
+        "benefit_2": "Tailored care plan for your pet",
+        "benefit_3": "Follow-up support included",
+        "padding": "py-10 lg:py-16"
+      }
     },
     "booking": {
       "type": "service_booking",
-      "settings": {}
+      "settings": {
+        "heading": "Book an Appointment",
+        "subheading": "Fill in the form below and we'll confirm your booking within 24 hours.",
+        "padding": "py-10 lg:py-16"
+      }
     }
   },
   "order": ["main", "booking"]
