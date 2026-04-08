@@ -59,6 +59,18 @@ export default {
     "translate-y-0",
     "hover:translate-x-1",
     "sm:grid-cols-4",
+    // Services grid hover interactions
+    "group-hover:scale-110",
+    "group-hover:bg-primary/20",
+    "group-hover:bg-medical-green/20",
+    "group-hover:translate-x-1",
+    "group-hover:opacity-100",
+    "bg-medical-green/10",
+    "from-medical-green/10",
+    "to-secondary/10",
+    "backdrop-blur-md",
+    "bg-white/80",
+    "border-white/60",
   ],
   theme: {
     extend: {

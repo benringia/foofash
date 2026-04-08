@@ -34,6 +34,10 @@ export function generate({ manifestPath, outputPath }) {
     `<script src="{{ vite_js }}" type="module" defer></script>`,
   ].join("\n");
 
+  const existing = existsSync(outputPath)
+    ? readFileSync(outputPath, "utf8")
+    : null;
+  if (existing === snippet) return;
   writeFileSync(outputPath, snippet);
 }
 

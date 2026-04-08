@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero-banner": {
@@ -12,6 +21,7 @@
         "secondary_cta_label": "Explore Services",
         "secondary_cta_link": "",
         "trust_label": "Trusted by 5,000+ Pet Parents",
+        "image": "shopify://shop_images/Gemini_Generated_Image_dild5ldild5ldild.png",
         "stat_1_value": "4.9★",
         "stat_1_label": "Average Rating",
         "stat_2_value": "5,000+",
@@ -57,44 +67,6 @@
       "block_order": ["trust_vet", "trust_vets", "trust_clock", "trust_paw"],
       "settings": {}
     },
-    "pet-type-nav": {
-      "type": "pet-type-nav",
-      "blocks": {
-        "pet_dogs": {
-          "type": "pet_category",
-          "settings": {
-            "label": "Dogs",
-            "link": ""
-          }
-        },
-        "pet_cats": {
-          "type": "pet_category",
-          "settings": {
-            "label": "Cats",
-            "link": ""
-          }
-        },
-        "pet_small": {
-          "type": "pet_category",
-          "settings": {
-            "label": "Small Animals",
-            "link": ""
-          }
-        },
-        "pet_fish": {
-          "type": "pet_category",
-          "settings": {
-            "label": "Fish",
-            "link": ""
-          }
-        }
-      },
-      "block_order": ["pet_dogs", "pet_cats", "pet_small", "pet_fish"],
-      "settings": {
-        "heading": "Care for Every Friend",
-        "subheading": "Specialized care and products for all your companions"
-      }
-    },
     "featured-collection": {
       "type": "featured-collection",
       "settings": {
@@ -104,6 +76,48 @@
         "view_all_link": "",
         "collection": "",
         "products_to_show": 4
+      }
+    },
+    "pet-type-nav": {
+      "type": "pet-type-nav",
+      "blocks": {
+        "pet_dogs": {
+          "type": "pet_category",
+          "settings": {
+            "image": "shopify://shop_images/cute-dog-for-thumbnail.png",
+            "label": "Dogs",
+            "link": ""
+          }
+        },
+        "pet_cats": {
+          "type": "pet_category",
+          "settings": {
+            "image": "shopify://shop_images/cute-cat-for-thumbnail.png",
+            "label": "Cats",
+            "link": ""
+          }
+        },
+        "pet_small": {
+          "type": "pet_category",
+          "settings": {
+            "image": "shopify://shop_images/cute-hamster-for-thumbnail.png",
+            "label": "Small Animals",
+            "link": ""
+          }
+        },
+        "pet_fish": {
+          "type": "pet_category",
+          "settings": {
+            "image": "shopify://shop_images/fish-for-thumbnail.png",
+            "label": "Fish",
+            "link": ""
+          }
+        }
+      },
+      "block_order": ["pet_dogs", "pet_cats", "pet_small", "pet_fish"],
+      "settings": {
+        "heading": "Care for Every Friend",
+        "subheading": "Specialized care and products for all your companions"
       }
     },
     "services-grid": {
@@ -208,8 +222,8 @@
   "order": [
     "hero-banner",
     "trust-bar",
-    "pet-type-nav",
     "featured-collection",
+    "pet-type-nav",
     "services-grid",
     "clinic-info",
     "testimonials"

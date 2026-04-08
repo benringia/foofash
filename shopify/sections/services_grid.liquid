@@ -1,8 +1,8 @@
 {%- if section.blocks.size > 0 -%}
-  <section class='services-grid bg-background {{ section.settings.padding }}'>
+  <section class='services-grid bg-surface-container-low {{ section.settings.padding }}'>
     <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
       {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
-        <div class='mb-12 text-center'>
+        <div class='mb-14 text-center'>
           {%- if section.settings.heading != blank -%}
             <h2 class='font-display text-4xl font-extrabold text-primary'>{{ section.settings.heading }}</h2>
           {%- endif -%}
@@ -15,34 +15,67 @@
       <ul class='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4' role='list'>
         {%- for block in section.blocks -%}
           <li
-            class='flex flex-col rounded-3xl border border-transparent bg-white p-6 shadow-bubbly transition-all duration-300 hover:-translate-y-1 hover:border-primary/10'
+            class='group relative flex flex-col overflow-hidden rounded-3xl border border-white/60 bg-white/80 p-6 shadow-bubbly backdrop-blur-md transition-all duration-300 hover:-translate-y-2 hover:shadow-bubbly-lg md:p-8'
             {{ block.shopify_attributes }}
           >
-            {%- if block.settings.icon != blank -%}
-              <span
-                class='mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary'
-                aria-hidden='true'
-              >
-                <span class='h-6 w-6'>
-                  {%- render 'icon', icon: block.settings.icon -%}
-                </span>
+            {%- comment -%} Gradient glow — fades in on hover behind all content {%- endcomment -%}
+            <div
+              class='pointer-events-none absolute inset-0 bg-gradient-to-br from-medical-green/10 to-secondary/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100'
+              aria-hidden='true'
+            ></div>
+
+            {%- comment -%} Optional badge tag {%- endcomment -%}
+            {%- if block.settings.badge != blank -%}
+              <span class='relative mb-4 inline-block self-start rounded-full bg-secondary/10 px-3 py-1 text-xs font-semibold text-secondary'>
+                {{- block.settings.badge -}}
               </span>
             {%- endif -%}
 
+            {%- comment -%} Icon {%- endcomment -%}
+            {%- if block.settings.icon != blank -%}
+              <span
+                class='relative mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-medical-green/10 text-primary transition-all duration-300 group-hover:scale-110 group-hover:bg-medical-green/20'
+                aria-hidden='true'
+              >
+                <span class='h-6 w-6'>{%- render 'icon', icon: block.settings.icon -%}</span>
+              </span>
+            {%- endif -%}
+
+            {%- comment -%} Title {%- endcomment -%}
             {%- if block.settings.title != blank -%}
-              <h3 class='text-base font-semibold text-on-surface'>{{ block.settings.title }}</h3>
+              <h3 class='relative text-lg font-semibold text-primary'>{{ block.settings.title }}</h3>
             {%- endif -%}
 
+            {%- comment -%} Description {%- endcomment -%}
             {%- if block.settings.description != blank -%}
-              <p class='mt-2 flex-1 text-sm text-on-surface/60'>{{ block.settings.description }}</p>
+              <p class='relative mt-2 flex-1 text-sm leading-relaxed text-on-surface-variant'>
+                {{ block.settings.description }}
+              </p>
             {%- endif -%}
 
+            {%- comment -%} CTA pill button with arrow {%- endcomment -%}
             {%- if block.settings.cta_url != blank -%}
               <a
                 href='{{ block.settings.cta_url }}'
-                class='mt-5 inline-block cursor-pointer rounded-full bg-primary/10 px-5 py-2.5 text-center text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
+                class='relative mt-6 inline-flex items-center gap-2 self-start rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-white shadow-bubbly transition-all duration-200 hover:bg-primary-dim hover:shadow-bubbly-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
               >
-                {{ block.settings.cta_label | default: 'Book Now' }}
+                {{- block.settings.cta_label | default: 'Book Now' -}}
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  width='14'
+                  height='14'
+                  viewBox='0 0 24 24'
+                  fill='none'
+                  stroke='currentColor'
+                  stroke-width='2.5'
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  aria-hidden='true'
+                  class='transition-transform duration-200 group-hover:translate-x-1'
+                >
+                  <line x1='5' y1='12' x2='19' y2='12'></line>
+                  <polyline points='12 5 19 12 12 19'></polyline>
+                </svg>
               </a>
             {%- endif -%}
           </li>
@@ -51,7 +84,7 @@
     </div>
   </section>
 {%- else -%}
-  <section class='services-grid bg-background {{ section.settings.padding }}'>
+  <section class='services-grid bg-surface-container-low {{ section.settings.padding }}'>
     <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
       <p class='text-center text-sm text-on-surface/40'>Add service cards using the theme editor.</p>
     </div>
@@ -91,6 +124,12 @@
       "type": "service_card",
       "name": "Service card",
       "settings": [
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge label",
+          "info": "Optional tag shown above the icon, e.g. 'Most Popular'"
+        },
         {
           "type": "text",
           "id": "icon",
@@ -138,6 +177,7 @@
         {
           "type": "service_card",
           "settings": {
+            "badge": "Most Popular",
             "icon": "scissors",
             "title": "Grooming",
             "description": "Full grooming services including wash, cut, and nail trim.",

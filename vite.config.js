@@ -28,6 +28,9 @@ export default {
     },
   },
   build: {
+    watch: {
+      exclude: ["shopify/assets/**", "shopify/snippets/vite-assets.liquid"],
+    },
     outDir: "../shopify/assets",
     emptyOutDir: false,
     assetsDir: "",
