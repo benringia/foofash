@@ -11,7 +11,11 @@
         "primary_cta_link": "",
         "secondary_cta_label": "Explore Services",
         "secondary_cta_link": "",
-        "trust_label": "Trusted by 5,000+ Pet Parents"
+        "trust_label": "Trusted by 5,000+ Pet Parents",
+        "stat_1_value": "4.9★",
+        "stat_1_label": "Average Rating",
+        "stat_2_value": "5,000+",
+        "stat_2_label": "Happy Pets"
       }
     },
     "trust-bar": {

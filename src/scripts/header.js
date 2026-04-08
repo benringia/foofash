@@ -13,9 +13,11 @@ function initMegaMenu() {
   const panelEls = document.querySelectorAll("[data-mega-panel]");
 
   const positionPanels = () => {
-    const top = header.offsetHeight;
+    // Use getBoundingClientRect().bottom so the fixed header's top-4 offset
+    // is included. Add 8px gap between header bottom and dropdown.
+    const bottom = header.getBoundingClientRect().bottom + 8;
     panelEls.forEach((panel) => {
-      panel.style.top = `${top}px`;
+      panel.style.top = `${bottom}px`;
     });
   };
 
@@ -30,8 +32,12 @@ function initMegaMenu() {
   const menuItems = [];
 
   const closePanel = (trigger, panel) => {
-    panel.classList.remove("opacity-100", "pointer-events-auto");
-    panel.classList.add("opacity-0", "pointer-events-none");
+    panel.classList.remove(
+      "opacity-100",
+      "pointer-events-auto",
+      "translate-y-0",
+    );
+    panel.classList.add("opacity-0", "pointer-events-none", "translate-y-2");
     panel.setAttribute("aria-hidden", "true");
     trigger.setAttribute("aria-expanded", "false");
     const chevron = trigger.querySelector("[data-mega-chevron]");
@@ -43,8 +49,8 @@ function initMegaMenu() {
     menuItems.forEach(({ trigger: t, panel: p }) => {
       if (p !== panel) closePanel(t, p);
     });
-    panel.classList.remove("opacity-0", "pointer-events-none");
-    panel.classList.add("opacity-100", "pointer-events-auto");
+    panel.classList.remove("opacity-0", "pointer-events-none", "translate-y-2");
+    panel.classList.add("opacity-100", "pointer-events-auto", "translate-y-0");
     panel.setAttribute("aria-hidden", "false");
     trigger.setAttribute("aria-expanded", "true");
     const chevron = trigger.querySelector("[data-mega-chevron]");

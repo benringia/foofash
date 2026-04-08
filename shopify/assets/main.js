@@ -3,7 +3,7 @@ async function E() {
   if (!e.ok) throw new Error("Failed to fetch cart");
   return e.json();
 }
-async function C(e) {
+async function D(e) {
   const t = await fetch("/cart/add.js", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -25,7 +25,7 @@ async function _(e) {
   return L(e, 0);
 }
 let u = !1,
-  b = null;
+  h = null;
 function T(e) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -112,13 +112,13 @@ function w() {
     e.classList.add("translate-x-full"),
     e.setAttribute("aria-hidden", "true"),
     (document.body.style.overflow = ""),
-    b == null || b.focus());
+    h == null || h.focus());
 }
 function j() {
   (document.addEventListener("click", async (e) => {
     if (
       e.target.closest("[data-cart-toggle]") &&
-      ((b = e.target.closest("[data-cart-toggle]")), !u)
+      ((h = e.target.closest("[data-cart-toggle]")), !u)
     ) {
       u = !0;
       try {
@@ -161,7 +161,7 @@ function j() {
             : o.value) ?? "1",
           10,
         );
-        await C([{ id: c, quantity: s }]);
+        await D([{ id: c, quantity: s }]);
         const i = await E();
         (y(i), k());
       } catch (c) {
@@ -264,15 +264,15 @@ function A(e) {
     currency: "USD",
   }).format(e / 100);
 }
-function P(e) {
+function R(e) {
   return Array.from(
     e.querySelectorAll(
       'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea, [tabindex]:not([tabindex="-1"])',
     ),
   );
 }
-function R(e, t) {
-  const n = P(e);
+function P(e, t) {
+  const n = R(e);
   if (!n.length) return;
   const r = n[0],
     a = n[n.length - 1];
@@ -290,7 +290,7 @@ function F(e, t) {
     e.setAttribute("aria-hidden", "false"),
     (document.body.style.overflow = "hidden"),
     (e._trapHandler = (r) => {
-      r.key === "Tab" && R(e, r);
+      r.key === "Tab" && P(e, r);
     }),
     e.addEventListener("keydown", e._trapHandler),
     (n = e.querySelector("[data-quick-view-close]")) == null || n.focus());
@@ -425,17 +425,17 @@ function V() {
         });
     });
 }
-let h = null,
+let b = null,
   I = null;
 async function B(e) {
-  (h && h.abort(), (h = new AbortController()));
+  (b && b.abort(), (b = new AbortController()));
   const t = new URLSearchParams({
       q: e,
       "resources[type]": "product",
       "resources[limit]": "6",
       "resources[options][unavailable_products]": "last",
     }),
-    n = await fetch(`/search/suggest.json?${t}`, { signal: h.signal });
+    n = await fetch(`/search/suggest.json?${t}`, { signal: b.signal });
   if (!n.ok) throw new Error("Search failed");
   return (await n.json()).resources.results.products ?? [];
 }
@@ -461,19 +461,19 @@ function X(e, t) {
   (t.classList.remove("hidden"), e.setAttribute("aria-expanded", "true"));
 }
 function q(e, t) {
-  (t.classList.add("hidden"), e.setAttribute("aria-expanded", "false"), D(t));
+  (t.classList.add("hidden"), e.setAttribute("aria-expanded", "false"), C(t));
 }
 function $(e) {
   return Array.from(e.querySelectorAll("[data-predictive-search-item]"));
 }
-function D(e) {
+function C(e) {
   $(e).forEach((t) => {
     (t.removeAttribute("data-active"),
       t.setAttribute("aria-selected", "false"));
   });
 }
 function M(e, t, n) {
-  (D(n),
+  (C(n),
     e.setAttribute("data-active", ""),
     e.setAttribute("aria-selected", "true"),
     t.setAttribute("aria-activedescendant", e.querySelector("a").id || ""),
@@ -597,7 +597,7 @@ function re() {
   if (!e) return;
   const t = document.querySelectorAll("[data-mega-panel]"),
     n = () => {
-      const s = e.offsetHeight;
+      const s = e.getBoundingClientRect().bottom + 8;
       t.forEach((i) => {
         i.style.top = `${s}px`;
       });
@@ -605,8 +605,12 @@ function re() {
   (n(), new ResizeObserver(n).observe(e));
   const a = [],
     o = (s, i) => {
-      (i.classList.remove("opacity-100", "pointer-events-auto"),
-        i.classList.add("opacity-0", "pointer-events-none"),
+      (i.classList.remove(
+        "opacity-100",
+        "pointer-events-auto",
+        "translate-y-0",
+      ),
+        i.classList.add("opacity-0", "pointer-events-none", "translate-y-2"),
         i.setAttribute("aria-hidden", "true"),
         s.setAttribute("aria-expanded", "false"));
       const l = s.querySelector("[data-mega-chevron]");
@@ -616,8 +620,8 @@ function re() {
       (a.forEach(({ trigger: d, panel: f }) => {
         f !== i && o(d, f);
       }),
-        i.classList.remove("opacity-0", "pointer-events-none"),
-        i.classList.add("opacity-100", "pointer-events-auto"),
+        i.classList.remove("opacity-0", "pointer-events-none", "translate-y-2"),
+        i.classList.add("opacity-100", "pointer-events-auto", "translate-y-0"),
         i.setAttribute("aria-hidden", "false"),
         s.setAttribute("aria-expanded", "true"));
       const l = s.querySelector("[data-mega-chevron]");

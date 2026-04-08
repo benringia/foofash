@@ -44,6 +44,21 @@ export default {
     "text-on-surface-variant",
     "shadow-bubbly",
     "shadow-bubbly-lg",
+    "hover:shadow-2xl",
+    "overflow-visible",
+    "translate-x-5",
+    "translate-y-5",
+    "-translate-x-2",
+    "translate-y-3",
+    "ring-1",
+    "h-[300px]",
+    "sm:h-[400px]",
+    "lg:h-[520px]",
+    "inset-x-0",
+    // Mega menu slide animation — toggled by JS only
+    "translate-y-0",
+    "hover:translate-x-1",
+    "sm:grid-cols-4",
   ],
   theme: {
     extend: {

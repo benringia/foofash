@@ -1,0 +1,104 @@
+<section class='py-20 px-6'>
+  <div class='mx-auto max-w-7xl'>
+    {%- comment -%} Section heading {%- endcomment -%}
+    <div class='mb-14 text-center'>
+      {%- if section.settings.heading != blank -%}
+        <h1 class='font-display text-4xl font-extrabold tracking-tight text-primary lg:text-5xl'>
+          {{- section.settings.heading -}}
+        </h1>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class='mt-3 text-lg text-on-surface-variant'>{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if collections.size > 0 -%}
+      <ul class='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 md:gap-6' role='list'>
+        {%- for collection in collections -%}
+          {%- assign is_featured = forloop.first -%}
+          <li class='{% if is_featured %}col-span-2 md:col-span-1{% endif %}'>
+            <a
+              href='{{ collection.url }}'
+              class='group flex h-full flex-col rounded-3xl bg-white shadow-bubbly ring-1 ring-primary/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-bubbly-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
+            >
+              {%- comment -%} Collection image {%- endcomment -%}
+              <div class='relative overflow-hidden rounded-t-3xl bg-surface-container-low'>
+                {%- if collection.image != blank -%}
+                  {{
+                    collection.image
+                    | image_url: width: 600
+                    | image_tag:
+                      loading: 'lazy',
+                      width: 600,
+                      height: 400,
+                      class: 'aspect-[3/2] w-full object-cover transition-transform duration-500 group-hover:scale-105',
+                      alt: collection.title
+                  }}
+                {%- else -%}
+                  <div class='flex aspect-[3/2] w-full items-center justify-center'>
+                    <span class='h-16 w-16 text-primary/20' aria-hidden='true'>
+                      {%- render 'icon', icon: 'paw' -%}
+                    </span>
+                  </div>
+                {%- endif -%}
+
+                {%- if is_featured -%}
+                  <div class='absolute left-3 top-3 rounded-full bg-secondary px-3 py-1 text-xs font-bold text-white shadow-sm'>
+                    Featured
+                  </div>
+                {%- endif -%}
+              </div>
+
+              {%- comment -%} Card body {%- endcomment -%}
+              <div class='flex flex-1 flex-col gap-1 p-5'>
+                <h2 class='font-display text-base font-bold text-on-surface transition-colors group-hover:text-primary'>
+                  {{- collection.title -}}
+                </h2>
+                <p class='text-sm text-on-surface-variant'>
+                  {{ collection.products_count }}
+                  {%- if collection.products_count == 1 -%}
+                    &nbsp;product
+                  {%- else -%}
+                    &nbsp;products
+                  {%- endif -%}
+                </p>
+              </div>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- else -%}
+      <div class='flex flex-col items-center gap-4 py-24 text-center'>
+        <span class='h-20 w-20 text-primary/20' aria-hidden='true'>
+          {%- render 'icon', icon: 'paw' -%}
+        </span>
+        <p class='text-lg font-medium text-on-surface-variant'>No collections available yet.</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collections List",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by Category"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Everything your pet needs, all in one place"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collections List"
+    }
+  ]
+}
+{% endschema %}

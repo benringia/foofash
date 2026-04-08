@@ -4,10 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"shopify theme dev --path shopify --store foofash.myshopify.com\"",
+    "dev": "concurrently \"vite\" \"shopify theme dev --path shopify --store foofash.myshopify.com --theme-editor-sync\"",
     "build": "vite build",
     "clean": "rimraf shopify/assets/main.css shopify/assets/main.js shopify/assets/.vite",
-    "push": "shopify theme push --path shopify --store foofash.myshopify.com",
+    "pull": "shopify theme pull --path shopify --store foofash.myshopify.com --theme 155204550703",
+    "push": "shopify theme push --path shopify --store foofash.myshopify.com --theme 155204550703",
     "test": "node --test scripts/*.test.mjs"
   },
   "devDependencies": {
