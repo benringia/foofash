@@ -12,7 +12,11 @@
           aria-label='{{ shop.name }} – home'
         >
           {%- if section.settings.logo != blank -%}
-            {{ section.settings.logo | image_tag: width: 120, loading: 'eager', alt: shop.name, class: 'h-7 w-auto' }}
+            {{
+              section.settings.logo
+              | image_url: width: 240
+              | image_tag: width: 120, loading: 'eager', alt: shop.name, class: 'h-7 w-auto'
+            }}
           {%- else -%}
             <span class='h-6 w-6 shrink-0 text-primary' aria-hidden='true'>
               {%- render 'icon', icon: 'paw' -%}

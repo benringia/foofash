@@ -9,6 +9,7 @@
     {%- if product.featured_image != blank -%}
       {{
         product.featured_image
+        | image_url: width: 600
         | image_tag:
           loading: 'eager',
           width: 600,

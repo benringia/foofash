@@ -24,6 +24,7 @@
                   {%- if block.settings.image != blank -%}
                     {{
                       block.settings.image
+                      | image_url: width: 288
                       | image_tag:
                         width: 288,
                         height: 288,

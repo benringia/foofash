@@ -72,6 +72,7 @@
           <div class='relative z-10 w-full max-w-[700px]'>
             {{
               section.settings.image
+              | image_url: width: 800
               | image_tag:
                 loading: 'eager',
                 fetchpriority: 'high',
