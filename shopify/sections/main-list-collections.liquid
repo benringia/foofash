@@ -1,57 +1,162 @@
-<section class='py-20 px-6'>
-  <div class='mx-auto max-w-7xl'>
-    {%- comment -%} Section heading {%- endcomment -%}
-    <div class='mb-14 text-center'>
+{%- liquid
+  assign popular_coll = section.settings.popular_collection
+  assign has_popular = false
+  if section.settings.show_popular and popular_coll != blank and popular_coll.products_count > 0
+    assign has_popular = true
+  endif
+-%}
+
+<section class='bg-surface-container-low'>
+  {{- '<!-- ─── Hero ─────────────────────────────────────────────── -->' -}}
+  <div class='relative overflow-hidden'>
+    <div
+      class='pointer-events-none absolute right-0 top-0 h-80 w-[32rem] rounded-full bg-primary/5 blur-3xl'
+      aria-hidden='true'
+    ></div>
+    <div
+      class='pointer-events-none absolute -left-20 bottom-0 h-64 w-96 rounded-full bg-secondary/5 blur-3xl'
+      aria-hidden='true'
+    ></div>
+
+    <div class='mx-auto max-w-7xl px-4 py-16 text-center sm:px-6 lg:px-8 lg:py-20'>
+      <p class='mb-3 text-xs font-semibold uppercase tracking-widest text-primary/70'>Explore our range</p>
+
       {%- if section.settings.heading != blank -%}
-        <h1 class='font-display text-4xl font-extrabold tracking-tight text-primary lg:text-5xl'>
+        <h1 class='font-display text-4xl font-extrabold tracking-tight text-on-surface sm:text-5xl'>
           {{- section.settings.heading -}}
         </h1>
       {%- endif -%}
+
       {%- if section.settings.subheading != blank -%}
-        <p class='mt-3 text-lg text-on-surface-variant'>{{ section.settings.subheading }}</p>
+        <p class='mx-auto mt-3 max-w-xl text-base leading-relaxed text-on-surface-variant'>
+          {{ section.settings.subheading }}
+        </p>
+      {%- endif -%}
+
+      {{- '<!-- Trust pills -->' -}}
+      <div class='mt-6 flex flex-wrap items-center justify-center gap-2'>
+        <span
+          class='flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 text-xs font-semibold text-on-surface shadow-ambient'
+        >
+          <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
+            {%- render 'icon', icon: 'vet-approved' -%}
+          </span>
+          Vet Approved Products
+        </span>
+        <span
+          class='flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 text-xs font-semibold text-on-surface shadow-ambient'
+        >
+          <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
+            {%- render 'icon', icon: 'clock' -%}
+          </span>
+          Fast Dispatch
+        </span>
+        <span
+          class='flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 text-xs font-semibold text-on-surface shadow-ambient'
+        >
+          <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
+            {%- render 'icon', icon: 'returns' -%}
+          </span>
+          Easy Returns
+        </span>
+      </div>
+
+      {{- '<!-- Quick-nav chips -->' -}}
+      {%- if section.blocks.size > 0 -%}
+        <div
+          class='mt-5 flex flex-wrap items-center justify-center gap-2'
+          role='navigation'
+          aria-label='Quick category links'
+        >
+          {%- for block in section.blocks -%}
+            {%- if block.settings.label != blank -%}
+              <a
+                href='{{ block.settings.link | default: '#' }}'
+                class='rounded-full border border-primary/20 bg-surface px-4 py-1.5 text-sm font-semibold text-primary transition-colors hover:border-primary hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-primary'
+                {{ block.shopify_attributes }}
+              >
+                {{ block.settings.label }}
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
       {%- endif -%}
     </div>
+  </div>
 
+  {{- '<!-- ─── Category grid ──────────────────────────────────────── -->' -}}
+  <div class='mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8'>
     {%- if collections.size > 0 -%}
-      <ul class='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 md:gap-6' role='list'>
+      <ul class='grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4' role='list'>
         {%- for collection in collections -%}
           {%- assign is_featured = forloop.first -%}
-          <li class='{% if is_featured %}col-span-2 md:col-span-1{% endif %}'>
+          {%- if is_featured -%}
+            {%- assign card_aspect = 'aspect-[16/9]' -%}
+            {%- assign img_w = 1200 -%}
+          {%- else -%}
+            {%- assign card_aspect = 'aspect-[4/3]' -%}
+            {%- assign img_w = 800 -%}
+          {%- endif -%}
+          <li class='{% if is_featured %}col-span-2{% endif %}'>
             <a
               href='{{ collection.url }}'
-              class='group flex h-full flex-col rounded-3xl bg-white shadow-bubbly ring-1 ring-primary/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-bubbly-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
+              class='group flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-bubbly transition-all duration-300 hover:-translate-y-1 hover:shadow-bubbly-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
+              aria-label='Browse {{ collection.title }}'
             >
-              {%- comment -%} Collection image {%- endcomment -%}
-              <div class='relative overflow-hidden rounded-t-3xl bg-surface-container-low'>
+              {{- '<!-- Image -->' -}}
+              <div class='relative overflow-hidden bg-surface-container-low'>
                 {%- if collection.image != blank -%}
+                  {%- assign card_img_alt = collection.image.alt | default: collection.title -%}
+                  {%- capture img_classes -%}{{ card_aspect }} w-full object-cover transition-transform duration-500 group-hover:scale-105{%- endcapture -%}
                   {{
                     collection.image
-                    | image_url: width: 600
-                    | image_tag:
-                      loading: 'lazy',
-                      width: 600,
-                      height: 400,
-                      class: 'aspect-[3/2] w-full object-cover transition-transform duration-500 group-hover:scale-105',
-                      alt: collection.title
+                    | image_url: width: img_w
+                    | image_tag: loading: 'lazy', width: img_w, height: 600, class: img_classes, alt: card_img_alt
                   }}
                 {%- else -%}
-                  <div class='flex aspect-[3/2] w-full items-center justify-center'>
+                  <div class='{{ card_aspect }} flex w-full items-center justify-center'>
                     <span class='h-16 w-16 text-primary/20' aria-hidden='true'>
                       {%- render 'icon', icon: 'paw' -%}
                     </span>
                   </div>
                 {%- endif -%}
 
+                {{- '<!-- CRO badge -->' -}}
                 {%- if is_featured -%}
-                  <div class='absolute left-3 top-3 rounded-full bg-secondary px-3 py-1 text-xs font-bold text-white shadow-sm'>
+                  <div
+                    class='absolute left-3 top-3 rounded-full bg-secondary px-3 py-1 text-xs font-bold text-white shadow-sm'
+                  >
                     Featured
                   </div>
                 {%- endif -%}
+
+                {{- '<!-- Arrow indicator (appears on hover) -->' -}}
+                <div
+                  class='absolute bottom-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 text-primary opacity-0 shadow-sm backdrop-blur-sm transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5'
+                  aria-hidden='true'
+                >
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    width='14'
+                    height='14'
+                    viewBox='0 0 24 24'
+                    fill='none'
+                    stroke='currentColor'
+                    stroke-width='2.5'
+                    stroke-linecap='round'
+                    stroke-linejoin='round'
+                  >
+                    <line x1="7" y1="17" x2="17" y2="7"/>
+                    <polyline points="7 7 17 7 17 17"/>
+                  </svg>
+                </div>
               </div>
 
-              {%- comment -%} Card body {%- endcomment -%}
+              {{- '<!-- Card body -->' -}}
               <div class='flex flex-1 flex-col gap-1 p-5'>
-                <h2 class='font-display text-base font-bold text-on-surface transition-colors group-hover:text-primary'>
+                <h2
+                  class='font-display text-base font-bold text-on-surface transition-colors duration-200 group-hover:text-primary'
+                >
                   {{- collection.title -}}
                 </h2>
                 <p class='text-sm text-on-surface-variant'>
@@ -62,25 +167,110 @@
                     &nbsp;products
                   {%- endif -%}
                 </p>
+                {%- if collection.description != blank -%}
+                  <p class='mt-1 line-clamp-2 text-xs leading-relaxed text-on-surface-variant/70'>
+                    {{ collection.description | strip_html | truncatewords: 12 }}
+                  </p>
+                {%- endif -%}
               </div>
             </a>
           </li>
         {%- endfor -%}
       </ul>
     {%- else -%}
-      <div class='flex flex-col items-center gap-4 py-24 text-center'>
-        <span class='h-20 w-20 text-primary/20' aria-hidden='true'>
-          {%- render 'icon', icon: 'paw' -%}
-        </span>
-        <p class='text-lg font-medium text-on-surface-variant'>No collections available yet.</p>
+      <div class='flex flex-col items-center gap-6 rounded-3xl bg-surface px-8 py-24 text-center shadow-ambient'>
+        <div
+          class='flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 text-primary'
+          aria-hidden='true'
+        >
+          <span class='block h-10 w-10'>{%- render 'icon', icon: 'paw' -%}</span>
+        </div>
+        <div>
+          <p class='text-xl font-bold text-on-surface'>No collections yet</p>
+          <p class='mt-2 text-sm text-on-surface-variant'>Check back soon — new categories are on their way.</p>
+        </div>
       </div>
     {%- endif -%}
+  </div>
+
+  {{- '<!-- ─── Popular Right Now ──────────────────────────────────── -->' -}}
+  {%- if has_popular -%}
+    <div class='bg-surface py-16'>
+      <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+        <div class='mb-8 flex items-end justify-between'>
+          <div>
+            <p class='mb-1 text-xs font-semibold uppercase tracking-widest text-primary/70'>Trending now</p>
+            <h2 class='font-display text-3xl font-extrabold text-on-surface'>
+              {{ section.settings.popular_heading }}
+            </h2>
+          </div>
+          <a
+            href='{{ popular_coll.url }}'
+            class='hidden text-sm font-semibold text-primary transition-colors hover:text-primary/70 sm:block'
+          >
+            View all →
+          </a>
+        </div>
+        <ul class='grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-4' role='list'>
+          {%- for product in popular_coll.products limit: section.settings.popular_count -%}
+            <li>
+              {%- render 'product-card', product: product, homepage: true -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {{- '<!-- ─── Trust bar ───────────────────────────────────────────── -->' -}}
+  <div class='border-t border-primary/5 bg-surface-container-low'>
+    <div class='mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8'>
+      <ul class='flex flex-wrap items-center justify-center gap-8 md:gap-16' role='list'>
+        <li class='flex items-center gap-3'>
+          <span
+            class='flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary'
+            aria-hidden='true'
+          >
+            <span class='block h-5 w-5'>{%- render 'icon', icon: 'vet-approved' -%}</span>
+          </span>
+          <div>
+            <p class='text-sm font-bold text-on-surface'>Vet Approved Products</p>
+            <p class='text-xs text-on-surface-variant'>Clinician-reviewed picks</p>
+          </div>
+        </li>
+        <li class='flex items-center gap-3'>
+          <span
+            class='flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary'
+            aria-hidden='true'
+          >
+            <span class='block h-5 w-5'>{%- render 'icon', icon: 'shipping' -%}</span>
+          </span>
+          <div>
+            <p class='text-sm font-bold text-on-surface'>Free Shipping</p>
+            <p class='text-xs text-on-surface-variant'>On qualifying orders</p>
+          </div>
+        </li>
+        <li class='flex items-center gap-3'>
+          <span
+            class='flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary'
+            aria-hidden='true'
+          >
+            <span class='block h-5 w-5'>{%- render 'icon', icon: 'returns' -%}</span>
+          </span>
+          <div>
+            <p class='text-sm font-bold text-on-surface'>30-Day Returns</p>
+            <p class='text-xs text-on-surface-variant'>Hassle-free, always</p>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </section>
 
 {% schema %}
 {
   "name": "Collections List",
+  "max_blocks": 8,
   "settings": [
     {
       "type": "text",
@@ -92,12 +282,66 @@
       "type": "text",
       "id": "subheading",
       "label": "Subheading",
-      "default": "Everything your pet needs, all in one place"
+      "default": "Everything your pet needs, curated for better health"
+    },
+    {
+      "type": "header",
+      "content": "Popular Products"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_popular",
+      "label": "Show popular products section",
+      "default": true
+    },
+    {
+      "type": "collection",
+      "id": "popular_collection",
+      "label": "Popular products collection"
+    },
+    {
+      "type": "range",
+      "id": "popular_count",
+      "label": "Products to show",
+      "min": 2,
+      "max": 8,
+      "step": 2,
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "popular_heading",
+      "label": "Popular section heading",
+      "default": "Popular Right Now"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "nav_chip",
+      "name": "Quick nav chip",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Collections List"
+      "name": "Collections List",
+      "blocks": [
+        { "type": "nav_chip", "settings": { "label": "Dogs" } },
+        { "type": "nav_chip", "settings": { "label": "Cats" } },
+        { "type": "nav_chip", "settings": { "label": "Grooming" } },
+        { "type": "nav_chip", "settings": { "label": "Supplements" } }
+      ]
     }
   ]
 }
