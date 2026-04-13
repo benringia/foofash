@@ -6,7 +6,7 @@ let lastTrigger = null;
 function getFocusable(modal) {
   return Array.from(
     modal.querySelectorAll(
-      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea, [tabindex]:not([tabindex="-1"])',
+      'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea, [tabindex]:not([tabindex="-1"])',
     ),
   );
 }

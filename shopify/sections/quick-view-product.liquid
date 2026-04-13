@@ -88,9 +88,9 @@
         <button
           type='submit'
           data-add-to-cart
-          {%- unless card_variant.available -%}
+          {% unless card_variant.available %}
             disabled
-          {%- endunless -%}
+          {% endunless %}
           class='w-full rounded-2xl bg-primary-gradient px-6 py-3 text-sm font-bold text-on-primary transition-transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
         >
           {%- if card_variant.available -%}
