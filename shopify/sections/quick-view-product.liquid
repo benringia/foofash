@@ -4,47 +4,68 @@
   Intentionally lightweight — full PDP logic lives in main-product.liquid.
 {%- endcomment -%}
 
+{%- liquid
+  assign card_variant = product.selected_or_first_available_variant
+  assign img_alt = product.featured_image.alt | default: product.title
+  assign badge_vet = false
+  if product.metafields.pet.vet_approved.value == true
+    assign badge_vet = true
+  endif
+-%}
+
 <div class='grid grid-cols-1 gap-6 sm:grid-cols-2'>
-  <div class='aspect-square overflow-hidden rounded-lg bg-gray-100'>
+  {{- '<!-- Product image -->' -}}
+  <div class='aspect-square overflow-hidden rounded-2xl bg-surface-container'>
     {%- if product.featured_image != blank -%}
       {{
         product.featured_image
         | image_url: width: 600
-        | image_tag:
-          loading: 'eager',
-          width: 600,
-          height: 600,
-          class: 'h-full w-full object-cover',
-          alt: product.featured_image.alt
-        | default: product.title
+        | image_tag: loading: 'eager', width: 600, height: 600, class: 'h-full w-full object-contain p-4', alt: img_alt
       }}
     {%- else -%}
-      <div class='flex h-full w-full items-center justify-center text-gray-300' aria-hidden='true'>
-        {%- render 'icon', icon: 'paw' -%}
+      <div class='flex h-full w-full items-center justify-center text-on-surface/20' aria-hidden='true'>
+        <span class='block h-16 w-16'>{%- render 'icon', icon: 'paw' -%}</span>
       </div>
     {%- endif -%}
   </div>
 
+  {{- '<!-- Info + form -->' -}}
   <div class='flex flex-col gap-4'>
-    <div class='flex flex-col gap-1'>
-      <h2 class='text-xl font-bold text-gray-900'>{{ product.title }}</h2>
-      <div class='text-lg' data-quick-view-price>
+    <div>
+      {%- if product.type != blank -%}
+        <p class='mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant'>
+          {{- product.type -}}
+        </p>
+      {%- endif -%}
+
+      <h2 class='text-xl font-extrabold leading-snug text-on-surface'>{{ product.title }}</h2>
+
+      <div class='mt-2 text-base' data-quick-view-price>
         {%- render 'price', product: product -%}
       </div>
+
+      {%- if product.metafields.reviews.rating.value != blank -%}
+        <div class='mt-2 text-xs'>
+          {%- render 'rating-stars', product: product -%}
+        </div>
+      {%- endif -%}
     </div>
 
     {%- form 'product', product, data-cart-form: '' -%}
       <div class='flex flex-col gap-3'>
         {%- unless product.has_only_default_variant -%}
-          <div class='flex flex-col gap-1'>
-            <label for='qv-variant-select' class='text-sm font-medium text-gray-700'>
-              {{ product.options.first }}
+          <div class='flex flex-col gap-1.5'>
+            <label
+              for='qv-variant-select'
+              class='text-xs font-semibold uppercase tracking-wide text-on-surface-variant'
+            >
+              {{- product.options.first -}}
             </label>
             <select
               id='qv-variant-select'
               name='id'
               data-variant-selector
-              class='rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500'
+              class='cursor-pointer rounded-2xl bg-surface-container-low px-4 py-2.5 text-sm font-semibold text-on-surface shadow-ambient focus:outline-none focus:ring-2 focus:ring-primary'
             >
               {%- for variant in product.variants -%}
                 <option
@@ -60,44 +81,57 @@
             </select>
           </div>
         {%- else -%}
-          <input type='hidden' name='id' value='{{ product.selected_or_first_available_variant.id }}'>
+          <input type='hidden' name='id' value='{{ card_variant.id }}'>
         {%- endunless -%}
-
-        <div class='flex items-center gap-2'>
-          <label for='qv-quantity' class='text-sm font-medium text-gray-700'>Qty</label>
-          <input
-            id='qv-quantity'
-            type='number'
-            name='quantity'
-            value='1'
-            min='1'
-            class='w-16 rounded-lg border border-gray-300 px-2 py-2 text-center text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500'
-          >
-        </div>
 
         <button
           type='submit'
           data-add-to-cart
-          {%- unless product.selected_or_first_available_variant.available -%}
-            disabled aria-disabled='true'
+          {%- unless card_variant.available -%}
+            disabled
+            aria-disabled='true'
           {%- endunless -%}
-          class='rounded-lg bg-green-600 px-6 py-3 font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
+          class='w-full rounded-2xl bg-primary-gradient px-6 py-3 text-sm font-bold text-on-primary transition-transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
         >
-          {%- if product.selected_or_first_available_variant.available -%}
-            Add to cart
+          {%- if card_variant.available -%}
+            Add to Cart
           {%- else -%}
-            Sold out
+            Sold Out
           {%- endif -%}
         </button>
 
         <a
           href='{{ product.url }}'
-          class='text-center text-sm text-green-700 underline hover:text-green-900'
+          class='text-center text-sm font-semibold text-primary transition-colors hover:text-primary-dim focus:outline-none focus:ring-2 focus:ring-primary'
         >
-          View full details
+          View full details →
         </a>
       </div>
     {%- endform -%}
+
+    {{- '<!-- Trust micro-row -->' -}}
+    <div class='flex flex-wrap gap-x-4 gap-y-1.5 rounded-2xl bg-surface-container-low px-3 py-2.5'>
+      {%- if badge_vet -%}
+        <span class='flex items-center gap-1 text-xs text-on-surface-variant'>
+          <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
+            {%- render 'icon', icon: 'vet-approved' -%}
+          </span>
+          Vet Approved
+        </span>
+      {%- endif -%}
+      <span class='flex items-center gap-1 text-xs text-on-surface-variant'>
+        <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
+          {%- render 'icon', icon: 'shipping' -%}
+        </span>
+        Fast Dispatch
+      </span>
+      <span class='flex items-center gap-1 text-xs text-on-surface-variant'>
+        <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
+          {%- render 'icon', icon: 'returns' -%}
+        </span>
+        Easy Returns
+      </span>
+    </div>
   </div>
 </div>
 
