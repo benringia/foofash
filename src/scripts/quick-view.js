@@ -33,13 +33,16 @@ function openModal(modal, overlay) {
   modal.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
 
-  // Animate panel in after display:flex is applied
+  // Double rAF ensures the browser paints the initial scale-95/opacity-0 state
+  // before the transition class change fires (single rAF batches with hidden removal)
   requestAnimationFrame(() => {
-    const panel = modal.querySelector(".qv-panel");
-    if (panel) {
-      panel.classList.remove("scale-95", "opacity-0");
-      panel.classList.add("scale-100", "opacity-100");
-    }
+    requestAnimationFrame(() => {
+      const panel = modal.querySelector(".qv-panel");
+      if (panel) {
+        panel.classList.remove("scale-95", "opacity-0");
+        panel.classList.add("scale-100", "opacity-100");
+      }
+    });
   });
 
   modal._trapHandler = (e) => {
@@ -79,9 +82,7 @@ function closeModal(modal, overlay) {
 }
 
 async function loadProduct(handle) {
-  const res = await fetch(
-    `/products/${handle}?view=quick-view&sections=quick-view-product`,
-  );
+  const res = await fetch(`/products/${handle}?sections=quick-view-product`);
   if (!res.ok) throw new Error(`${res.status}`);
   const json = await res.json();
   return json["quick-view-product"] ?? "";
