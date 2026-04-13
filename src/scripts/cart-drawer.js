@@ -1,59 +1,40 @@
 import { getCart, addToCart, updateItem, removeItem } from "./cart.js";
+import { refreshCartUpsell } from "./cart-upsell.js";
+import { formatMoney } from "./utils.js";
 
 let busy = false;
 let lastToggleTrigger = null;
 
-function formatMoney(cents) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(cents / 100);
-}
+const REMOVE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
 
 function renderCartItem(item) {
   const image = item.image
-    ? `<img src="${item.image}" alt="${item.title}" width="80" height="80" loading="lazy" class="h-20 w-20 rounded-md object-cover bg-gray-100">`
-    : `<div class="h-20 w-20 rounded-md bg-gray-100 flex items-center justify-center text-gray-300" aria-hidden="true"></div>`;
+    ? `<img src="${item.image}" alt="${item.product_title}" width="80" height="80" loading="lazy" class="h-20 w-20 rounded-2xl object-cover bg-surface-container">`
+    : `<div class="flex h-20 w-20 items-center justify-center rounded-2xl bg-surface-container text-primary/20" aria-hidden="true"></div>`;
 
   const variantLine =
     item.variant_title && item.variant_title !== "Default Title"
-      ? `<p class="text-xs text-gray-500">${item.variant_title}</p>`
+      ? `<p class="mt-0.5 text-xs text-on-surface-variant">${item.variant_title}</p>`
       : "";
 
   return `
-    <li class="flex gap-4 py-4 border-b border-gray-100 last:border-0" data-line-item data-item-key="${item.key}">
-      ${image}
-      <div class="flex flex-1 flex-col gap-1 min-w-0">
-        <p class="text-sm font-medium text-gray-800 truncate">${item.product_title}</p>
-        ${variantLine}
-        <p class="text-sm font-semibold text-gray-900">${formatMoney(item.final_line_price)}</p>
-        <div class="flex items-center gap-2 mt-1">
-          <button
-            type="button"
-            data-quantity-decrease
-            aria-label="Decrease quantity"
-            class="flex h-7 w-7 items-center justify-center rounded border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-40"
-          >−</button>
-          <input
-            type="number"
-            data-quantity-input
-            value="${item.quantity}"
-            min="0"
-            class="w-10 text-center text-sm border border-gray-300 rounded py-0.5"
-            aria-label="Quantity for ${item.product_title}"
-          >
-          <button
-            type="button"
-            data-quantity-increase
-            aria-label="Increase quantity"
-            class="flex h-7 w-7 items-center justify-center rounded border border-gray-300 text-gray-600 hover:bg-gray-50"
-          >+</button>
-          <button
-            type="button"
-            data-remove-item
-            aria-label="Remove ${item.product_title}"
-            class="ml-auto text-xs text-gray-400 hover:text-red-500 underline"
-          >Remove</button>
+    <li class="flex gap-3 py-4" data-line-item data-item-key="${item.key}">
+      <div class="shrink-0">${image}</div>
+      <div class="flex min-w-0 flex-1 flex-col gap-2">
+        <div class="flex items-start justify-between gap-2">
+          <div class="min-w-0">
+            <p class="line-clamp-2 text-sm font-semibold leading-snug text-on-surface">${item.product_title}</p>
+            ${variantLine}
+          </div>
+          <button type="button" data-remove-item aria-label="Remove ${item.product_title}" class="ml-1 flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-xl text-on-surface-variant/60 transition-colors hover:bg-secondary/10 hover:text-secondary focus:outline-none focus:ring-2 focus:ring-primary">${REMOVE_ICON}</button>
+        </div>
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center overflow-hidden rounded-2xl bg-surface shadow-ambient" aria-label="Quantity">
+            <button type="button" data-quantity-decrease aria-label="Decrease quantity" class="flex h-8 w-8 cursor-pointer items-center justify-center text-on-surface transition-colors hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">&#8722;</button>
+            <input type="number" data-quantity-input value="${item.quantity}" min="0" class="w-8 bg-transparent text-center text-sm font-semibold text-on-surface focus:outline-none" aria-label="Quantity for ${item.product_title}">
+            <button type="button" data-quantity-increase aria-label="Increase quantity" class="flex h-8 w-8 cursor-pointer items-center justify-center text-on-surface transition-colors hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">&#43;</button>
+          </div>
+          <p class="text-sm font-bold text-on-surface">${formatMoney(item.final_line_price)}</p>
         </div>
       </div>
     </li>
@@ -81,6 +62,9 @@ function renderCart(cart) {
   countEls.forEach((el) => {
     el.textContent = cart.item_count;
   });
+
+  // Refresh upsell after every cart state change (fire-and-forget)
+  refreshCartUpsell(cart);
 }
 
 function openDrawer() {
@@ -127,6 +111,11 @@ export function initCartDrawer() {
     } finally {
       busy = false;
     }
+  });
+
+  // Upsell quick-add fires this event after updating the cart
+  document.addEventListener("foofash:cart-updated", (e) => {
+    renderCart(e.detail.cart);
   });
 
   // Close on ✕ button

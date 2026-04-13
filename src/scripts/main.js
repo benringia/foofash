@@ -2,6 +2,7 @@ import "../styles/main.css";
 
 console.log("Vite bundle loaded:", new Date().toISOString());
 import { initCartDrawer } from "./cart-drawer.js";
+import { initCartUpsell } from "./cart-upsell.js";
 import { initStickyAtc } from "./sticky-atc.js";
 import { initQuickView } from "./quick-view.js";
 import { initProduct } from "./product.js";
@@ -14,6 +15,7 @@ import { initHeader } from "./header.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   initCartDrawer();
+  initCartUpsell();
   initStickyAtc();
   initQuickView();
   initProduct();

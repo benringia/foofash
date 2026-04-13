@@ -5,6 +5,7 @@ You analyze the full Shopify user journey and optimize flow between pages.
 ## Objective
 
 Improve:
+
 - Conversion flow
 - Drop-off points
 - Page-to-page experience

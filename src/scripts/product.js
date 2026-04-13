@@ -1,3 +1,5 @@
+import { formatMoney } from "./utils.js";
+
 export function initProduct() {
   const variantSelector = document.querySelector("[data-variant-selector]");
   const addToCartBtn = document.querySelector("[data-add-to-cart]");
@@ -110,27 +112,16 @@ export function initProduct() {
       // Update price display
       const priceContainer = document.querySelector("[data-pdp-price]");
       if (priceContainer) {
-        const formatted = new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "USD",
-        }).format(variant.price / 100);
+        const formatted = formatMoney(variant.price);
 
         const compareFormatted =
           variant.compare_at_price > variant.price
-            ? new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              }).format(variant.compare_at_price / 100)
+            ? formatMoney(variant.compare_at_price)
             : null;
 
         const savingsAmount = variant.compare_at_price - variant.price;
         const savingsFormatted =
-          savingsAmount > 0
-            ? new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              }).format(savingsAmount / 100)
-            : null;
+          savingsAmount > 0 ? formatMoney(savingsAmount) : null;
 
         // Rebuild price HTML inline — mirrors price.liquid output structure
         let priceHTML = `<div class="text-2xl">`;

@@ -36,7 +36,12 @@
       <p class='truncate text-sm font-semibold text-on-surface'>
         {{ product.title }}
       </p>
-      <div class='text-sm text-on-surface-variant'>
+      {%- unless product.has_only_default_variant -%}
+        <p data-sticky-atc-variant class='truncate text-xs text-on-surface-variant/70'>
+          {{- variant.title -}}
+        </p>
+      {%- endunless -%}
+      <div data-sticky-atc-price class='text-sm text-on-surface-variant'>
         {%- render 'price', product: product -%}
       </div>
     </div>

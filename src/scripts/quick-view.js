@@ -1,12 +1,7 @@
+import { formatMoney } from "./utils.js";
+
 let busy = false;
 let lastTrigger = null;
-
-function formatMoney(cents) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(cents / 100);
-}
 
 function getFocusable(modal) {
   return Array.from(

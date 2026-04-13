@@ -5,7 +5,7 @@
 
 <div
   data-cart-overlay
-  class='fixed inset-0 z-40 hidden bg-black/50'
+  class='fixed inset-0 z-40 hidden bg-black/50 backdrop-blur-sm'
   aria-hidden='true'
 ></div>
 
@@ -15,26 +15,30 @@
   aria-modal='true'
   aria-label='Shopping cart'
   aria-hidden='true'
-  class='fixed right-0 top-0 z-50 flex h-full w-full max-w-md translate-x-full flex-col bg-white shadow-xl transition-transform duration-300 ease-in-out'
+  class='fixed right-0 top-0 z-50 flex h-full w-full max-w-md translate-x-full flex-col bg-surface-container-low shadow-bubbly-lg transition-transform duration-300 ease-in-out'
 >
-  <div class='flex items-center justify-between border-b border-gray-200 px-4 py-4'>
-    <h2 class='text-lg font-semibold text-gray-900'>
-      Your Cart (<span data-cart-count>{{ cart.item_count }}</span>)
-    </h2>
+  {{- '<!-- ─── Header ──────────────────────────────────────────────── -->' -}}
+  <div class='flex items-center justify-between px-5 py-4'>
+    <div>
+      <h2 class='text-base font-extrabold text-on-surface'>Your Cart</h2>
+      <p class='text-xs text-on-surface-variant'>
+        <span data-cart-count>{{ cart.item_count }}</span>&nbsp;items in bag
+      </p>
+    </div>
     <button
       type='button'
       data-cart-close
       aria-label='Close cart'
-      class='flex h-8 w-8 items-center justify-center rounded text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300'
+      class='flex h-9 w-9 cursor-pointer items-center justify-center rounded-2xl bg-surface text-on-surface-variant shadow-ambient transition-colors hover:bg-primary/10 hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary'
     >
       <svg
         xmlns='http://www.w3.org/2000/svg'
-        width='20'
-        height='20'
+        width='16'
+        height='16'
         viewBox='0 0 24 24'
         fill='none'
         stroke='currentColor'
-        stroke-width='2'
+        stroke-width='2.5'
         stroke-linecap='round'
         stroke-linejoin='round'
         aria-hidden='true'
@@ -45,30 +49,96 @@
     </button>
   </div>
 
-  <div class='flex-1 overflow-y-auto px-4 py-4'>
-    <p
+  {{- '<!-- ─── Scrollable body ──────────────────────────────────────── -->' -}}
+  <div class='flex-1 overflow-y-auto px-5 py-2'>
+    {{- '<!-- Empty state -->' -}}
+    <div
       data-cart-empty
-      class='py-8 text-center text-gray-500 {% if cart.item_count > 0 %}hidden{% endif %}'
+      class='flex flex-col items-center gap-5 py-16 text-center {% if cart.item_count > 0 %}hidden{% endif %}'
     >
-      Your cart is empty
-    </p>
-    <ul data-cart-items role='list' class='divide-y divide-gray-100'>
+      <div
+        class='flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 text-primary'
+        aria-hidden='true'
+      >
+        <span class='block h-10 w-10'>
+          {%- render 'icon', icon: 'paw' -%}
+        </span>
+      </div>
+      <div>
+        <p class='text-lg font-extrabold text-on-surface'>Your cart is empty</p>
+        <p class='mt-1 text-sm text-on-surface-variant'>Discover products your pet will love.</p>
+      </div>
+      <a
+        href='/collections'
+        class='rounded-2xl bg-primary-gradient px-6 py-3 text-sm font-bold text-on-primary transition-transform duration-150 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
+        data-cart-close
+      >
+        Shop All Products
+      </a>
+    </div>
+
+    {{- '<!-- Line items -->' -}}
+    <ul data-cart-items role='list' class='divide-y divide-on-surface/6'>
       {%- for item in cart.items -%}
         {%- render 'cart-item', item: item -%}
       {%- endfor -%}
     </ul>
+
+    {{- '<!-- Upsell placeholder — populated by JS when recommendations are available -->' -}}
+    <div data-cart-upsell class='hidden mt-5'>
+      <p class='mb-3 text-xs font-bold uppercase tracking-wider text-on-surface-variant/70'>You may also need</p>
+      <div data-cart-upsell-items class='flex flex-col gap-2'></div>
+    </div>
   </div>
 
-  <div class='border-t border-gray-200 px-4 py-4'>
-    <div class='mb-4 flex items-center justify-between text-sm'>
-      <span class='font-medium text-gray-700'>Subtotal</span>
-      <span data-cart-subtotal class='font-semibold text-gray-900'>{{ cart.total_price | money }}</span>
+  {{- '<!-- ─── Sticky checkout footer ────────────────────────────────── -->' -}}
+  <div class='bg-surface px-5 pb-6 pt-4 shadow-[0_-1px_0_0_rgba(0,0,0,0.06)]'>
+    {{- '<!-- Trust strip -->' -}}
+    <div class='mb-4 flex items-center justify-center gap-5 border-b border-on-surface/6 pb-4'>
+      <span class='flex items-center gap-1.5 text-xs font-semibold text-on-surface-variant'>
+        <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
+          {%- render 'icon', icon: 'vet-approved' -%}
+        </span>
+        Vet Approved
+      </span>
+      <span class='flex items-center gap-1.5 text-xs font-semibold text-on-surface-variant'>
+        <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
+          {%- render 'icon', icon: 'clock' -%}
+        </span>
+        Fast Dispatch
+      </span>
+      <span class='flex items-center gap-1.5 text-xs font-semibold text-on-surface-variant'>
+        <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
+          {%- render 'icon', icon: 'returns' -%}
+        </span>
+        Easy Returns
+      </span>
     </div>
+
+    {{- '<!-- Subtotal -->' -}}
+    <div class='mb-1 flex items-baseline justify-between'>
+      <span class='text-sm font-semibold text-on-surface-variant'>Subtotal</span>
+      <span data-cart-subtotal class='text-xl font-extrabold text-on-surface'>
+        {{- cart.total_price | money -}}
+      </span>
+    </div>
+    <p class='mb-4 text-xs text-on-surface-variant/70'>Shipping calculated at checkout &mdash; free over $50.</p>
+
+    {{- '<!-- Checkout CTA -->' -}}
     <a
       href='/checkout'
-      class='block w-full rounded-lg bg-green-600 px-6 py-3 text-center font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2'
+      class='block w-full rounded-2xl bg-primary-gradient py-4 text-center text-base font-bold text-on-primary transition-transform duration-150 hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
     >
       Checkout
     </a>
+
+    {{- '<!-- Continue shopping -->' -}}
+    <button
+      type='button'
+      data-cart-close
+      class='mt-3 w-full cursor-pointer text-center text-sm font-semibold text-on-surface-variant transition-colors hover:text-on-surface focus:outline-none'
+    >
+      Continue Shopping
+    </button>
   </div>
 </div>

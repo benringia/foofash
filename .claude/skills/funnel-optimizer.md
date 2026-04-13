@@ -24,24 +24,28 @@ homepage → collection/category → PDP → cart
 ## Funnel Priorities
 
 ### Homepage
+
 - clear value proposition
 - category guidance
 - featured products
 - trust
 
 ### Collections
+
 - efficient browsing
 - good filters/sort
 - merchandising cues
 - strong product cards
 
 ### PDP
+
 - decision confidence
 - variant clarity
 - CTA dominance
 - trust and reassurance
 
 ### Cart
+
 - low friction
 - easy edits
 - smart upsell

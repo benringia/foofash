@@ -25,7 +25,9 @@ Turn category and collection views into guided shopping experiences that improve
 ## Recommended Collection Structure
 
 ### Top Section
+
 Include:
+
 - collection title
 - short supporting description if available
 - product count
@@ -33,7 +35,9 @@ Include:
 - optional trust row
 
 ### Controls
+
 Include:
+
 - sort
 - filters
 - active filter visibility
@@ -41,7 +45,9 @@ Include:
 - mobile filter drawer when needed
 
 ### Product Grid
+
 Product cards should support:
+
 - stable image ratio
 - title
 - product type/category
@@ -52,7 +58,9 @@ Product cards should support:
 - clear CTA affordance
 
 ### Merchandising Blocks
+
 Useful modules:
+
 - Top picks this week
 - Clinic favorites
 - Best for first-time pet parents
@@ -68,6 +76,7 @@ Useful modules:
 - Add merchandising below the grid
 
 Useful modules:
+
 - hero with category context
 - quick chips
 - featured collections
@@ -92,6 +101,7 @@ Useful modules:
 ## Edge Cases
 
 Always handle:
+
 - no collection image
 - no description
 - few products
@@ -105,6 +115,7 @@ Always handle:
 ## Output Expectations
 
 When using this skill:
+
 1. Identify what makes the page feel flat or default
 2. Improve top-of-page merchandising
 3. Improve filter/sort usability

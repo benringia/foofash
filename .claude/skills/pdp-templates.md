@@ -27,34 +27,42 @@ Use this order unless there is a strong reason not to:
 ## Required Behaviors
 
 ### Product Media
+
 - Stable aspect ratio
 - Main image + thumbnails if available
 - Graceful fallback if image missing
 - Premium surface treatment
 
 ### Product Title Block
+
 - Strong hierarchy
 - Product type or category can appear as a small eyebrow
 - Long titles must wrap cleanly
 
 ### Social Proof
+
 Allowed:
+
 - real rating stars
 - real review count
 - editorial labels like “Clinic Pick”
 
 If rating missing:
+
 - hide numerical review UI
 - optionally use a clearly non-numeric merchandising label
 
 ### Pricing
+
 - Use `price.liquid`
 - Show compare-at only when real
 - Savings must be accurate
 - Keep price highly visible
 
 ### Trust / Urgency
+
 Allowed:
+
 - Vet Approved
 - Free shipping threshold
 - Easy returns
@@ -62,54 +70,68 @@ Allowed:
 - dispatch messaging if configured
 
 ### Variants
+
 Preferred:
+
 - pill selectors for small option sets
-Fallback:
+  Fallback:
 - dropdown for large or complex option sets
 
 Rules:
+
 - active state must be clear
 - unavailable options must be visually distinct
 - do not break native product form behavior
 
 ### CTA Row
+
 Preferred structure:
+
 - quantity control
 - primary Add to Cart button
 - optional secondary action only if truly useful
 
 Rules:
+
 - CTA must dominate visually
 - mobile CTA should be easy to tap
 - out-of-stock state must be explicit
 
 ### Accordion Content
+
 Common items:
+
 - Description
 - Ingredients
 - Shipping & Returns
 - Care / Usage
 
 Rules:
+
 - hide empty items
 - maintain clean spacing
 - do not overload top-of-page with long text
 
 ### Upsell / Recommendations
+
 Good modules:
+
 - Complete the Kit
 - You may also like
 - Frequently bought together
 
 Rules:
+
 - keep relevant
 - keep count limited
 - use product card patterns consistently
 
 ### Sticky ATC
+
 Use when the main CTA scrolls out of view.
 
 Sticky ATC should include:
+
 - product image thumbnail
 - title
 - price
@@ -118,6 +140,7 @@ Sticky ATC should include:
 ## Edge Cases
 
 Always guard for:
+
 - no variants
 - single default variant
 - no rating
@@ -131,6 +154,7 @@ Always guard for:
 ## Output Expectations
 
 When using this skill:
+
 1. Audit the current PDP structure
 2. Identify missing trust / friction / merchandising
 3. Improve hierarchy first

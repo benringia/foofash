@@ -27,6 +27,9 @@
         --header-height: 6rem; /* 96px — top-4 (16px) + pill height (80px) */
       }
     </style>
+    <script>
+      window.__foofash = { currency: '{{ shop.currency }}' };
+    </script>
     {% render 'vite-assets' %}
     {{ content_for_header }}
   </head>

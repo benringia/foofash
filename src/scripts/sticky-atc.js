@@ -1,3 +1,5 @@
+import { formatMoney } from "./utils.js";
+
 export function initStickyAtc() {
   const mainAtc = document.querySelector("[data-main-atc]");
   const stickyBar = document.querySelector("[data-sticky-atc]");
@@ -21,30 +23,62 @@ export function initStickyAtc() {
   stickyBtn.addEventListener("click", () => {
     const form = mainAtc.closest("form");
     if (!form) return;
-
-    // Keep variant in sync — read the selected value from the form's variant selector
-    const variantSelector = form.querySelector("[data-variant-selector]");
-    if (variantSelector) {
-      const selectedOption = variantSelector.querySelector(
-        "option:not([disabled]):checked",
-      );
-      const isAvailable = selectedOption !== null;
-      stickyBtn.disabled = !isAvailable;
-      if (!isAvailable) return;
-    }
-
     form.requestSubmit(mainAtc);
   });
 
-  // Mirror disabled state onto sticky button when variant changes
+  // ── Variant sync ──────────────────────────────────────────────────────────
   const variantSelector = document.querySelector("[data-variant-selector]");
-  if (variantSelector) {
-    variantSelector.addEventListener("change", () => {
-      const selected = variantSelector.options[variantSelector.selectedIndex];
-      const available = !selected.disabled;
-      stickyBtn.disabled = !available;
-      stickyBtn.setAttribute("aria-disabled", String(!available));
-      stickyBtn.textContent = available ? "Add to cart" : "Sold out";
-    });
-  }
+  const stickyPrice = document.querySelector("[data-sticky-atc-price]");
+  const stickyVariant = document.querySelector("[data-sticky-atc-variant]");
+
+  const variantsData = JSON.parse(
+    document.getElementById("product-variants-json")?.textContent || "[]",
+  );
+
+  const updatePrice = (variant) => {
+    if (!stickyPrice) return;
+    const onSale = variant.compare_at_price > variant.price;
+    if (onSale) {
+      stickyPrice.innerHTML = `
+        <div class="price">
+          <span class="price__sale font-semibold text-secondary">
+            <span class="sr-only">Sale price</span>${formatMoney(variant.price)}
+          </span>
+          <s class="price__compare ml-1 text-sm text-on-surface/50">
+            <span class="sr-only">Regular price</span>${formatMoney(variant.compare_at_price)}
+          </s>
+        </div>`;
+    } else {
+      stickyPrice.innerHTML = `
+        <div class="price">
+          <span class="price__regular font-semibold text-on-surface">
+            ${formatMoney(variant.price)}
+          </span>
+        </div>`;
+    }
+  };
+
+  if (!variantSelector || !variantsData.length) return;
+
+  variantSelector.addEventListener("change", () => {
+    const variant = variantsData.find(
+      (v) => v.id === parseInt(variantSelector.value, 10),
+    );
+    if (!variant) return;
+
+    // Sync button state
+    stickyBtn.disabled = !variant.available;
+    stickyBtn.setAttribute("aria-disabled", String(!variant.available));
+    stickyBtn.textContent = variant.available ? "Add to Cart" : "Sold Out";
+
+    // Sync price display
+    updatePrice(variant);
+
+    // Sync variant label
+    if (stickyVariant) {
+      const selectedOption =
+        variantSelector.options[variantSelector.selectedIndex];
+      stickyVariant.textContent = selectedOption?.text ?? "";
+    }
+  });
 }
