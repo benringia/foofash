@@ -7,19 +7,87 @@
 -%}
 
 {%- paginate collection.products by section.settings.products_per_page -%}
-  <div class='{{ section.settings.padding }}'>
-    <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
-      {{- '<!-- Collection header -->' -}}
-      <div class='mb-6'>
-        <h1 class='text-3xl font-bold text-gray-900'>{{ collection.title }}</h1>
-        {%- if collection.description != blank -%}
-          <p class='mt-2 text-sm text-gray-600'>{{ collection.description }}</p>
-        {%- endif -%}
-        <p class='mt-1 text-sm text-gray-500'>{{ collection.products_count }} products</p>
-      </div>
+  <section
+    class='bg-surface-container-low'
+    style='padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px'
+  >
+    {{- '<!-- Collection header -->' -}}
+    <div class='relative overflow-hidden'>
+      <div
+        class='pointer-events-none absolute right-0 top-0 h-64 w-96 rounded-full bg-primary/5 blur-3xl'
+        aria-hidden='true'
+      ></div>
 
+      <div class='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12'>
+        <div class='flex items-start gap-10'>
+          <div class='min-w-0 flex-1'>
+            <p class='mb-3 text-sm font-semibold uppercase tracking-wider text-primary/70'>Shop</p>
+
+            <h1 class='text-4xl font-extrabold tracking-tight text-on-surface lg:text-5xl'>
+              {{ collection.title }}
+            </h1>
+
+            {%- if collection.description != blank -%}
+              <p class='mt-3 max-w-xl text-base leading-relaxed text-on-surface-variant'>
+                {{ collection.description }}
+              </p>
+            {%- endif -%}
+
+            <p class='mt-2 text-sm text-on-surface-variant'>
+              {{ collection.products_count }}
+              {%- if collection.products_count == 1 -%}
+                &nbsp;product
+              {%- else -%}
+                &nbsp;products
+              {%- endif -%}
+            </p>
+
+            {%- if section.settings.show_trust_strip -%}
+              <div class='mt-5 flex flex-wrap gap-2'>
+                <span class='flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 text-xs font-semibold text-on-surface shadow-ambient'>
+                  <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
+                    {%- render 'icon', icon: 'vet-approved' -%}
+                  </span>
+                  Vet Approved Picks
+                </span>
+                <span class='flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 text-xs font-semibold text-on-surface shadow-ambient'>
+                  <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
+                    {%- render 'icon', icon: 'clock' -%}
+                  </span>
+                  Fast Dispatch
+                </span>
+                <span class='flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 text-xs font-semibold text-on-surface shadow-ambient'>
+                  <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
+                    {%- render 'icon', icon: 'returns' -%}
+                  </span>
+                  Easy Returns
+                </span>
+              </div>
+            {%- endif -%}
+          </div>
+
+          {%- if collection.image != blank -%}
+            <div class='hidden shrink-0 overflow-hidden rounded-3xl shadow-bubbly-lg lg:block'>
+              {{
+                collection.image
+                | image_url: width: 300
+                | image_tag:
+                  loading: 'lazy',
+                  width: 192,
+                  height: 192,
+                  class: 'h-48 w-48 object-cover',
+                  alt: collection.image.alt
+                | default: collection.title
+              }}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
       {{- '<!-- Controls bar: active filters + sort -->' -}}
-      <div class='mb-6 flex flex-wrap items-center justify-between gap-3'>
+      <div class='flex flex-wrap items-center justify-between gap-3 py-4'>
         <div class='flex flex-wrap items-center gap-2'>
           {{- '<!-- Mobile filter button -->' -}}
           {%- if collection.filters.size > 0 -%}
@@ -28,7 +96,7 @@
               data-filter-open
               aria-expanded='false'
               aria-controls='filter-panel'
-              class='inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 lg:hidden'
+              class='inline-flex items-center gap-2 rounded-2xl bg-surface px-4 py-2 text-sm font-semibold text-on-surface shadow-ambient transition-shadow hover:shadow-bubbly focus:outline-none focus:ring-2 focus:ring-primary lg:hidden'
             >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -47,7 +115,7 @@
               </svg>
               Filters
               {%- if active_filter_count > 0 -%}
-                <span class='ml-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-green-600 text-xs font-semibold text-white'>
+                <span class='flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-on-primary'>
                   {{- active_filter_count -}}
                 </span>
               {%- endif -%}
@@ -60,13 +128,13 @@
               {%- for value in filter.active_values -%}
                 <a
                   href='{{ value.url_to_remove }}'
-                  class='inline-flex items-center gap-1 rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-800 ring-1 ring-inset ring-green-600/20 hover:bg-green-100'
+                  class='inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary transition-colors hover:bg-primary/15'
                 >
                   {{ filter.label }}: {{ value.label }}
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
-                    width='12'
-                    height='12'
+                    width='10'
+                    height='10'
                     viewBox='0 0 24 24'
                     fill='none'
                     stroke='currentColor'
@@ -83,27 +151,27 @@
             {%- endfor -%}
             <a
               href='{{ collection.url }}'
-              class='text-xs font-medium text-gray-500 underline hover:text-gray-700'
+              class='text-xs font-semibold text-primary transition-colors hover:text-primary-dim'
             >
               Clear all
             </a>
           {%- endif -%}
         </div>
 
-        {{- '<!-- Sort select -->' -}}
+        {{- '<!-- Sort control -->' -}}
         {%- if collection.sort_options.size > 0 -%}
-          <div class='flex items-center gap-2'>
+          <div class='flex items-center gap-2 rounded-2xl bg-surface px-4 py-2 shadow-ambient'>
             <label
               for='sort-select'
-              class='text-sm font-medium text-gray-700'
+              class='whitespace-nowrap text-xs font-semibold uppercase tracking-wide text-on-surface-variant'
             >
-              Sort
+              Sort by
             </label>
             <select
               id='sort-select'
               data-sort-select
               aria-label='Sort products'
-              class='rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500'
+              class='cursor-pointer bg-transparent text-sm font-semibold text-on-surface focus:outline-none'
             >
               {%- for option in collection.sort_options -%}
                 <option
@@ -121,19 +189,19 @@
       </div>
 
       {{- '<!-- Main layout: sidebar + product grid -->' -}}
-      <div class='flex gap-8'>
+      <div class='flex gap-8 lg:gap-10'>
         {{- '<!-- Desktop sidebar -->' -}}
         {%- if collection.filters.size > 0 -%}
-          <aside class='hidden w-56 flex-none lg:block' aria-label='Product filters'>
-            <div class='sticky top-24'>
-              <p class='mb-4 text-xs font-semibold uppercase tracking-wide text-gray-500'>Filters</p>
+          <aside class='hidden w-60 flex-none lg:block' aria-label='Product filters'>
+            <div class='sticky top-24 space-y-3'>
+              <p class='text-xs font-bold uppercase tracking-wider text-primary/70'>Refine</p>
               {%- for filter in collection.filters -%}
                 {%- render 'filter-group', filter: filter -%}
               {%- endfor -%}
               {%- if active_filter_count > 0 -%}
                 <a
                   href='{{ collection.url }}'
-                  class='mt-4 block text-center text-sm font-medium text-green-700 underline hover:text-green-900'
+                  class='block rounded-xl bg-primary/10 py-2 text-center text-sm font-semibold text-primary transition-colors hover:bg-primary/15'
                 >
                   Clear all filters
                 </a>
@@ -146,7 +214,7 @@
         <div class='min-w-0 flex-1'>
           {%- if collection.products.size > 0 -%}
             <ul
-              class='grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3'
+              class='grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3'
               role='list'
             >
               {%- for product in collection.products -%}
@@ -160,13 +228,13 @@
             {%- if paginate.pages > 1 -%}
               <nav
                 aria-label='Pagination'
-                class='mt-10 flex items-center justify-center gap-1'
+                class='mt-12 flex items-center justify-center gap-2'
               >
                 {%- if paginate.previous -%}
                   <a
                     href='{{ paginate.previous.url }}'
                     aria-label='Previous page'
-                    class='inline-flex h-9 items-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500'
+                    class='inline-flex h-10 items-center gap-2 rounded-2xl bg-surface px-4 text-sm font-semibold text-on-surface shadow-ambient transition-shadow hover:shadow-bubbly focus:outline-none focus:ring-2 focus:ring-primary'
                   >
                     ← Previous
                   </a>
@@ -176,16 +244,16 @@
                   {%- if part.is_link -%}
                     <a
                       href='{{ part.url }}'
-                      class='inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500'
+                      class='inline-flex h-10 w-10 items-center justify-center rounded-xl bg-surface text-sm font-semibold text-on-surface shadow-ambient transition-shadow hover:shadow-bubbly focus:outline-none focus:ring-2 focus:ring-primary'
                     >
                       {{ part.title }}
                     </a>
                   {%- elsif part.title == paginate.current_page -%}
-                    <span class='inline-flex h-9 w-9 items-center justify-center rounded-lg bg-green-600 text-sm font-semibold text-white'>
+                    <span class='inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-gradient text-sm font-bold text-on-primary'>
                       {{- part.title -}}
                     </span>
                   {%- else -%}
-                    <span class='inline-flex h-9 w-9 items-center justify-center text-sm text-gray-400'>
+                    <span class='inline-flex h-10 w-10 items-center justify-center text-sm text-on-surface-variant'>
                       {{- part.title -}}
                     </span>
                   {%- endif -%}
@@ -195,7 +263,7 @@
                   <a
                     href='{{ paginate.next.url }}'
                     aria-label='Next page'
-                    class='inline-flex h-9 items-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500'
+                    class='inline-flex h-10 items-center gap-2 rounded-2xl bg-surface px-4 text-sm font-semibold text-on-surface shadow-ambient transition-shadow hover:shadow-bubbly focus:outline-none focus:ring-2 focus:ring-primary'
                   >
                     Next →
                   </a>
@@ -205,22 +273,29 @@
 
           {%- else -%}
             {{- '<!-- Empty state -->' -}}
-            <div class='flex flex-col items-center gap-4 py-16 text-center'>
-              <div class='text-5xl text-gray-200' aria-hidden='true'>
-                {%- render 'icon', icon: 'paw' -%}
+            <div class='flex flex-col items-center gap-6 rounded-3xl bg-surface px-8 py-20 text-center shadow-ambient'>
+              <div
+                class='flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 text-primary'
+                aria-hidden='true'
+              >
+                <span class='block h-10 w-10'>
+                  {%- render 'icon', icon: 'paw' -%}
+                </span>
               </div>
               <div>
-                <p class='text-lg font-semibold text-gray-900'>No products found</p>
+                <p class='text-xl font-bold text-on-surface'>No products found</p>
                 {%- if active_filter_count > 0 -%}
-                  <p class='mt-1 text-sm text-gray-500'>Try removing some filters to see more results.</p>
+                  <p class='mx-auto mt-2 max-w-xs text-sm text-on-surface-variant'>
+                    Try removing some filters to discover more products.
+                  </p>
                   <a
                     href='{{ collection.url }}'
-                    class='mt-4 inline-block rounded-lg bg-green-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2'
+                    class='mt-6 inline-block rounded-2xl bg-primary-gradient px-6 py-3 text-sm font-bold text-on-primary transition-transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
                   >
                     Clear all filters
                   </a>
                 {%- else -%}
-                  <p class='mt-1 text-sm text-gray-500'>Check back soon — new products are on their way.</p>
+                  <p class='mt-2 text-sm text-on-surface-variant'>Check back soon — new products are on their way.</p>
                 {%- endif -%}
               </div>
             </div>
@@ -228,7 +303,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
   {{- '<!-- Mobile filter panel (off-canvas) -->' -}}
   {%- if collection.filters.size > 0 -%}
@@ -244,15 +319,15 @@
       role='dialog'
       aria-modal='true'
       aria-label='Product filters'
-      class='fixed inset-y-0 left-0 z-50 w-80 max-w-full -translate-x-full overflow-y-auto bg-white p-6 shadow-xl transition-transform duration-300 ease-in-out lg:hidden'
+      class='fixed inset-y-0 left-0 z-50 w-80 max-w-full -translate-x-full overflow-y-auto bg-surface p-6 shadow-bubbly-lg transition-transform duration-300 ease-in-out lg:hidden'
     >
       <div class='mb-6 flex items-center justify-between'>
-        <h2 class='text-lg font-semibold text-gray-900'>Filters</h2>
+        <h2 class='text-xl font-extrabold text-on-surface'>Filters</h2>
         <button
           type='button'
           data-filter-close
           aria-label='Close filters'
-          class='flex h-8 w-8 items-center justify-center rounded text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300'
+          class='flex h-10 w-10 items-center justify-center rounded-2xl bg-surface-container-low text-on-surface transition-colors hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary'
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -272,14 +347,16 @@
         </button>
       </div>
 
-      {%- for filter in collection.filters -%}
-        {%- render 'filter-group', filter: filter -%}
-      {%- endfor -%}
+      <div class='space-y-3'>
+        {%- for filter in collection.filters -%}
+          {%- render 'filter-group', filter: filter -%}
+        {%- endfor -%}
+      </div>
 
       {%- if active_filter_count > 0 -%}
         <a
           href='{{ collection.url }}'
-          class='mt-6 block text-center text-sm font-medium text-green-700 underline hover:text-green-900'
+          class='mt-6 block rounded-xl bg-primary/10 py-3 text-center text-sm font-semibold text-primary transition-colors hover:bg-primary/15'
         >
           Clear all filters
         </a>
@@ -293,10 +370,22 @@
   "name": "Collection",
   "settings": [
     {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "info": "Leave blank to use the collection title"
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 48
     },
     {
       "type": "range",
@@ -308,15 +397,10 @@
       "default": 24
     },
     {
-      "type": "select",
-      "id": "padding",
-      "label": "Section padding",
-      "options": [
-        { "value": "py-8", "label": "Small" },
-        { "value": "py-12", "label": "Medium" },
-        { "value": "py-16", "label": "Large" }
-      ],
-      "default": "py-12"
+      "type": "checkbox",
+      "id": "show_trust_strip",
+      "label": "Show trust badges in header",
+      "default": true
     }
   ]
 }

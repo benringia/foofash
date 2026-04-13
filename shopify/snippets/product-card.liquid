@@ -4,16 +4,25 @@
 {%- endcomment -%}
 
 {%- liquid
+  assign badge_sale = false
+  if product.compare_at_price > product.price
+    assign badge_sale = true
+  endif
+  assign badge_vet = false
+  if product.metafields.pet.vet_approved.value == true
+    assign badge_vet = true
+  endif
   assign product_subtitle = product.type
   if product_subtitle == blank
     assign product_subtitle = product.description | strip_html | truncatewords: 8
   endif
 -%}
 
-<article class='product-card group bg-background rounded-3xl p-6 transition-all duration-500 hover:-translate-y-2 border border-transparent hover:border-primary/10'>
-  <a href='{{ product.url }}' class='flex flex-col' aria-label='{{ product.title }}'>
-    <div class='aspect-square bg-white rounded-2xl mb-6 relative overflow-hidden flex items-center justify-center p-4'>
+<article class='product-card group bg-background rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-bubbly'>
+  <a href='{{ product.url }}' class='block' aria-label='{{ product.title }}'>
+    <div class='relative aspect-square bg-white rounded-2xl mb-4 overflow-hidden flex items-center justify-center p-4'>
       {%- if product.featured_image != blank -%}
+        {%- assign card_img_alt = product.featured_image.alt | default: product.title -%}
         {{
           product.featured_image
           | image_url: width: 600
@@ -21,37 +30,64 @@
             loading: 'lazy',
             width: 600,
             height: 600,
-            class: 'w-full h-full object-contain group-hover:scale-110 transition-transform duration-700',
-            alt: product.featured_image.alt
-          | default: product.title
+            class: 'w-full h-full object-contain transition-transform duration-700 group-hover:scale-105',
+            alt: card_img_alt
         }}
       {%- else -%}
         <div class='flex h-full w-full items-center justify-center text-on-surface/20' aria-hidden='true'>
           {%- render 'icon', icon: 'paw' -%}
         </div>
       {%- endif -%}
+
+      {%- if badge_vet or badge_sale -%}
+        <div class='absolute left-2.5 top-2.5 z-10 flex flex-col gap-1'>
+          {%- if badge_vet -%}
+            <span class='rounded-full bg-primary/90 px-2 py-0.5 text-xs font-bold leading-snug text-white'>
+              Vet Approved
+            </span>
+          {%- endif -%}
+          {%- if badge_sale -%}
+            <span class='rounded-full bg-secondary px-2 py-0.5 text-xs font-bold leading-snug text-white'> Sale </span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- unless product.available -%}
+        <div class='absolute inset-0 flex items-center justify-center rounded-2xl bg-surface/70'>
+          <span class='rounded-full bg-on-surface/80 px-3 py-1 text-xs font-bold text-surface'>Sold Out</span>
+        </div>
+      {%- endunless -%}
     </div>
 
-    <h3 class='font-bold text-lg text-primary mb-1'>{{ product.title }}</h3>
     {%- if product_subtitle != blank -%}
-      <p class='text-sm text-on-surface-variant mb-6'>{{ product_subtitle }}</p>
+      <p class='mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant'>
+        {{ product_subtitle }}
+      </p>
+    {%- endif -%}
+
+    <h3 class='mb-1.5 line-clamp-2 text-sm font-bold leading-snug text-on-surface'>{{ product.title }}</h3>
+
+    {%- if product.metafields.reviews.rating.value != blank -%}
+      <div class='mb-3 text-xs'>
+        {%- render 'rating-stars', product: product -%}
+      </div>
     {%- else -%}
-      <div class='mb-6'></div>
+      <div class='mb-3'></div>
     {%- endif -%}
   </a>
 
-  <div class='flex justify-between items-center'>
-    <span class='text-2xl font-extrabold text-primary'>
-      {{- product.price | money -}}
-    </span>
+  <div class='flex items-center justify-between gap-2'>
+    <div class='text-sm font-bold'>
+      {%- render 'price', product: product -%}
+    </div>
     <button
       type='button'
       data-quick-view-trigger
       data-product-handle='{{ product.handle }}'
       aria-label='Quick view {{ product.title }}'
-      class='w-12 h-12 bg-white text-primary rounded-2xl flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-bubbly border border-primary/5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary'
+      class='flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-2xl bg-white text-primary shadow-bubbly transition-all hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-primary'
     >
-      <span class='block h-5 w-5' aria-hidden='true'>
+      <span class='block h-4 w-4' aria-hidden='true'>
         {%- render 'icon', icon: 'cart-add' -%}
       </span>
     </button>

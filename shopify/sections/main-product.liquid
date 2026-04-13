@@ -1,125 +1,524 @@
-<section class='main-product py-10 lg:py-16'>
+{%- assign variant = product.selected_or_first_available_variant -%}
+{%- assign inventory_qty = 0 -%}
+{%- if variant.inventory_management == 'shopify' -%}
+  {%- assign inventory_qty = variant.inventory_quantity -%}
+{%- endif -%}
+
+<section
+  class='main-product bg-surface-container-low'
+  style='padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;'
+>
   <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
-    <div class='grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start'>
-      {%- comment -%} Left: product media {%- endcomment -%}
-      <div class='product-media'>
-        {%- comment -%} Gallery container — single image now, expandable later {%- endcomment -%}
-        <div class='aspect-square overflow-hidden rounded-xl bg-gray-100'>
+    {%- comment -%} ── Main two-column grid: 60 / 40 ── {%- endcomment -%}
+    <div class='grid grid-cols-1 gap-12 lg:grid-cols-[3fr_2fr] lg:items-start lg:gap-16'>
+      {%- comment -%}
+        ══════════════════════════════════
+          LEFT — product media
+        ══════════════════════════════════
+      {%- endcomment -%}
+      <div class='product-media relative'>
+        {%- comment -%} Ambient blob behind the image {%- endcomment -%}
+        <div
+          class='pointer-events-none absolute -inset-8 rounded-full bg-primary/5 blur-3xl'
+          aria-hidden='true'
+        ></div>
+
+        {%- comment -%} Main image — floating card {%- endcomment -%}
+        <div class='group relative overflow-hidden rounded-[3rem] bg-surface shadow-bubbly-lg'>
           {%- if product.featured_image != blank -%}
+            {%- assign main_img_alt = product.featured_image.alt | default: product.title -%}
             {{
               product.featured_image
-              | image_url: width: 800
+              | image_url: width: 900
               | image_tag:
                 loading: 'eager',
                 fetchpriority: 'high',
-                width: 800,
-                height: 800,
-                class: 'h-full w-full object-cover',
-                alt: product.featured_image.alt
-              | default: product.title
+                width: 900,
+                height: 900,
+                class: 'h-full w-full object-cover transition-transform duration-700 group-hover:scale-105',
+                alt: main_img_alt,
+                data-main-image: ''
             }}
           {%- else -%}
-            <div class='flex h-full w-full items-center justify-center text-gray-300' aria-hidden='true'>
-              {%- render 'icon', icon: 'paw' -%}
+            <div
+              class='flex aspect-square w-full items-center justify-center text-primary/20'
+              aria-hidden='true'
+              data-main-image
+            >
+              <span class='block h-32 w-32'>
+                {%- render 'icon', icon: 'paw' -%}
+              </span>
             </div>
           {%- endif -%}
         </div>
+
+        {%- comment -%} Thumbnail strip — only shown when product has multiple images {%- endcomment -%}
+        {%- if product.images.size > 1 -%}
+          <div
+            class='mt-4 flex gap-3 overflow-x-auto pb-2'
+            role='list'
+            aria-label='Product images'
+          >
+            {%- for image in product.images -%}
+              <button
+                type='button'
+                role='listitem'
+                data-thumbnail
+                data-image-url='{{ image | image_url: width: 900 }}'
+                class='h-20 w-20 shrink-0 cursor-pointer overflow-hidden rounded-2xl transition-all duration-200 hover:ring-2 hover:ring-primary/50 focus:outline-none focus:ring-2 focus:ring-primary {% if forloop.first %}ring-2 ring-primary{% else %}ring-2 ring-transparent{% endif %}'
+                aria-label='View image {{ forloop.index }} of {{ product.images.size }}'
+                {% if forloop.first %}
+                  aria-pressed='true'
+                {% else %}
+                  aria-pressed='false'
+                {% endif %}
+              >
+                {{
+                  image
+                  | image_url: width: 160
+                  | image_tag: loading: 'lazy', width: 80, height: 80, class: 'h-full w-full object-cover'
+                }}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
       </div>
 
-      {%- comment -%} Right: product info {%- endcomment -%}
+      {%- comment -%}
+        ══════════════════════════════════
+          RIGHT — product info
+        ══════════════════════════════════
+      {%- endcomment -%}
       <div class='product-info flex flex-col gap-6'>
-        <div class='flex flex-col gap-2'>
-          <h1 class='text-3xl font-bold text-gray-900 sm:text-4xl'>{{ product.title }}</h1>
-          <div class='text-xl'>
-            {%- render 'price', product: product -%}
-          </div>
-        </div>
-
-        {%- comment -%} Inventory message — placeholder for low-stock badge later {%- endcomment -%}
-        {%- if product.selected_or_first_available_variant.inventory_management == 'shopify' -%}
-          {%- assign inventory_qty = product.selected_or_first_available_variant.inventory_quantity -%}
-          {%- if inventory_qty <= 5 and inventory_qty > 0 -%}
-            <p class='text-sm font-medium text-orange-600'>Only {{ inventory_qty }} left in stock</p>
-          {%- endif -%}
+        {%- comment -%} Product type {%- endcomment -%}
+        {%- if product.type != blank -%}
+          <p class='text-xs font-semibold uppercase tracking-widest text-on-surface-variant'>
+            {{ product.type }}
+          </p>
         {%- endif -%}
 
-        {%- comment -%} Add-to-cart form {%- endcomment -%}
+        {%- comment -%} Title + rating {%- endcomment -%}
+        <div class='flex flex-col gap-2'>
+          <h1 class='text-4xl font-extrabold leading-tight text-on-surface'>
+            {{ product.title }}
+          </h1>
+          {%- render 'rating-stars', product: product -%}
+        </div>
+
+        {%- comment -%} Price + savings badge {%- endcomment -%}
+        <div class='flex flex-wrap items-baseline gap-3' data-pdp-price>
+          <div class='text-2xl'>
+            {%- render 'price', product: product -%}
+          </div>
+          {%- if variant.compare_at_price > variant.price -%}
+            {%- assign savings = variant.compare_at_price | minus: variant.price -%}
+            <span class='rounded-full bg-secondary/15 px-3 py-1 text-sm font-bold text-secondary'>
+              Save {{ savings | money }}
+            </span>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Trust + urgency badges {%- endcomment -%}
+        {%- assign show_badges = false -%}
+        {%- if product.metafields.pet.vet_approved.value == true
+          or inventory_qty <= 5
+          and inventory_qty > 0
+          or section.settings.show_urgency
+        -%}
+          {%- assign show_badges = true -%}
+        {%- endif -%}
+        {%- if show_badges -%}
+          <div class='flex flex-wrap gap-2'>
+            {%- if product.metafields.pet.vet_approved.value == true -%}
+              <span class='flex items-center gap-1.5 rounded-full bg-medical-green px-3 py-1.5 text-xs font-semibold text-primary'>
+                <span class='block h-3.5 w-3.5 shrink-0' aria-hidden='true'>
+                  {%- render 'icon', icon: 'vet-approved' -%}
+                </span>
+                Vet Approved
+              </span>
+            {%- endif -%}
+            {%- if inventory_qty <= 5 and inventory_qty > 0 -%}
+              <span class='flex items-center gap-1.5 rounded-full bg-secondary/15 px-3 py-1.5 text-xs font-semibold text-secondary'>
+                Only {{ inventory_qty }} left in stock
+              </span>
+            {%- endif -%}
+            {%- if section.settings.show_urgency -%}
+              <span class='flex items-center gap-1.5 rounded-full bg-medical-blue px-3 py-1.5 text-xs font-semibold text-tertiary'>
+                <span class='block h-3.5 w-3.5 shrink-0' aria-hidden='true'>
+                  {%- render 'icon', icon: 'clock' -%}
+                </span>
+                Order before 3PM for same-day dispatch
+              </span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} ── Product form ── {%- endcomment -%}
         {%- form 'product', product, data-cart-form: '' -%}
-          <div class='flex flex-col gap-4'>
-            {%- comment -%} Variant selector — only shown when multiple variants exist {%- endcomment -%}
+          <div class='flex flex-col gap-5'>
+            {%- comment -%} Variant selector — pill UI backed by hidden select {%- endcomment -%}
             {%- unless product.has_only_default_variant -%}
-              <div class='flex flex-col gap-1'>
-                <label for='variant-select' class='text-sm font-medium text-gray-700'>
+              <div class='flex flex-col gap-3'>
+                <p class='text-sm font-semibold text-on-surface-variant'>
                   {{ product.options.first }}
-                </label>
+                </p>
+
+                {%- comment -%} Hidden select preserves all existing JS contracts {%- endcomment -%}
                 <select
-                  id='variant-select'
                   name='id'
                   data-variant-selector
-                  class='rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500'
+                  class='sr-only'
+                  aria-label='{{ product.options.first }}'
                 >
-                  {%- for variant in product.variants -%}
+                  {%- for v in product.variants -%}
                     <option
-                      value='{{ variant.id }}'
-                      {%- unless variant.available -%}
+                      value='{{ v.id }}'
+                      {%- unless v.available -%}
                         disabled
                       {%- endunless -%}
                     >
-                      {{ variant.title }}
-                      {%- unless variant.available %} – Sold out{%- endunless -%}
+                      {{ v.title }}
                     </option>
                   {%- endfor -%}
                 </select>
+
+                {%- comment -%} Visual pill buttons synced to the hidden select by product.js {%- endcomment -%}
+                <div
+                  class='flex flex-wrap gap-2'
+                  role='group'
+                  aria-label='{{ product.options.first }}'
+                >
+                  {%- for v in product.variants -%}
+                    <button
+                      type='button'
+                      data-variant-pill
+                      data-variant-id='{{ v.id }}'
+                      data-available='{{ v.available }}'
+                      aria-pressed='{% if forloop.first %}true{% else %}false{% endif %}'
+                      class='rounded-2xl px-5 py-2.5 text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 {% if forloop.first %}bg-primary text-on-primary shadow-bubbly{% else %}bg-surface text-on-surface shadow-ambient hover:bg-primary/10{% endif %} {% unless v.available %}cursor-not-allowed opacity-40{% endunless %}'
+                    >
+                      {{ v.title }}
+                    </button>
+                  {%- endfor -%}
+                </div>
               </div>
             {%- else -%}
-              <input type='hidden' name='id' value='{{ product.selected_or_first_available_variant.id }}'>
+              <input
+                type='hidden'
+                name='id'
+                value='{{ variant.id }}'
+              >
             {%- endunless -%}
 
-            <div class='flex flex-col gap-1'>
-              <label for='quantity' class='text-sm font-medium text-gray-700'>Quantity</label>
-              <input
-                id='quantity'
-                type='number'
-                name='quantity'
-                value='1'
-                min='1'
-                class='w-24 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500'
+            {%- comment -%} Quantity stepper + ATC {%- endcomment -%}
+            <div class='flex gap-3 items-stretch'>
+              {%- comment -%} Stepper {%- endcomment -%}
+              <div
+                class='flex items-center overflow-hidden rounded-2xl bg-surface shadow-ambient'
+                aria-label='Quantity'
               >
+                <button
+                  type='button'
+                  data-qty-decrease
+                  aria-label='Decrease quantity'
+                  class='flex h-full w-12 cursor-pointer items-center justify-center text-xl text-on-surface transition-colors hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary'
+                >
+                  <span aria-hidden='true'>&#8722;</span>
+                </button>
+                <input
+                  id='quantity'
+                  type='number'
+                  name='quantity'
+                  value='1'
+                  min='1'
+                  aria-label='Quantity'
+                  class='w-12 bg-transparent text-center text-sm font-semibold text-on-surface focus:outline-none'
+                >
+                <button
+                  type='button'
+                  data-qty-increase
+                  aria-label='Increase quantity'
+                  class='flex h-full w-12 cursor-pointer items-center justify-center text-xl text-on-surface transition-colors hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary'
+                >
+                  <span aria-hidden='true'>&#43;</span>
+                </button>
+              </div>
+
+              {%- comment -%} Add to cart — also the sticky-atc.js observer target {%- endcomment -%}
+              <button
+                type='submit'
+                data-add-to-cart
+                data-main-atc
+                {%- unless variant.available -%}
+                  disabled
+                  aria-disabled='true'
+                {%- endunless -%}
+                class='flex-1 rounded-2xl bg-primary-gradient py-4 text-base font-bold text-on-primary transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:scale-100 disabled:cursor-not-allowed disabled:opacity-50'
+              >
+                {%- if variant.available -%}
+                  Add to Cart
+                {%- else -%}
+                  Sold Out
+                {%- endif -%}
+              </button>
             </div>
 
-            <button
-              type='submit'
-              data-add-to-cart
-              data-main-atc
-              {%- unless product.selected_or_first_available_variant.available -%}
-                disabled aria-disabled='true'
-              {%- endunless -%}
-              class='rounded-lg bg-green-600 px-6 py-3 font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
-            >
-              {%- if product.selected_or_first_available_variant.available -%}
-                Add to cart
-              {%- else -%}
-                Sold out
-              {%- endif -%}
-            </button>
+            {%- comment -%} Microcopy under CTA {%- endcomment -%}
+            <div class='flex flex-wrap gap-x-6 gap-y-2 text-sm text-on-surface-variant'>
+              <span class='flex items-center gap-1.5'>
+                <span class='block h-4 w-4 shrink-0' aria-hidden='true'>
+                  {%- render 'icon', icon: 'shipping' -%}
+                </span>
+                Free shipping over $50
+              </span>
+              <span class='flex items-center gap-1.5'>
+                <span class='block h-4 w-4 shrink-0' aria-hidden='true'>
+                  {%- render 'icon', icon: 'returns' -%}
+                </span>
+                Easy 30-day returns
+              </span>
+            </div>
           </div>
         {%- endform -%}
 
-        {%- if product.description != blank -%}
-          <div class='prose prose-sm max-w-none border-t border-gray-200 pt-6 text-gray-700'>
-            {{ product.description }}
+        {%- comment -%} ── Accordion tabs ── {%- endcomment -%}
+        <div class='mt-2 flex flex-col divide-y divide-on-surface/8'>
+          {%- comment -%} Description {%- endcomment -%}
+          {%- if product.description != blank -%}
+            <div data-accordion>
+              <button
+                type='button'
+                data-accordion-trigger
+                aria-expanded='true'
+                class='flex w-full items-center justify-between py-4 text-left text-sm font-semibold text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary'
+              >
+                <span>Description</span>
+                <span
+                  class='block h-5 w-5 shrink-0 text-on-surface-variant transition-transform duration-200 [[aria-expanded=true]_&]:rotate-180'
+                  aria-hidden='true'
+                >
+                  <svg
+                    viewBox='0 0 20 20'
+                    fill='none'
+                    stroke='currentColor'
+                    stroke-width='1.75'
+                    stroke-linecap='round'
+                    stroke-linejoin='round'
+                  >
+                    <path d='M5 7.5l5 5 5-5'/>
+                  </svg>
+                </span>
+              </button>
+              <div
+                data-accordion-panel
+                class='prose prose-sm max-w-none pb-4 text-on-surface-variant'
+              >
+                {{ product.description }}
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} Ingredients (metafield) {%- endcomment -%}
+          {%- if product.metafields.pet.ingredients != blank -%}
+            <div data-accordion>
+              <button
+                type='button'
+                data-accordion-trigger
+                aria-expanded='false'
+                class='flex w-full items-center justify-between py-4 text-left text-sm font-semibold text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary'
+              >
+                <span>Ingredients</span>
+                <span
+                  class='block h-5 w-5 shrink-0 text-on-surface-variant transition-transform duration-200 [[aria-expanded=true]_&]:rotate-180'
+                  aria-hidden='true'
+                >
+                  <svg
+                    viewBox='0 0 20 20'
+                    fill='none'
+                    stroke='currentColor'
+                    stroke-width='1.75'
+                    stroke-linecap='round'
+                    stroke-linejoin='round'
+                  >
+                    <path d='M5 7.5l5 5 5-5'/>
+                  </svg>
+                </span>
+              </button>
+              <div
+                data-accordion-panel
+                hidden
+                class='prose prose-sm max-w-none pb-4 text-on-surface-variant'
+              >
+                {{ product.metafields.pet.ingredients.value }}
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} Shipping & Returns {%- endcomment -%}
+          <div data-accordion>
+            <button
+              type='button'
+              data-accordion-trigger
+              aria-expanded='false'
+              class='flex w-full items-center justify-between py-4 text-left text-sm font-semibold text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary'
+            >
+              <span>Shipping &amp; Returns</span>
+              <span
+                class='block h-5 w-5 shrink-0 text-on-surface-variant transition-transform duration-200 [[aria-expanded=true]_&]:rotate-180'
+                aria-hidden='true'
+              >
+                <svg
+                  viewBox='0 0 20 20'
+                  fill='none'
+                  stroke='currentColor'
+                  stroke-width='1.75'
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                >
+                  <path d='M5 7.5l5 5 5-5'/>
+                </svg>
+              </span>
+            </button>
+            <div
+              data-accordion-panel
+              hidden
+              class='pb-4 text-sm leading-relaxed text-on-surface-variant'
+            >
+              <p>
+                Free standard shipping on orders over $50. Orders placed before 3PM on weekdays ship the same day.
+                Delivery typically takes 2–5 business days.
+              </p>
+              <p class='mt-2'>
+                Not happy? We offer hassle-free returns within 30 days of delivery. Simply contact our team and we'll
+                arrange a free return label.
+              </p>
+            </div>
           </div>
-        {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    {%- comment -%} ── Trust strip ── {%- endcomment -%}
+    <div class='mt-16 grid grid-cols-1 gap-4 rounded-3xl bg-surface p-8 shadow-ambient sm:grid-cols-3'>
+      <div class='flex items-start gap-4'>
+        <span
+          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-medical-green text-primary'
+          aria-hidden='true'
+        >
+          <span class='block h-6 w-6'>
+            {%- render 'icon', icon: 'vet-approved' -%}
+          </span>
+        </span>
+        <div>
+          <p class='font-semibold text-on-surface'>Vet Approved</p>
+          <p class='mt-0.5 text-sm text-on-surface-variant'>Every product reviewed by our in-house veterinary team.</p>
+        </div>
+      </div>
+      <div class='flex items-start gap-4'>
+        <span
+          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-medical-green text-primary'
+          aria-hidden='true'
+        >
+          <span class='block h-6 w-6'>
+            {%- render 'icon', icon: 'shipping' -%}
+          </span>
+        </span>
+        <div>
+          <p class='font-semibold text-on-surface'>Free Shipping</p>
+          <p class='mt-0.5 text-sm text-on-surface-variant'>On all orders over $50. Same-day dispatch before 3PM.</p>
+        </div>
+      </div>
+      <div class='flex items-start gap-4'>
+        <span
+          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-medical-green text-primary'
+          aria-hidden='true'
+        >
+          <span class='block h-6 w-6'>
+            {%- render 'icon', icon: 'returns' -%}
+          </span>
+        </span>
+        <div>
+          <p class='font-semibold text-on-surface'>Easy Returns</p>
+          <p class='mt-0.5 text-sm text-on-surface-variant'>30-day hassle-free returns. No questions asked.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
+{%- comment -%}
+  Product recommendations — lives OUTSIDE the main max-w-7xl container so the injected
+  section HTML (which includes its own max-w-7xl wrapper + heading + grid) renders at
+  full width without double-padding or collapsed columns.
+
+  The inner <section> gives product-recommendations.js a safe .closest("section") target
+  to remove on AJAX failure, isolated from the main product section.
+{%- endcomment -%}
+{%- if section.settings.show_recommendations -%}
+  <section class='bg-surface-container-low pb-16' aria-label='Recommended products'>
+    <div
+      data-product-recommendations
+      data-product-id='{{ product.id }}'
+      data-url='{{ routes.product_recommendations_url }}'
+      data-limit='4'
+    >
+      {%- comment -%} Populated by product-recommendations.js {%- endcomment -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{%- comment -%} Variant data for client-side price/availability updates {%- endcomment -%}
+<script id='product-variants-json' type='application/json'>
+  [
+    {%- for v in product.variants -%}
+      {
+        "id": {{ v.id }},
+        "price": {{ v.price }},
+        "compare_at_price": {{ v.compare_at_price | default: 0 }},
+        "available": {{ v.available }}
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ]
+</script>
 
 {%- render 'sticky-atc', product: product -%}
 
 {% schema %}
 {
   "name": "Product",
-  "settings": []
+  "settings": [
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "checkbox",
+      "id": "show_recommendations",
+      "label": "Show product recommendations",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_urgency",
+      "label": "Show order cutoff urgency message",
+      "default": true
+    }
+  ]
 }
 {% endschema %}

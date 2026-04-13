@@ -11,29 +11,50 @@
 <div
   data-sticky-atc
   aria-hidden='true'
-  class='fixed bottom-0 left-0 z-40 w-full translate-y-full border-t border-gray-200 bg-white shadow-lg transition-transform duration-300 ease-in-out'
+  class='fixed bottom-0 left-0 z-40 w-full translate-y-full bg-surface shadow-[0_-4px_20px_-4px_rgba(45,106,79,0.12)] transition-transform duration-300 ease-in-out'
 >
   <div class='mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8'>
-    <p class='hidden min-w-0 flex-1 truncate text-sm font-semibold text-gray-900 sm:block'>
-      {{ product.title }}
-    </p>
+    {%- comment -%} Product thumbnail {%- endcomment -%}
+    {%- if product.featured_image != blank -%}
+      <div class='hidden shrink-0 sm:block'>
+        {{
+          product.featured_image
+          | image_url: width: 80
+          | image_tag:
+            loading: 'lazy',
+            width: 40,
+            height: 40,
+            class: 'h-10 w-10 rounded-xl object-cover',
+            alt: product.featured_image.alt
+          | default: product.title
+        }}
+      </div>
+    {%- endif -%}
 
-    <div class='text-sm font-semibold text-gray-900'>
-      {%- render 'price', product: product -%}
+    {%- comment -%} Title + price {%- endcomment -%}
+    <div class='min-w-0 flex-1'>
+      <p class='truncate text-sm font-semibold text-on-surface'>
+        {{ product.title }}
+      </p>
+      <div class='text-sm text-on-surface-variant'>
+        {%- render 'price', product: product -%}
+      </div>
     </div>
 
+    {%- comment -%} CTA {%- endcomment -%}
     <button
       type='button'
       data-sticky-atc-btn
       {%- unless variant.available -%}
-        disabled aria-disabled='true'
+        disabled
+        aria-disabled='true'
       {%- endunless -%}
-      class='shrink-0 rounded-lg bg-green-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
+      class='shrink-0 rounded-2xl bg-primary-gradient px-6 py-2.5 text-sm font-bold text-on-primary transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:scale-100 disabled:cursor-not-allowed disabled:opacity-50'
     >
       {%- if variant.available -%}
-        Add to cart
+        Add to Cart
       {%- else -%}
-        Sold out
+        Sold Out
       {%- endif -%}
     </button>
   </div>

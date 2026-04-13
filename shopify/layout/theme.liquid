@@ -23,6 +23,9 @@
       .hero-gradient {
         background: radial-gradient(circle at 70% 50%, #f0f4f0 0%, #fafaf8 100%);
       }
+      :root {
+        --header-height: 6rem; /* 96px — top-4 (16px) + pill height (80px) */
+      }
     </style>
     {% render 'vite-assets' %}
     {{ content_for_header }}
@@ -35,7 +38,7 @@
       Skip to content
     </a>
     {% section 'header' %}
-    <main id='main-content' tabindex='-1' class=''>
+    <main id='main-content' tabindex='-1' class='pt-24'>
       {{ content_for_layout }}
     </main>
     {% section 'footer' %}
