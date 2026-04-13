@@ -33,6 +33,15 @@ function openModal(modal, overlay) {
   modal.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
 
+  // Animate panel in after display:flex is applied
+  requestAnimationFrame(() => {
+    const panel = modal.querySelector(".qv-panel");
+    if (panel) {
+      panel.classList.remove("scale-95", "opacity-0");
+      panel.classList.add("scale-100", "opacity-100");
+    }
+  });
+
   modal._trapHandler = (e) => {
     if (e.key === "Tab") trapFocus(modal, e);
   };
@@ -57,16 +66,25 @@ function closeModal(modal, overlay) {
   const content = modal.querySelector("[data-quick-view-content]");
   if (content) content.innerHTML = "";
 
+  // Reset panel to initial state for next open
+  // (element is display:none here — no visible flicker)
+  const panel = modal.querySelector(".qv-panel");
+  if (panel) {
+    panel.classList.remove("scale-100", "opacity-100");
+    panel.classList.add("scale-95", "opacity-0");
+  }
+
   lastTrigger?.focus();
   lastTrigger = null;
 }
 
 async function loadProduct(handle) {
-  const res = await fetch(`/products/${handle}?view=quick-view`, {
-    headers: { "X-Requested-With": "XMLHttpRequest" },
-  });
-  if (!res.ok) throw new Error(`Failed to load product: ${res.status}`);
-  return res.text();
+  const res = await fetch(
+    `/products/${handle}?view=quick-view&sections=quick-view-product`,
+  );
+  if (!res.ok) throw new Error(`${res.status}`);
+  const json = await res.json();
+  return json["quick-view-product"] ?? "";
 }
 
 export function initQuickView() {
@@ -91,21 +109,27 @@ export function initQuickView() {
 
     const content = modal.querySelector("[data-quick-view-content]");
     if (content)
-      content.innerHTML =
-        '<p class="text-center text-gray-400 py-8">Loading…</p>';
+      content.innerHTML = `
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 animate-pulse">
+          <div class="aspect-square rounded-2xl bg-surface-container"></div>
+          <div class="flex flex-col gap-4 py-2">
+            <div class="h-3 w-1/3 rounded-full bg-surface-container"></div>
+            <div class="h-5 w-2/3 rounded-full bg-surface-container"></div>
+            <div class="h-4 w-1/4 rounded-full bg-surface-container"></div>
+            <div class="mt-4 h-10 w-full rounded-2xl bg-surface-container"></div>
+          </div>
+        </div>`;
     openModal(modal, overlay);
 
     try {
       const html = await loadProduct(handle);
-      const parsed = new DOMParser().parseFromString(html, "text/html");
-      const inner = parsed.querySelector("main") ?? parsed.body;
-      if (content) content.innerHTML = inner.innerHTML;
+      if (content) content.innerHTML = html;
     } catch {
       if (content) {
         content.innerHTML =
-          '<p class="text-center text-red-500 py-8">Could not load product. <a href="/products/' +
+          '<p class="py-12 text-center text-sm text-on-surface-variant">Could not load product. <a href="/products/' +
           handle +
-          '" class="underline">View full page</a></p>';
+          '" class="font-semibold text-primary underline">View full page</a></p>';
       }
     } finally {
       busy = false;
@@ -128,6 +152,14 @@ export function initQuickView() {
     if (e.key !== "Escape") return;
     if (modal.getAttribute("aria-hidden") === "false")
       closeModal(modal, overlay);
+  });
+
+  // Close modal when the product form inside it is submitted (ATC)
+  // cart-drawer.js handles the actual add-to-cart + drawer open flow
+  document.addEventListener("submit", (e) => {
+    if (modal.getAttribute("aria-hidden") === "true") return;
+    if (!e.target.closest("[data-cart-form]")) return;
+    closeModal(modal, overlay);
   });
 
   // Variant change → update price and ATC button state
@@ -153,17 +185,16 @@ export function initQuickView() {
       const price = formatMoney(variant.price);
       const compareAt = variant.compare_at_price;
       if (compareAt && compareAt > variant.price) {
-        priceEl.innerHTML = `<span class="text-red-600 font-semibold">${price}</span> <s class="text-gray-400 text-sm">${formatMoney(compareAt)}</s>`;
+        priceEl.innerHTML = `<div class="price"><span class="price__sale font-semibold text-secondary"><span class="sr-only">Sale price</span>${price}</span> <s class="price__compare ml-1 text-sm text-on-surface/50"><span class="sr-only">Regular price</span>${formatMoney(compareAt)}</s></div>`;
       } else {
-        priceEl.innerHTML = `<span class="font-semibold text-gray-900">${price}</span>`;
+        priceEl.innerHTML = `<div class="price"><span class="price__regular font-semibold text-on-surface">${price}</span></div>`;
       }
     }
 
     const atcBtn = modal.querySelector("[data-add-to-cart]");
     if (atcBtn) {
       atcBtn.disabled = !variant.available;
-      atcBtn.setAttribute("aria-disabled", String(!variant.available));
-      atcBtn.textContent = variant.available ? "Add to cart" : "Sold out";
+      atcBtn.textContent = variant.available ? "Add to Cart" : "Sold Out";
     }
   });
 }
