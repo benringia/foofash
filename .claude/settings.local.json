@@ -19,7 +19,19 @@
       "Bash(grep -o '\\\\.md\\\\\\\\\\\\\\\\:hidden\\\\b' shopify/assets/main.css)",
       "Bash(python .claude/skills/ui-ux-pro-max/scripts/search.py \"pet clinic boutique ecommerce card hover layout CTA conversion\" --domain ux -n 8)",
       "Bash(grep -B1 \"image_tag\" \"c:\\\\Users\\\\Ben\\\\Documents\\\\Shopify Projects\\\\foofash\\\\shopify\\\\snippets\"/*.liquid \"c:\\\\Users\\\\Ben\\\\Documents\\\\Shopify Projects\\\\foofash\\\\shopify\\\\sections\"/*.liquid)",
-      "Bash(grep -v \"^--$\")"
+      "Bash(grep -v \"^--$\")",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_snapshot",
+      "mcp__plugin_playwright_playwright__browser_console_messages",
+      "mcp__plugin_playwright_playwright__browser_click",
+      "mcp__plugin_playwright_playwright__browser_wait_for",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_evaluate",
+      "mcp__plugin_playwright_playwright__browser_press_key",
+      "Bash(node_modules/.bin/vite build:*)",
+      "Bash(npx vite:*)",
+      "Bash(echo \"BUILD_DONE_$?\")",
+      "mcp__plugin_playwright_playwright__browser_resize"
     ]
   },
   "hooks": {

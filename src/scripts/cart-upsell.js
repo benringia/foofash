@@ -1,5 +1,5 @@
 import { addToCart, getCart } from "./cart.js";
-import { formatPrice } from "./utils.js";
+import { formatMoney } from "./utils.js";
 
 const MAX_UPSELLS = 3;
 let upsellBusy = false;
@@ -49,7 +49,7 @@ function renderUpsellItem(product) {
       ${image}
       <div class="min-w-0 flex-1">
         <p class="line-clamp-2 text-xs font-semibold leading-snug text-on-surface">${product.title}</p>
-        <p class="mt-0.5 text-xs font-bold text-primary">${formatPrice(availableVariant.price)}</p>
+        <p class="mt-0.5 text-xs font-bold text-primary">${formatMoney(availableVariant.price)}</p>
       </div>
       ${action}
     </div>

@@ -1,0 +1,499 @@
+- generic [ref=e1]:
+    - link "Skip to content" [ref=e2] [cursor=pointer]:
+        - /url: "#main-content"
+    - banner [ref=e3]:
+        - generic [ref=e5]:
+            - generic [ref=e6]:
+                - link "Foofash – home" [ref=e7] [cursor=pointer]:
+                    - /url: /
+                    - img [ref=e9]
+                    - generic [ref=e15]: FOOFASH
+                - navigation "Main navigation" [ref=e16]:
+                    - generic [ref=e17]:
+                        - button "Shop" [ref=e18] [cursor=pointer]:
+                            - text: Shop
+                            - img [ref=e19]
+                        - generic:
+                            - generic:
+                                - generic:
+                                    - link:
+                                        - /url: "#"
+                                        - text: Dog
+                                    - list:
+                                        - listitem:
+                                            - link:
+                                                - /url: /collections/dog-food
+                                                - text: Dog Food
+                                - generic:
+                                    - link:
+                                        - /url: "#"
+                                        - text: Cat
+                                    - list:
+                                        - listitem:
+                                            - link:
+                                                - /url: /collections/cat-food
+                                                - text: Cat Food
+                                - generic:
+                                    - link:
+                                        - /url: "#"
+                                        - text: Health
+                                    - list:
+                                        - listitem:
+                                            - link:
+                                                - /url: /collections/medicine-1
+                                                - text: Medicine
+                                        - listitem:
+                                            - link:
+                                                - /url: /collections/flea-tick
+                                                - text: Flea & Tick
+                                        - listitem:
+                                            - link:
+                                                - /url: /collections/supplements
+                                                - text: Supplemments
+                                - generic:
+                                    - link:
+                                        - /url: "#"
+                                        - text: Care
+                                    - list:
+                                        - listitem:
+                                            - link:
+                                                - /url: /collections/medicine
+                                                - text: Grooming Supplies
+                                        - listitem:
+                                            - link:
+                                                - /url: /collections/hygiene
+                                                - text: Hygiene
+                                - generic:
+                                    - link:
+                                        - /url: "#"
+                                        - text: Accessories
+                                    - list:
+                                        - listitem:
+                                            - link:
+                                                - /url: /collections/toys
+                                                - text: Toys
+                                        - listitem:
+                                            - link:
+                                                - /url: /collections/beds
+                                                - text: Beds
+                                - generic:
+                                    - link:
+                                        - /url: /collections/treats
+                                        - text: Treats
+                    - generic [ref=e21]:
+                        - button "Clinic" [ref=e22] [cursor=pointer]:
+                            - text: Clinic
+                            - img [ref=e23]
+                        - generic:
+                            - generic:
+                                - generic:
+                                    - link:
+                                        - /url: /pages/general-checkup
+                                        - text: General Checkup
+                                - generic:
+                                    - link:
+                                        - /url: /pages/dental-care
+                                        - text: Dental Care
+                                - generic:
+                                    - link:
+                                        - /url: /pages/grooming
+                                        - text: Grooming
+                                - generic:
+                                    - link:
+                                        - /url: /pages/parasite-control
+                                        - text: Parasite Control
+                                - generic:
+                                    - link:
+                                        - /url: /pages/vaccination
+                                        - text: Vaccination
+                    - link "Contact" [ref=e25] [cursor=pointer]:
+                        - /url: /pages/contact
+            - button "Open cart, 0 items" [ref=e27] [cursor=pointer]:
+                - img [ref=e29]
+    - main [ref=e32]:
+        - generic [ref=e33]:
+            - generic [ref=e34]:
+                - generic [ref=e38]:
+                    - paragraph [ref=e39]: Shop
+                    - heading "Products" [level=1] [ref=e40]
+                    - paragraph [ref=e41]:
+                        - generic [ref=e42]: 30 products
+                    - generic [ref=e43]:
+                        - generic [ref=e44]:
+                            - img [ref=e46]
+                            - text: Vet Approved Picks
+                        - generic [ref=e49]:
+                            - img [ref=e51]
+                            - text: Fast Dispatch
+                        - generic [ref=e54]:
+                            - img [ref=e56]
+                            - text: Easy Returns
+                - generic [ref=e59]:
+                    - generic [ref=e60]:
+                        - button "Filters" [ref=e62] [cursor=pointer]:
+                            - img [ref=e63]
+                            - text: Filters
+                        - generic [ref=e64]:
+                            - generic [ref=e65]: Sort by
+                            - combobox "Sort products" [ref=e66] [cursor=pointer]:
+                                - option "Featured"
+                                - option "Best selling"
+                                - option "Alphabetically, A-Z" [selected]
+                                - option "Alphabetically, Z-A"
+                                - option "Price, low to high"
+                                - option "Price, high to low"
+                                - option "Date, old to new"
+                                - option "Date, new to old"
+                    - generic [ref=e68]:
+                        - list [ref=e69]:
+                            - listitem [ref=e70]:
+                                - article [ref=e71]:
+                                    - link "Calming Treats" [ref=e72] [cursor=pointer]:
+                                        - /url: /products/calming-treats
+                                        - img "Calming Treats" [ref=e74]
+                                        - paragraph [ref=e75]: Treats
+                                        - heading "Calming Treats" [level=3] [ref=e76]
+                                    - generic [ref=e77]:
+                                        - generic [ref=e79]: ₱12.99
+                                        - button "Quick view Calming Treats" [ref=e80] [cursor=pointer]:
+                                            - img [ref=e82]
+                            - listitem [ref=e85]:
+                                - article [ref=e86]:
+                                    - link "Cat Antibiotic Basic" [ref=e87] [cursor=pointer]:
+                                        - /url: /products/cat-medicine
+                                        - img "Cat Antibiotic Basic" [ref=e89]
+                                        - paragraph [ref=e90]: Medicine
+                                        - heading "Cat Antibiotic Basic" [level=3] [ref=e91]
+                                    - generic [ref=e92]:
+                                        - generic [ref=e94]: ₱19.99
+                                        - button "Quick view Cat Antibiotic Basic" [ref=e95] [cursor=pointer]:
+                                            - img [ref=e97]
+                            - listitem [ref=e100]:
+                                - article [ref=e101]:
+                                    - link "Cat Collar Soft" [ref=e102] [cursor=pointer]:
+                                        - /url: /products/cat-collar
+                                        - img "Cat Collar Soft" [ref=e104]
+                                        - paragraph [ref=e105]: Leashes
+                                        - heading "Cat Collar Soft" [level=3] [ref=e106]
+                                    - generic [ref=e107]:
+                                        - generic [ref=e109]: ₱8.99
+                                        - button "Quick view Cat Collar Soft" [active] [ref=e110] [cursor=pointer]:
+                                            - img [ref=e112]
+                            - listitem [ref=e115]:
+                                - article [ref=e116]:
+                                    - link "Cat Shampoo Mild" [ref=e117] [cursor=pointer]:
+                                        - /url: /products/cat-shampoo
+                                        - img "Cat Shampoo Mild" [ref=e119]
+                                        - paragraph [ref=e120]: Grooming
+                                        - heading "Cat Shampoo Mild" [level=3] [ref=e121]
+                                    - generic [ref=e122]:
+                                        - generic [ref=e124]: ₱11.99
+                                        - button "Quick view Cat Shampoo Mild" [ref=e125] [cursor=pointer]:
+                                            - img [ref=e127]
+                            - listitem [ref=e130]:
+                                - article [ref=e131]:
+                                    - link "Cat Treats Crunchy" [ref=e132] [cursor=pointer]:
+                                        - /url: /products/cat-treats
+                                        - img "Cat Treats Crunchy" [ref=e134]
+                                        - paragraph [ref=e135]: Treats
+                                        - heading "Cat Treats Crunchy" [level=3] [ref=e136]
+                                    - generic [ref=e137]:
+                                        - generic [ref=e139]: ₱8.99
+                                        - button "Quick view Cat Treats Crunchy" [ref=e140] [cursor=pointer]:
+                                            - img [ref=e142]
+                            - listitem [ref=e145]:
+                                - article [ref=e146]:
+                                    - link "Cat Vitamin Supplement" [ref=e147] [cursor=pointer]:
+                                        - /url: /products/cat-vitamin-supplement
+                                        - img "Cat Vitamin Supplement" [ref=e149]
+                                        - paragraph [ref=e150]: Cat Supplement
+                                        - heading "Cat Vitamin Supplement" [level=3] [ref=e151]
+                                    - generic [ref=e152]:
+                                        - generic [ref=e154]: ₱15.99
+                                        - button "Quick view Cat Vitamin Supplement" [ref=e155] [cursor=pointer]:
+                                            - img [ref=e157]
+                            - listitem [ref=e160]:
+                                - article [ref=e161]:
+                                    - link "Cat Vitamins Supplement" [ref=e162] [cursor=pointer]:
+                                        - /url: /products/cat-vitamins
+                                        - img "Cat Vitamins Supplement" [ref=e164]
+                                        - paragraph [ref=e165]: Supplements
+                                        - heading "Cat Vitamins Supplement" [level=3] [ref=e166]
+                                    - generic [ref=e167]:
+                                        - generic [ref=e169]: ₱17.99
+                                        - button "Quick view Cat Vitamins Supplement" [ref=e170] [cursor=pointer]:
+                                            - img [ref=e172]
+                            - listitem [ref=e175]:
+                                - article [ref=e176]:
+                                    - link "Dog Antibiotic Basic" [ref=e177] [cursor=pointer]:
+                                        - /url: /products/dog-medicine
+                                        - img "Dog Antibiotic Basic" [ref=e179]
+                                        - paragraph [ref=e180]: Medicine
+                                        - heading "Dog Antibiotic Basic" [level=3] [ref=e181]
+                                    - generic [ref=e182]:
+                                        - generic [ref=e184]: ₱21.99
+                                        - button "Quick view Dog Antibiotic Basic" [ref=e185] [cursor=pointer]:
+                                            - img [ref=e187]
+                            - listitem [ref=e190]:
+                                - article [ref=e191]:
+                                    - link "Dog Collar Adjustable" [ref=e192] [cursor=pointer]:
+                                        - /url: /products/dog-collar
+                                        - img "Dog Collar Adjustable" [ref=e194]
+                                        - paragraph [ref=e195]: Leashes
+                                        - heading "Dog Collar Adjustable" [level=3] [ref=e196]
+                                    - generic [ref=e197]:
+                                        - generic [ref=e199]: ₱13.99
+                                        - button "Quick view Dog Collar Adjustable" [ref=e200] [cursor=pointer]:
+                                            - img [ref=e202]
+                            - listitem [ref=e205]:
+                                - article [ref=e206]:
+                                    - link "Dog Leash Durable" [ref=e207] [cursor=pointer]:
+                                        - /url: /products/dog-leash
+                                        - img "Dog Leash Durable" [ref=e209]
+                                        - paragraph [ref=e210]: Leashes
+                                        - heading "Dog Leash Durable" [level=3] [ref=e211]
+                                    - generic [ref=e212]:
+                                        - generic [ref=e214]: ₱15.99
+                                        - button "Quick view Dog Leash Durable" [ref=e215] [cursor=pointer]:
+                                            - img [ref=e217]
+                            - listitem [ref=e220]:
+                                - article [ref=e221]:
+                                    - link "Dog Shampoo Gentle" [ref=e222] [cursor=pointer]:
+                                        - /url: /products/dog-shampoo
+                                        - img "Dog Shampoo Gentle" [ref=e224]
+                                        - paragraph [ref=e225]: Grooming
+                                        - heading "Dog Shampoo Gentle" [level=3] [ref=e226]
+                                    - generic [ref=e227]:
+                                        - generic [ref=e229]: ₱12.99
+                                        - button "Quick view Dog Shampoo Gentle" [ref=e230] [cursor=pointer]:
+                                            - img [ref=e232]
+                            - listitem [ref=e235]:
+                                - article [ref=e236]:
+                                    - link "Dog Treats Tasty" [ref=e237] [cursor=pointer]:
+                                        - /url: /products/dog-treats
+                                        - img "Dog Treats Tasty" [ref=e239]
+                                        - paragraph [ref=e240]: Treats
+                                        - heading "Dog Treats Tasty" [level=3] [ref=e241]
+                                    - generic [ref=e242]:
+                                        - generic [ref=e244]: ₱9.99
+                                        - button "Quick view Dog Treats Tasty" [ref=e245] [cursor=pointer]:
+                                            - img [ref=e247]
+                            - listitem [ref=e250]:
+                                - article [ref=e251]:
+                                    - link "Dog Vitamins Supplement" [ref=e252] [cursor=pointer]:
+                                        - /url: /products/dog-vitamins
+                                        - img "Dog Vitamins Supplement" [ref=e254]
+                                        - paragraph [ref=e255]: Supplements
+                                        - heading "Dog Vitamins Supplement" [level=3] [ref=e256]
+                                    - generic [ref=e257]:
+                                        - generic [ref=e259]: ₱19.99
+                                        - button "Quick view Dog Vitamins Supplement" [ref=e260] [cursor=pointer]:
+                                            - img [ref=e262]
+                            - listitem [ref=e265]:
+                                - article [ref=e266]:
+                                    - link "Flea Treatment Cat" [ref=e267] [cursor=pointer]:
+                                        - /url: /products/flea-treatment-cat
+                                        - img "Flea Treatment Cat" [ref=e269]
+                                        - paragraph [ref=e270]: Flea & Tick
+                                        - heading "Flea Treatment Cat" [level=3] [ref=e271]
+                                    - generic [ref=e272]:
+                                        - generic [ref=e274]: ₱13.99
+                                        - button "Quick view Flea Treatment Cat" [ref=e275] [cursor=pointer]:
+                                            - img [ref=e277]
+                            - listitem [ref=e280]:
+                                - article [ref=e281]:
+                                    - link "Flea Treatment Dog" [ref=e282] [cursor=pointer]:
+                                        - /url: /products/flea-treatment-dog
+                                        - img "Flea Treatment Dog" [ref=e284]
+                                        - paragraph [ref=e285]: Flea & Tick
+                                        - heading "Flea Treatment Dog" [level=3] [ref=e286]
+                                    - generic [ref=e287]:
+                                        - generic [ref=e289]: ₱14.99
+                                        - button "Quick view Flea Treatment Dog" [ref=e290] [cursor=pointer]:
+                                            - img [ref=e292]
+                            - listitem [ref=e295]:
+                                - article [ref=e296]:
+                                    - link "Joint Support Supplement" [ref=e297] [cursor=pointer]:
+                                        - /url: /products/joint-supplement
+                                        - img "Joint Support Supplement" [ref=e299]
+                                        - paragraph [ref=e300]: Supplements
+                                        - heading "Joint Support Supplement" [level=3] [ref=e301]
+                                    - generic [ref=e302]:
+                                        - generic [ref=e304]: ₱22.99
+                                        - button "Quick view Joint Support Supplement" [ref=e305] [cursor=pointer]:
+                                            - img [ref=e307]
+                            - listitem [ref=e310]:
+                                - article [ref=e311]:
+                                    - link "Kitten Food Formula" [ref=e312] [cursor=pointer]:
+                                        - /url: /products/kitten-food
+                                        - img "Kitten Food Formula" [ref=e314]
+                                        - paragraph [ref=e315]: Cat Food
+                                        - heading "Kitten Food Formula" [level=3] [ref=e316]
+                                    - generic [ref=e317]:
+                                        - generic [ref=e319]: ₱25.99
+                                        - button "Quick view Kitten Food Formula" [ref=e320] [cursor=pointer]:
+                                            - img [ref=e322]
+                            - listitem [ref=e325]:
+                                - article [ref=e326]:
+                                    - link "Pet Bed Large" [ref=e327] [cursor=pointer]:
+                                        - /url: /products/pet-bed-large
+                                        - img "Pet Bed Large" [ref=e329]
+                                        - paragraph [ref=e330]: Beds
+                                        - heading "Pet Bed Large" [level=3] [ref=e331]
+                                    - generic [ref=e332]:
+                                        - generic [ref=e334]: ₱49.99
+                                        - button "Quick view Pet Bed Large" [ref=e335] [cursor=pointer]:
+                                            - img [ref=e337]
+                            - listitem [ref=e340]:
+                                - article [ref=e341]:
+                                    - link "Pet Bed Small" [ref=e342] [cursor=pointer]:
+                                        - /url: /products/pet-bed-small
+                                        - img "Pet Bed Small" [ref=e344]
+                                        - paragraph [ref=e345]: Beds
+                                        - heading "Pet Bed Small" [level=3] [ref=e346]
+                                    - generic [ref=e347]:
+                                        - generic [ref=e349]: ₱29.99
+                                        - button "Quick view Pet Bed Small" [ref=e350] [cursor=pointer]:
+                                            - img [ref=e352]
+                            - listitem [ref=e355]:
+                                - article [ref=e356]:
+                                    - link "Pet Carrier Box" [ref=e357] [cursor=pointer]:
+                                        - /url: /products/pet-carrier
+                                        - img "Pet Carrier Box" [ref=e359]
+                                        - paragraph [ref=e360]: Beds
+                                        - heading "Pet Carrier Box" [level=3] [ref=e361]
+                                    - generic [ref=e362]:
+                                        - generic [ref=e364]: ₱39.99
+                                        - button "Quick view Pet Carrier Box" [ref=e365] [cursor=pointer]:
+                                            - img [ref=e367]
+                            - listitem [ref=e370]:
+                                - article [ref=e371]:
+                                    - link "Pet Cleaning Wipes" [ref=e372] [cursor=pointer]:
+                                        - /url: /products/pet-wipes
+                                        - img "Pet Cleaning Wipes" [ref=e374]
+                                        - paragraph [ref=e375]: Hygiene
+                                        - heading "Pet Cleaning Wipes" [level=3] [ref=e376]
+                                    - generic [ref=e377]:
+                                        - generic [ref=e379]: ₱7.99
+                                        - button "Quick view Pet Cleaning Wipes" [ref=e380] [cursor=pointer]:
+                                            - img [ref=e382]
+                            - listitem [ref=e385]:
+                                - article [ref=e386]:
+                                    - link "Pet Ear Cleaner" [ref=e387] [cursor=pointer]:
+                                        - /url: /products/ear-cleaner
+                                        - img "Pet Ear Cleaner" [ref=e389]
+                                        - paragraph [ref=e390]: Hygiene
+                                        - heading "Pet Ear Cleaner" [level=3] [ref=e391]
+                                    - generic [ref=e392]:
+                                        - generic [ref=e394]: ₱9.49
+                                        - button "Quick view Pet Ear Cleaner" [ref=e395] [cursor=pointer]:
+                                            - img [ref=e397]
+                            - listitem [ref=e400]:
+                                - article [ref=e401]:
+                                    - link "Pet Grooming Brush" [ref=e402] [cursor=pointer]:
+                                        - /url: /products/pet-brush
+                                        - img "Pet Grooming Brush" [ref=e404]
+                                        - paragraph [ref=e405]: Grooming
+                                        - heading "Pet Grooming Brush" [level=3] [ref=e406]
+                                    - generic [ref=e407]:
+                                        - generic [ref=e409]: ₱10.99
+                                        - button "Quick view Pet Grooming Brush" [ref=e410] [cursor=pointer]:
+                                            - img [ref=e412]
+                            - listitem [ref=e415]:
+                                - article [ref=e416]:
+                                    - link "Pet Nail Clipper" [ref=e417] [cursor=pointer]:
+                                        - /url: /products/pet-nail-clipper
+                                        - img "Pet Nail Clipper" [ref=e419]
+                                        - paragraph [ref=e420]: Grooming
+                                        - heading "Pet Nail Clipper" [level=3] [ref=e421]
+                                    - generic [ref=e422]:
+                                        - generic [ref=e424]: ₱7.99
+                                        - button "Quick view Pet Nail Clipper" [ref=e425] [cursor=pointer]:
+                                            - img [ref=e427]
+                        - navigation "Pagination" [ref=e430]:
+                            - generic [ref=e431]: "1"
+                            - link "2" [ref=e432] [cursor=pointer]:
+                                - /url: /collections/all?page=2
+                            - link "Next page" [ref=e433] [cursor=pointer]:
+                                - /url: /collections/all?page=2
+                                - text: Next →
+            - dialog "Product filters" [ref=e434]:
+                - generic [ref=e435]:
+                    - heading "Filters" [level=2] [ref=e436]
+                    - button "Close filters" [ref=e437] [cursor=pointer]:
+                        - img [ref=e438]
+                - generic [ref=e441]:
+                    - group [ref=e442]:
+                        - generic "Availability" [ref=e443] [cursor=pointer]:
+                            - generic [ref=e444]: Availability
+                            - img [ref=e445]
+                        - generic [ref=e447]:
+                            - 'link "Add filter: Availability In stock" [ref=e448] [cursor=pointer]':
+                                - /url: /collections/all?filter.v.availability=1
+                                - text: In stock
+                                - generic [ref=e450]: (30)
+                            - generic [ref=e451]:
+                                - text: Out of stock
+                                - generic [ref=e453]: (0)
+                    - group [ref=e454]:
+                        - generic "Price" [ref=e455] [cursor=pointer]:
+                            - generic [ref=e456]: Price
+                            - img [ref=e457]
+                - button "Done" [ref=e460] [cursor=pointer]
+    - contentinfo [ref=e462]:
+        - generic [ref=e463]:
+            - generic [ref=e464]:
+                - generic [ref=e465]:
+                    - heading "Foofash" [level=2] [ref=e466]:
+                        - img [ref=e468]
+                        - text: Foofash
+                    - paragraph [ref=e474]: Redefining pet wellness through joyful care and premium products. Join our community of healthy, happy pets.
+                - navigation "Navigation" [ref=e475]:
+                    - paragraph [ref=e476]: Navigation
+                    - list [ref=e477]:
+                        - listitem [ref=e478]:
+                            - link "Search" [ref=e479] [cursor=pointer]:
+                                - /url: /search
+                - generic [ref=e480]:
+                    - paragraph [ref=e481]: Newsletter
+                    - paragraph [ref=e482]: Join our pack for monthly pet health tips and exclusive offers.
+                    - generic [ref=e483]:
+                        - generic [ref=e484]: Email address
+                        - textbox "Email address" [ref=e485]:
+                            - /placeholder: Your email address
+                        - button "Join the Pack" [ref=e486] [cursor=pointer]
+            - paragraph [ref=e488]: © 2026 Foofash
+    - dialog [ref=e489]:
+        - generic [ref=e490]:
+            - generic [ref=e491]:
+                - heading [level=2] [ref=e492]: Your Cart
+                - paragraph [ref=e493]: 0 items in bag
+            - button [ref=e494] [cursor=pointer]:
+                - img [ref=e495]
+        - generic [ref=e499]:
+            - img [ref=e502]
+            - generic [ref=e508]:
+                - paragraph [ref=e509]: Your cart is empty
+                - paragraph [ref=e510]: Discover products your pet will love.
+            - link [ref=e511] [cursor=pointer]:
+                - /url: /collections
+                - text: Shop All Products
+        - generic [ref=e512]:
+            - generic [ref=e513]:
+                - generic [ref=e514]:
+                    - img [ref=e516]
+                    - text: Vet Approved
+                - generic [ref=e519]:
+                    - img [ref=e521]
+                    - text: Fast Dispatch
+                - generic [ref=e524]:
+                    - img [ref=e526]
+                    - text: Easy Returns
+            - generic [ref=e529]:
+                - generic [ref=e530]: Subtotal
+                - generic [ref=e531]: ₱0.00
+            - paragraph [ref=e532]: Shipping calculated at checkout — free over $50.
+            - link [ref=e533] [cursor=pointer]:
+                - /url: /checkout
+                - text: Checkout
+            - button [ref=e534] [cursor=pointer]: Continue Shopping
