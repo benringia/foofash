@@ -1,4 +1,4 @@
-import { formatMoney } from "./utils.js";
+import { formatAmount } from "./utils.js";
 
 let abortController = null;
 let debounceTimer = null;
@@ -35,8 +35,8 @@ function renderItem(product) {
     Number(product.compare_at_price_max) > Number(product.price);
 
   const priceHtml = onSale
-    ? `<span class="font-semibold text-secondary">${formatMoney(Number(product.price))}</span><s class="ml-1 text-xs text-on-surface/40">${formatMoney(Number(product.compare_at_price_max))}</s>`
-    : `<span class="font-semibold text-on-surface">${formatMoney(Number(product.price))}</span>`;
+    ? `<span class="font-semibold text-secondary">${formatAmount(Number(product.price))}</span><s class="ml-1 text-xs text-on-surface/40">${formatAmount(Number(product.compare_at_price_max))}</s>`
+    : `<span class="font-semibold text-on-surface">${formatAmount(Number(product.price))}</span>`;
 
   return `<li role="option" aria-selected="false" data-predictive-search-item>
   <a href="${product.url}" class="flex items-center gap-3 mx-2 rounded-xl px-3 py-2 hover:bg-surface-container/60 focus:bg-surface-container/60 focus:outline-none" tabindex="-1">
