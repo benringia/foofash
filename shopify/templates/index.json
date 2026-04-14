@@ -1,25 +1,16 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "hero-banner": {
       "type": "hero-banner",
       "settings": {
-        "eyebrow": "Premium Clinical Care",
+        "eyebrow": "Vet-Approved Pet Care",
         "heading": "Happy Paws,",
         "heading_accent": "Healthy Hearts",
-        "subheading": "Your pet's best life starts here. Combining world-class veterinary expertise with premium boutique care for every furry family member.",
-        "primary_cta_label": "Book Appointment",
-        "primary_cta_link": "",
-        "secondary_cta_label": "Explore Services",
-        "secondary_cta_link": "",
+        "subheading": "Premium, vet-approved products for every pet in your family. Fast shipping, easy returns, and a team that genuinely cares.",
+        "primary_cta_label": "Shop Now",
+        "primary_cta_link": "shopify://collections/all",
+        "secondary_cta_label": "Shop by Pet",
+        "secondary_cta_link": "#categories",
         "trust_label": "Trusted by 5,000+ Pet Parents",
         "image": "shopify://shop_images/Gemini_Generated_Image_dild5ldild5ldild.png",
         "stat_1_value": "4.9★",
@@ -36,47 +27,41 @@
           "settings": {
             "icon": "vet-approved",
             "title": "Vet Approved",
-            "subtitle": "Clinical Standard"
+            "subtitle": "Clinically recommended"
           }
         },
-        "trust_vets": {
+        "trust_shipping": {
           "type": "trust_item",
           "settings": {
-            "icon": "stethoscope",
-            "title": "Licensed Vets",
-            "subtitle": "Expert Staff"
+            "icon": "shipping",
+            "title": "Free Shipping",
+            "subtitle": "On orders over $50"
           }
         },
-        "trust_clock": {
+        "trust_returns": {
           "type": "trust_item",
           "settings": {
-            "icon": "clock",
-            "title": "24/7 Care",
-            "subtitle": "Always Available"
+            "icon": "returns",
+            "title": "Easy Returns",
+            "subtitle": "30-day hassle-free"
           }
         },
         "trust_paw": {
           "type": "trust_item",
           "settings": {
             "icon": "paw",
-            "title": "Premium Shop",
-            "subtitle": "Handpicked Goods"
+            "title": "5,000+ Happy Pets",
+            "subtitle": "Trusted by pet parents"
           }
         }
       },
-      "block_order": ["trust_vet", "trust_vets", "trust_clock", "trust_paw"],
+      "block_order": [
+        "trust_vet",
+        "trust_shipping",
+        "trust_returns",
+        "trust_paw"
+      ],
       "settings": {}
-    },
-    "featured-collection": {
-      "type": "featured-collection",
-      "settings": {
-        "heading": "Boutique Favorites",
-        "subheading": "Curated essentials for a healthy life",
-        "view_all_label": "View All Products",
-        "view_all_link": "",
-        "collection": "",
-        "products_to_show": 4
-      }
     },
     "pet-type-nav": {
       "type": "pet-type-nav",
@@ -116,77 +101,76 @@
       },
       "block_order": ["pet_dogs", "pet_cats", "pet_small", "pet_fish"],
       "settings": {
-        "heading": "Care for Every Friend",
-        "subheading": "Specialized care and products for all your companions"
+        "heading": "Shop by Pet",
+        "subheading": ""
       }
     },
-    "services-grid": {
-      "type": "services_grid",
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "Best Sellers",
+        "subheading": "The products your pets keep coming back to",
+        "view_all_label": "Shop All Best Sellers",
+        "view_all_link": "shopify://collections/all",
+        "collection": "",
+        "products_to_show": 4
+      }
+    },
+    "why-choose-us": {
+      "type": "why-choose-us",
       "blocks": {
-        "svc_consult": {
-          "type": "service_card",
+        "benefit_vet": {
+          "type": "benefit",
           "settings": {
-            "badge": "",
-            "icon": "stethoscope",
-            "title": "Vet Consultation",
-            "description": "Professional health checks and diagnostics for your pet.",
-            "cta_label": "Book Now",
-            "cta_url": "/pages/vet-consultation"
+            "icon": "vet-approved",
+            "title": "Vet Approved",
+            "description": "Every product is reviewed and recommended by our in-house veterinary team"
           }
         },
-        "svc_groom": {
-          "type": "service_card",
+        "benefit_shipping": {
+          "type": "benefit",
           "settings": {
-            "badge": "",
-            "icon": "scissors",
-            "title": "Grooming",
-            "description": "Full grooming services including wash, cut, and nail trim.",
-            "cta_label": "Book Now",
-            "cta_url": "/pages/grooming"
+            "icon": "shipping",
+            "title": "Free Shipping",
+            "description": "Free delivery on all orders over $50 — fast, reliable, tracked"
           }
         },
-        "svc_vaccine": {
-          "type": "service_card",
+        "benefit_returns": {
+          "type": "benefit",
           "settings": {
-            "badge": "",
-            "icon": "syringe",
-            "title": "Vaccination",
-            "description": "Keep your pet protected with up-to-date vaccinations.",
-            "cta_label": "Book Now",
-            "cta_url": "/pages/vaccination"
+            "icon": "returns",
+            "title": "Easy Returns",
+            "description": "Changed your mind? 30-day hassle-free returns, no questions asked"
           }
         },
-        "svc_dental": {
-          "type": "service_card",
+        "benefit_clinic": {
+          "type": "benefit",
           "settings": {
-            "badge": "",
-            "icon": "tooth",
-            "title": "Dental Care",
-            "description": "Professional dental cleaning and oral health checks.",
-            "cta_label": "Book Now",
-            "cta_url": "/pages/dental-care"
+            "icon": "paw",
+            "title": "Clinic-Backed Care",
+            "description": "Products chosen by vets who treat pets daily — not just sourced for the shelf"
           }
         }
       },
-      "block_order": ["svc_consult", "svc_groom", "svc_vaccine", "svc_dental"],
+      "block_order": [
+        "benefit_vet",
+        "benefit_shipping",
+        "benefit_returns",
+        "benefit_clinic"
+      ],
       "settings": {
-        "heading": "Our Services",
-        "subheading": "Expert care for every pet, every need",
-        "padding": "py-10 lg:py-16"
+        "heading": "Why Pet Parents Choose Foofash",
+        "subheading": "Care you can trust, backed by a real veterinary team"
       }
     },
-    "clinic-info": {
-      "type": "clinic-info",
+    "homepage-bundles": {
+      "type": "homepage-bundles",
       "settings": {
-        "eyebrow": "Flagship Location",
-        "heading": "Visit Our Modern Wellness Center",
-        "subheading": "Experience a stress-free environment where every detail is designed for your pet's comfort and clinical excellence.",
-        "address": "123 Petal Lane, Furry Heights, New York, NY 10011",
-        "hours": "Open 24/7 for Emergencies\nRegular clinic: 8AM – 8PM",
-        "cta_label": "Get Directions",
-        "cta_link": "",
-        "image": "shopify://shop_images/veterinary-clinic.png",
-        "padding": "py-24"
+        "eyebrow": "Starter Kits",
+        "heading": "Complete Care Kits",
+        "subheading": "Everything your pet needs, curated by our vet team",
+        "collection": "",
+        "products_to_show": 3
       }
     },
     "testimonials": {
@@ -222,15 +206,28 @@
         "heading": "Loved by Pets & Parents",
         "padding": "py-24"
       }
+    },
+    "cta": {
+      "type": "cta",
+      "settings": {
+        "heading": "Your pet deserves the best. Start here.",
+        "subheading": "Vet-approved products, fast shipping, and a team that genuinely cares.",
+        "primary_cta_label": "Shop Now",
+        "primary_cta_link": "shopify://collections/all",
+        "secondary_cta_label": "Meet Our Vets",
+        "secondary_cta_link": "shopify://pages/our-team",
+        "padding": "py-24"
+      }
     }
   },
   "order": [
     "hero-banner",
     "trust-bar",
-    "featured-collection",
     "pet-type-nav",
-    "services-grid",
-    "clinic-info",
-    "testimonials"
+    "featured-collection",
+    "why-choose-us",
+    "homepage-bundles",
+    "testimonials",
+    "cta"
   ]
 }
