@@ -11,7 +11,7 @@
     {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
       <div class='mb-12 flex flex-col md:flex-row justify-between items-end gap-6'>
         <div>
-          <p class='mb-2 text-xs font-semibold uppercase tracking-widest text-primary/70'>Most-loved picks this week</p>
+          <p class='mb-2 text-xs font-semibold uppercase tracking-widest text-primary/70'>Customer Favorites</p>
           {%- if section.settings.heading != blank -%}
             <h2 class='font-display text-4xl font-extrabold text-primary'>{{ section.settings.heading }}</h2>
           {%- endif -%}
@@ -27,9 +27,9 @@
             </span>
             <span class='flex items-center gap-1.5 rounded-full bg-surface-container px-3 py-1.5 text-xs font-semibold text-on-surface'>
               <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
-                {%- render 'icon', icon: 'clock' -%}
+                {%- render 'icon', icon: 'shipping' -%}
               </span>
-              Fast dispatch
+              Free shipping over $50
             </span>
             <span class='flex items-center gap-1.5 rounded-full bg-surface-container px-3 py-1.5 text-xs font-semibold text-on-surface'>
               <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
@@ -99,7 +99,7 @@
       "type": "text",
       "id": "view_all_label",
       "label": "View all label",
-      "default": "View All Products"
+      "default": "Shop All Best Sellers"
     },
     {
       "type": "url",
