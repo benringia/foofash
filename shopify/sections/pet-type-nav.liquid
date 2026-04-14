@@ -17,7 +17,7 @@
           <li {{ block.shopify_attributes }}>
             <a
               href='{{ block.settings.link | default: '#' }}'
-              class='group flex flex-col items-center bg-white rounded-3xl p-6 shadow-bubbly hover:-translate-y-1 hover:shadow-bubbly-lg transition-all duration-300'
+              class='group flex flex-col items-center bg-white rounded-3xl p-6 shadow-bubbly hover:-translate-y-1 hover:shadow-bubbly-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2'
             >
               <div class='w-32 h-32 rounded-full overflow-hidden'>
                 {%- if block.settings.image != blank -%}
