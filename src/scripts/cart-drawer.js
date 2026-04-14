@@ -7,6 +7,39 @@ let lastToggleTrigger = null;
 
 const REMOVE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
 
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function trapFocus(drawer) {
+  const focusable = () => Array.from(drawer.querySelectorAll(FOCUSABLE));
+  drawer._trapHandler = (e) => {
+    if (e.key !== "Tab") return;
+    const items = focusable();
+    if (!items.length) return;
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  };
+  drawer.addEventListener("keydown", drawer._trapHandler);
+}
+
+function releaseFocus(drawer) {
+  if (drawer._trapHandler) {
+    drawer.removeEventListener("keydown", drawer._trapHandler);
+    drawer._trapHandler = null;
+  }
+}
+
 function renderCartItem(item) {
   const image = item.image
     ? `<img src="${item.image}" alt="${item.product_title}" width="80" height="80" loading="lazy" class="h-20 w-20 rounded-2xl object-cover bg-surface-container">`
@@ -34,7 +67,14 @@ function renderCartItem(item) {
             <input type="number" data-quantity-input value="${item.quantity}" min="0" class="w-8 bg-transparent text-center text-sm font-semibold text-on-surface focus:outline-none" aria-label="Quantity for ${item.product_title}">
             <button type="button" data-quantity-increase aria-label="Increase quantity" class="flex h-8 w-8 cursor-pointer items-center justify-center text-on-surface transition-colors hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">&#43;</button>
           </div>
-          <p class="text-sm font-bold text-on-surface">${formatMoney(item.final_line_price)}</p>
+          <div class="flex flex-col items-end gap-0.5">
+            <p class="text-sm font-bold text-on-surface">${formatMoney(item.final_line_price)}</p>
+            ${
+              item.original_line_price !== item.final_line_price
+                ? `<p class="text-xs text-on-surface/40 line-through">${formatMoney(item.original_line_price)}</p>`
+                : ""
+            }
+          </div>
         </div>
       </div>
     </li>
@@ -63,6 +103,14 @@ function renderCart(cart) {
     el.textContent = cart.item_count;
   });
 
+  document.querySelectorAll("[data-cart-count-label]").forEach((el) => {
+    el.textContent = cart.item_count === 1 ? "item" : "items";
+  });
+
+  document.querySelectorAll("[data-cart-count-badge]").forEach((el) => {
+    el.classList.toggle("hidden", cart.item_count === 0);
+  });
+
   // Refresh upsell after every cart state change (fire-and-forget)
   refreshCartUpsell(cart);
 }
@@ -76,6 +124,7 @@ function openDrawer() {
   drawer.classList.remove("translate-x-full");
   drawer.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
+  trapFocus(drawer);
 
   // Focus the close button
   const closeBtn = drawer.querySelector("[data-cart-close]");
@@ -91,6 +140,7 @@ function closeDrawer() {
   drawer.classList.add("translate-x-full");
   drawer.setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
+  releaseFocus(drawer);
 
   lastToggleTrigger?.focus();
 }
@@ -178,12 +228,14 @@ export function initCartDrawer() {
     const input = li?.querySelector("[data-quantity-input]");
     if (!key || !input) return;
     const newQty = Math.max(0, parseInt(input.value, 10) - 1);
+    li.classList.add("opacity-50", "pointer-events-none");
     busy = true;
     try {
       const cart = await updateItem(key, newQty);
       renderCart(cart);
     } catch (err) {
       console.error("Quantity update failed:", err);
+      li.classList.remove("opacity-50", "pointer-events-none");
     } finally {
       busy = false;
     }
@@ -199,12 +251,36 @@ export function initCartDrawer() {
     const input = li?.querySelector("[data-quantity-input]");
     if (!key || !input) return;
     const newQty = parseInt(input.value, 10) + 1;
+    li.classList.add("opacity-50", "pointer-events-none");
     busy = true;
     try {
       const cart = await updateItem(key, newQty);
       renderCart(cart);
     } catch (err) {
       console.error("Quantity update failed:", err);
+      li.classList.remove("opacity-50", "pointer-events-none");
+    } finally {
+      busy = false;
+    }
+  });
+
+  // Direct quantity input (typing a number)
+  document.addEventListener("change", async (e) => {
+    const input = e.target.closest("[data-quantity-input]");
+    if (!input) return;
+    if (busy) return;
+    const li = input.closest("[data-line-item]");
+    const key = li?.dataset.itemKey;
+    if (!key) return;
+    const newQty = Math.max(0, parseInt(input.value, 10) || 0);
+    li.classList.add("opacity-50", "pointer-events-none");
+    busy = true;
+    try {
+      const cart = await updateItem(key, newQty);
+      renderCart(cart);
+    } catch (err) {
+      console.error("Quantity update failed:", err);
+      li.classList.remove("opacity-50", "pointer-events-none");
     } finally {
       busy = false;
     }
@@ -218,12 +294,14 @@ export function initCartDrawer() {
     const li = btn.closest("[data-line-item]");
     const key = li?.dataset.itemKey;
     if (!key) return;
+    li.classList.add("opacity-50", "pointer-events-none");
     busy = true;
     try {
       const cart = await removeItem(key);
       renderCart(cart);
     } catch (err) {
       console.error("Remove item failed:", err);
+      li.classList.remove("opacity-50", "pointer-events-none");
     } finally {
       busy = false;
     }

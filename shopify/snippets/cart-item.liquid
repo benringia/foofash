@@ -97,7 +97,12 @@
           <span aria-hidden='true'>&#43;</span>
         </button>
       </div>
-      <p class='text-sm font-bold text-on-surface'>{{ item.final_line_price | money }}</p>
+      <div class='flex flex-col items-end gap-0.5'>
+        <p class='text-sm font-bold text-on-surface'>{{ item.final_line_price | money }}</p>
+        {%- if item.original_line_price != item.final_line_price -%}
+          <p class='text-xs text-on-surface/40 line-through'>{{ item.original_line_price | money }}</p>
+        {%- endif -%}
+      </div>
     </div>
   </div>
 </li>

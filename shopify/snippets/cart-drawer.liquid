@@ -22,7 +22,9 @@
     <div>
       <h2 class='text-base font-extrabold text-on-surface'>Your Cart</h2>
       <p class='text-xs text-on-surface-variant'>
-        <span data-cart-count>{{ cart.item_count }}</span>&nbsp;items in bag
+        <span data-cart-count>{{ cart.item_count }}</span>&nbsp;<span data-cart-count-label>
+          {{- cart.item_count == 1 ? 'item' : 'items' -}}</span
+        >&nbsp;in bag
       </p>
     </div>
     <button

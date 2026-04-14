@@ -87,6 +87,7 @@
             class='{% unless cart.item_count > 0 %}hidden {% endunless %}absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-secondary text-[10px] font-bold leading-none text-white'
             aria-hidden='true'
             data-cart-count
+            data-cart-count-badge
           >
             {{- cart.item_count -}}
           </span>
