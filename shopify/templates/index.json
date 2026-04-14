@@ -80,7 +80,7 @@
           "settings": {
             "image": "shopify://shop_images/cute-dog-for-thumbnail.png",
             "label": "Dogs",
-            "link": ""
+            "link": "shopify://collections/dog"
           }
         },
         "pet_cats": {
@@ -88,7 +88,7 @@
           "settings": {
             "image": "shopify://shop_images/cute-cat-for-thumbnail.png",
             "label": "Cats",
-            "link": ""
+            "link": "shopify://collections/cats"
           }
         },
         "pet_small": {
@@ -96,7 +96,7 @@
           "settings": {
             "image": "shopify://shop_images/cute-hamster-for-thumbnail.png",
             "label": "Small Animals",
-            "link": ""
+            "link": "shopify://collections/small-animals"
           }
         },
         "pet_fish": {
@@ -104,16 +104,11 @@
           "settings": {
             "image": "shopify://shop_images/fish-for-thumbnail.png",
             "label": "Fish",
-            "link": ""
+            "link": "shopify://collections/fish"
           }
         }
       },
-      "block_order": [
-        "pet_dogs",
-        "pet_cats",
-        "pet_small",
-        "pet_fish"
-      ],
+      "block_order": ["pet_dogs", "pet_cats", "pet_small", "pet_fish"],
       "settings": {
         "heading": "Shop by Pet",
         "subheading": ""
@@ -215,11 +210,7 @@
           }
         }
       },
-      "block_order": [
-        "testimonial_1",
-        "testimonial_2",
-        "testimonial_3"
-      ],
+      "block_order": ["testimonial_1", "testimonial_2", "testimonial_3"],
       "settings": {
         "heading": "Loved by Pets & Parents",
         "padding": "py-24"
