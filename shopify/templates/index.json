@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero-banner": {
@@ -99,7 +108,12 @@
           }
         }
       },
-      "block_order": ["pet_dogs", "pet_cats", "pet_small", "pet_fish"],
+      "block_order": [
+        "pet_dogs",
+        "pet_cats",
+        "pet_small",
+        "pet_fish"
+      ],
       "settings": {
         "heading": "Shop by Pet",
         "subheading": ""
@@ -169,7 +183,7 @@
         "eyebrow": "Starter Kits",
         "heading": "Complete Care Kits",
         "subheading": "Everything your pet needs, curated by our vet team",
-        "collection": "",
+        "collection": "medicine",
         "products_to_show": 3
       }
     },
@@ -201,7 +215,11 @@
           }
         }
       },
-      "block_order": ["testimonial_1", "testimonial_2", "testimonial_3"],
+      "block_order": [
+        "testimonial_1",
+        "testimonial_2",
+        "testimonial_3"
+      ],
       "settings": {
         "heading": "Loved by Pets & Parents",
         "padding": "py-24"

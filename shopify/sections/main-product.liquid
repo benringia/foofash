@@ -552,27 +552,6 @@
   </div>
 </section>
 
-{%- comment -%}
-  Product recommendations — lives OUTSIDE the main max-w-7xl container so the injected
-  section HTML (which includes its own max-w-7xl wrapper + heading + grid) renders at
-  full width without double-padding or collapsed columns.
-
-  The inner <section> gives product-recommendations.js a safe .closest("section") target
-  to remove on AJAX failure, isolated from the main product section.
-{%- endcomment -%}
-{%- if section.settings.show_recommendations -%}
-  <section class='bg-surface-container-low pb-16' aria-label='Recommended products'>
-    <div
-      data-product-recommendations
-      data-product-id='{{ product.id }}'
-      data-url='{{ routes.product_recommendations_url }}'
-      data-limit='4'
-    >
-      {%- comment -%} Populated by product-recommendations.js {%- endcomment -%}
-    </div>
-  </section>
-{%- endif -%}
-
 {%- comment -%} Variant data for client-side price/availability updates {%- endcomment -%}
 <script id='product-variants-json' type='application/json'>
   [
@@ -612,12 +591,6 @@
       "step": 4,
       "unit": "px",
       "default": 40
-    },
-    {
-      "type": "checkbox",
-      "id": "show_recommendations",
-      "label": "Show product recommendations",
-      "default": true
     },
     {
       "type": "checkbox",

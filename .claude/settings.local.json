@@ -31,7 +31,8 @@
       "Bash(node_modules/.bin/vite build:*)",
       "Bash(npx vite:*)",
       "Bash(echo \"BUILD_DONE_$?\")",
-      "mcp__plugin_playwright_playwright__browser_resize"
+      "mcp__plugin_playwright_playwright__browser_resize",
+      "Bash(grep -E \"\\\\.liquid$\")"
     ]
   },
   "hooks": {

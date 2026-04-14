@@ -16,110 +16,123 @@
 {%- if bundle_products == blank or bundle_products.size == 0 -%}
   {%- comment -%} No bundle configured — render nothing {%- endcomment -%}
 {%- else -%}
-  <section class='product-bundle bg-neutral-50 rounded-2xl p-6 space-y-4 my-8'>
-    <div class='bundle-header space-y-1'>
-      <h2 class='text-lg font-semibold text-gray-900'>{{ section.settings.heading }}</h2>
-      {%- if section.settings.subheading != blank -%}
-        <p class='text-sm text-gray-500'>{{ section.settings.subheading }}</p>
-      {%- endif -%}
-    </div>
-
-    <div class='bundle-items flex flex-col gap-3 md:flex-row md:flex-wrap md:gap-4'>
-      {%- for p in bundle_products -%}
-        {%- assign v = p.selected_or_first_available_variant -%}
-        {%- assign is_multi_variant = false -%}
-        {%- if p.variants.size > 1 -%}
-          {%- assign is_multi_variant = true -%}
-        {%- endif -%}
-
-        {%- assign inventory_qty = 0 -%}
-        {%- if v.inventory_management == 'shopify' -%}
-          {%- assign inventory_qty = v.inventory_quantity -%}
-        {%- endif -%}
-
-        <div class='bundle-item flex items-start gap-4 rounded-xl bg-white/70 p-4 flex-1 min-w-[200px]'>
-          <label class='flex items-center pt-1'>
-            <input
-              type='checkbox'
-              class='bundle-checkbox w-5 h-5 rounded accent-[var(--color-primary,#000)] cursor-pointer disabled:cursor-not-allowed'
-              data-bundle-checkbox
-              data-variant-id='{{ v.id }}'
-              {%- unless v.available -%}
-                disabled
-              {%- endunless -%}
-              {%- if v.available -%}
-                checked
-              {%- endif -%}
-              aria-label='Include {{ p.title | escape }} in bundle'
-            >
-          </label>
-
-          {%- if p.featured_image -%}
-            <a href='{{ p.url }}' tabindex='-1' aria-hidden='true' class='shrink-0'>
-              <img
-                src='{{ p.featured_image | image_url: width: 80 }}'
-                alt='{{ p.featured_image.alt | default: p.title | escape }}'
-                width='64'
-                height='64'
-                loading='lazy'
-                class='w-16 h-16 object-cover rounded-lg'
-              >
-            </a>
+  <section class='product-bundle border-t border-neutral-200 bg-neutral-50 py-8'>
+    <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+      <div class='space-y-4'>
+        <div class='bundle-header space-y-0.5'>
+          <h2 class='text-base font-semibold text-gray-900'>{{ section.settings.heading }}</h2>
+          {%- if section.settings.subheading != blank -%}
+            <p class='text-sm text-gray-400'>{{ section.settings.subheading }}</p>
           {%- endif -%}
+        </div>
 
-          <div class='bundle-item-info flex flex-col gap-1 min-w-0'>
-            <a href='{{ p.url }}' class='text-sm font-medium text-gray-900 hover:underline line-clamp-2 leading-snug'>
-              {{ p.title | escape }}
-            </a>
+        <div class='bundle-items flex flex-col gap-3 md:flex-row md:flex-wrap md:gap-3'>
+          {%- assign render_count = 0 -%}
+          {%- for p in bundle_products -%}
+            {%- if p.id == product.id -%}{%- continue -%}{%- endif -%}
+            {%- if render_count >= 3 -%}{%- break -%}{%- endif -%}
 
-            <div class='bundle-item-price' data-bundle-price='{{ v.price }}'>
-              {%- render 'price', product: p, variant: v -%}
+            {%- assign v = p.selected_or_first_available_variant -%}
+            {%- assign is_multi_variant = false -%}
+            {%- if p.variants.size > 1 -%}
+              {%- assign is_multi_variant = true -%}
+            {%- endif -%}
+
+            {%- assign inventory_qty = 0 -%}
+            {%- if v.inventory_management == 'shopify' -%}
+              {%- assign inventory_qty = v.inventory_quantity -%}
+            {%- endif -%}
+
+            <div class='bundle-item flex items-start gap-3 rounded-xl bg-white p-3 flex-1 min-w-[180px] shadow-sm'>
+              <label class='flex items-center pt-0.5'>
+                <input
+                  type='checkbox'
+                  class='bundle-checkbox w-4 h-4 rounded accent-[var(--color-primary,#000)] cursor-pointer disabled:cursor-not-allowed'
+                  data-bundle-checkbox
+                  data-variant-id='{{ v.id }}'
+                  {%- unless v.available -%}
+                    disabled
+                  {%- endunless -%}
+                  {%- if v.available -%}
+                    checked
+                  {%- endif -%}
+                  aria-label='Include {{ p.title | escape }} in bundle'
+                >
+              </label>
+
+              {%- if p.featured_image -%}
+                <a href='{{ p.url }}' tabindex='-1' aria-hidden='true' class='shrink-0'>
+                  <img
+                    src='{{ p.featured_image | image_url: width: 80 }}'
+                    alt='{{ p.featured_image.alt | default: p.title | escape }}'
+                    width='56'
+                    height='56'
+                    loading='lazy'
+                    class='w-14 h-14 object-cover rounded-lg'
+                  >
+                </a>
+              {%- endif -%}
+
+              <div class='bundle-item-info flex flex-col gap-0.5 min-w-0'>
+                <a
+                  href='{{ p.url }}'
+                  class='text-sm font-medium text-gray-900 hover:underline line-clamp-2 leading-snug'
+                >
+                  {{ p.title | escape }}
+                </a>
+
+                <div class='bundle-item-price' data-bundle-price='{{ v.price }}'>
+                  {%- render 'price', product: p, variant: v -%}
+                </div>
+
+                {%- if is_multi_variant -%}
+                  <a href='{{ p.url }}' class='text-xs text-gray-400 hover:text-gray-600 hover:underline'>
+                    Choose options &rarr;
+                  </a>
+                {%- endif -%}
+
+                {%- unless v.available -%}
+                  <span class='text-xs text-red-500 font-medium'>Unavailable</span>
+                {%- endunless -%}
+
+                {%- if v.available and inventory_qty > 0 and inventory_qty <= 5 -%}
+                  <span class='text-xs text-amber-600 font-medium'>Only {{ inventory_qty }} left</span>
+                {%- endif -%}
+              </div>
             </div>
 
-            {%- if is_multi_variant -%}
-              <a href='{{ p.url }}' class='text-xs text-gray-400 hover:text-gray-600 hover:underline mt-0.5'>
-                Choose options &rarr;
-              </a>
-            {%- endif -%}
+            {%- assign render_count = render_count | plus: 1 -%}
+          {%- endfor -%}
+        </div>
 
-            {%- unless v.available -%}
-              <span class='text-xs text-red-500 font-medium'>Unavailable</span>
-            {%- endunless -%}
-
-            {%- if v.available and inventory_qty > 0 and inventory_qty <= 5 -%}
-              <span class='text-xs text-amber-600 font-medium'>Only {{ inventory_qty }} left</span>
-            {%- endif -%}
+        <div class='bundle-summary flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pt-3 border-t border-neutral-200'>
+          <div class='bundle-totals flex flex-col gap-0.5'>
+            <div class='flex items-baseline gap-2 flex-wrap'>
+              <span class='text-sm text-gray-500'>Total:</span>
+              <span class='text-base font-semibold text-gray-900' data-bundle-total>&mdash;</span>
+            </div>
+            <span
+              class='text-sm font-medium text-[var(--color-secondary,#e05d5d)] hidden'
+              data-bundle-savings
+              aria-live='polite'
+            ></span>
+            <span
+              class='text-sm text-red-500 hidden'
+              data-bundle-error
+              role='alert'
+            ></span>
           </div>
-        </div>
-      {%- endfor -%}
-    </div>
 
-    <div class='bundle-summary flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pt-2 border-t border-neutral-200'>
-      <div class='bundle-totals flex flex-col gap-0.5'>
-        <div class='flex items-baseline gap-2 flex-wrap'>
-          <span class='text-sm text-gray-500'>Total:</span>
-          <span class='text-base font-semibold text-gray-900' data-bundle-total>&mdash;</span>
+          <button
+            type='button'
+            class='bundle-add-btn btn btn-primary w-full sm:w-auto'
+            data-bundle-add
+            aria-label='{{ section.settings.cta_label | escape }}'
+          >
+            {{ section.settings.cta_label | escape }}
+          </button>
         </div>
-        <span
-          class='text-sm font-medium text-[var(--color-secondary,#e05d5d)] hidden'
-          data-bundle-savings
-          aria-live='polite'
-        ></span>
-        <span
-          class='text-sm text-red-500 hidden'
-          data-bundle-error
-          role='alert'
-        ></span>
       </div>
-
-      <button
-        type='button'
-        class='bundle-add-btn btn btn-primary w-full sm:w-auto'
-        data-bundle-add
-        aria-label='{{ section.settings.cta_label | escape }}'
-      >
-        {{ section.settings.cta_label | escape }}
-      </button>
     </div>
   </section>
 
@@ -127,10 +140,15 @@
     {
       "showSavings": {{ section.settings.show_savings | json }},
       "items": [
+        {%- assign json_count = 0 -%}
+        {%- assign json_first = true -%}
         {%- for p in bundle_products -%}
+          {%- if p.id == product.id -%}{%- continue -%}{%- endif -%}
+          {%- if json_count >= 3 -%}{%- break -%}{%- endif -%}
           {%- assign v = p.selected_or_first_available_variant -%}
           {%- assign is_multi = false -%}
           {%- if p.variants.size > 1 -%}{%- assign is_multi = true -%}{%- endif -%}
+          {%- unless json_first -%},{%- endunless -%}
           {
             "variantId": {{ v.id }},
             "price": {{ v.price }},
@@ -138,7 +156,9 @@
             "available": {{ v.available | json }},
             "multiVariant": {{ is_multi | json }},
             "productUrl": {{ p.url | json }}
-          }{%- unless forloop.last -%},{%- endunless -%}
+          }
+          {%- assign json_first = false -%}
+          {%- assign json_count = json_count | plus: 1 -%}
         {%- endfor -%}
       ]
     }
