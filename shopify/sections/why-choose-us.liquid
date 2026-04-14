@@ -81,10 +81,16 @@
       "name": "Benefit",
       "settings": [
         {
-          "type": "text",
+          "type": "select",
           "id": "icon",
-          "label": "Icon name",
-          "info": "Supported: vet-approved, shipping, returns, paw"
+          "label": "Icon",
+          "options": [
+            { "value": "vet-approved", "label": "Vet Approved" },
+            { "value": "shipping", "label": "Shipping" },
+            { "value": "returns", "label": "Returns" },
+            { "value": "paw", "label": "Paw" }
+          ],
+          "default": "paw"
         },
         {
           "type": "text",
