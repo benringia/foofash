@@ -1,4 +1,4 @@
-<section class='pet-type-nav bg-surface py-24'>
+<section class='pet-type-nav bg-surface py-24' id='categories'>
   <div class='mx-auto max-w-7xl px-6 lg:px-8'>
     {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
       <div class='mb-16 text-center'>
@@ -12,36 +12,37 @@
     {%- endif -%}
 
     {%- if section.blocks.size > 0 -%}
-      <ul class='flex flex-wrap justify-center gap-12' role='list'>
+      <ul class='grid grid-cols-2 gap-6 md:grid-cols-4' role='list'>
         {%- for block in section.blocks -%}
           <li {{ block.shopify_attributes }}>
             <a
               href='{{ block.settings.link | default: '#' }}'
-              class='group flex flex-col items-center cursor-pointer'
+              class='group flex flex-col items-center bg-white rounded-3xl p-6 shadow-bubbly hover:-translate-y-1 hover:shadow-bubbly-lg transition-all duration-300 cursor-pointer'
             >
-              <div class='w-36 h-36 rounded-full bg-white p-2 shadow-bubbly border-2 border-transparent group-hover:border-primary/20 group-hover:scale-110 transition-all duration-500'>
-                <div class='w-full h-full rounded-full overflow-hidden'>
-                  {%- if block.settings.image != blank -%}
-                    {{
-                      block.settings.image
-                      | image_url: width: 288
-                      | image_tag:
-                        width: 288,
-                        height: 288,
-                        loading: 'lazy',
-                        class: 'h-full w-full object-cover',
-                        alt: block.settings.label
-                      | default: block.settings.image.alt
-                    }}
-                  {%- else -%}
-                    <div class='flex h-full w-full items-center justify-center bg-surface-high text-primary'>
-                      {%- render 'icon', icon: 'paw' -%}
-                    </div>
-                  {%- endif -%}
-                </div>
+              <div class='w-32 h-32 rounded-full overflow-hidden'>
+                {%- if block.settings.image != blank -%}
+                  {{
+                    block.settings.image
+                    | image_url: width: 288
+                    | image_tag:
+                      width: 288,
+                      height: 288,
+                      loading: 'lazy',
+                      class: 'h-full w-full object-cover',
+                      alt: block.settings.label
+                    | default: block.settings.image.alt
+                  }}
+                {%- else -%}
+                  <div class='flex h-full w-full items-center justify-center bg-surface-container text-primary'>
+                    {%- render 'icon', icon: 'paw' -%}
+                  </div>
+                {%- endif -%}
               </div>
               {%- if block.settings.label != blank -%}
-                <span class='mt-4 font-bold text-primary'>{{ block.settings.label }}</span>
+                <span class='mt-4 text-lg font-bold text-primary flex items-center gap-1'>
+                  {{ block.settings.label }}
+                  <span aria-hidden='true'>→</span>
+                </span>
               {%- endif -%}
             </a>
           </li>
