@@ -3,8 +3,57 @@
   role='listbox'
   aria-label='Search results'
   data-predictive-search-results
-  class='absolute left-0 top-full z-50 mt-1 hidden w-full min-w-[320px] rounded-2xl bg-surface shadow-ambient'
+  class='absolute left-0 top-full z-50 mt-2 hidden w-full min-w-[360px] overflow-hidden rounded-2xl bg-surface shadow-bubbly'
 >
-  <p data-predictive-search-empty class='hidden px-4 py-6 text-center text-sm text-on-surface/50'>No products found</p>
-  <ul data-predictive-search-list role='presentation'></ul>
+  {%- comment -%} Loading skeleton — 4 rows {%- endcomment -%}
+  <div data-predictive-search-loading class='hidden p-2'>
+    {%- for i in (1..4) -%}
+      <div class='flex items-center gap-3 rounded-xl px-3 py-2'>
+        <div class='h-14 w-14 flex-none animate-pulse rounded-xl bg-surface-container'></div>
+        <div class='flex flex-1 flex-col gap-2'>
+          <div class='h-3 w-3/4 animate-pulse rounded-full bg-surface-container'></div>
+          <div class='h-3 w-1/4 animate-pulse rounded-full bg-surface-container'></div>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} Error state {%- endcomment -%}
+  <p
+    data-predictive-search-error
+    class='hidden px-4 py-6 text-center text-sm text-on-surface/50'
+  >
+    Something went wrong — please try again.
+  </p>
+
+  {%- comment -%} Empty state {%- endcomment -%}
+  <div data-predictive-search-empty class='hidden px-4 py-8 text-center'>
+    <p class='text-sm font-medium text-on-surface/60'>No products found.</p>
+    <p class='mt-1 text-xs text-on-surface/40'>Try a shorter term or browse our categories.</p>
+  </div>
+
+  {%- comment -%} Results body: group label + list {%- endcomment -%}
+  <div data-predictive-search-body class='hidden'>
+    <p
+      class='px-4 pb-1 pt-3 text-[10px] font-semibold uppercase tracking-widest text-on-surface-variant/60'
+      aria-hidden='true'
+    >
+      Products
+    </p>
+    <ul data-predictive-search-list role='presentation' class='pb-2'></ul>
+  </div>
+
+  {%- comment -%} Footer: view-all CTA {%- endcomment -%}
+  <div
+    data-predictive-search-footer
+    class='hidden bg-surface-container/40 px-4 py-3'
+  >
+    <a
+      data-predictive-search-view-all
+      href='/search'
+      class='flex w-full items-center justify-center rounded-xl bg-surface py-2.5 text-sm font-semibold text-on-surface shadow-ambient transition-colors hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-primary/40'
+    >
+      View all results
+    </a>
+  </div>
 </div>

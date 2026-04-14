@@ -1,3 +1,5 @@
+import { formatMoney } from "./utils.js";
+
 let abortController = null;
 let debounceTimer = null;
 
@@ -23,34 +25,66 @@ async function fetchResults(query) {
 }
 
 function renderItem(product) {
-  const img = product.image
-    ? `<img src="${product.image}" alt="" width="48" height="48" class="h-12 w-12 flex-none rounded object-cover">`
-    : `<div class="h-12 w-12 flex-none rounded bg-gray-100" aria-hidden="true"></div>`;
+  const imgSrc = product.featured_image?.url ?? product.image;
+  const img = imgSrc
+    ? `<img src="${imgSrc}" alt="" width="56" height="56" loading="lazy" class="h-14 w-14 flex-none rounded-xl object-cover">`
+    : `<div class="h-14 w-14 flex-none rounded-xl bg-surface-container" aria-hidden="true"></div>`;
+
+  const onSale =
+    product.compare_at_price_max &&
+    Number(product.compare_at_price_max) > Number(product.price);
+
+  const priceHtml = onSale
+    ? `<span class="font-semibold text-secondary">${formatMoney(Number(product.price))}</span><s class="ml-1 text-xs text-on-surface/40">${formatMoney(Number(product.compare_at_price_max))}</s>`
+    : `<span class="font-semibold text-on-surface">${formatMoney(Number(product.price))}</span>`;
 
   return `<li role="option" aria-selected="false" data-predictive-search-item>
-  <a href="${product.url}" class="flex items-center gap-3 px-4 py-3 text-sm hover:bg-gray-50 focus:bg-gray-50 focus:outline-none" tabindex="-1">
+  <a href="${product.url}" class="flex items-center gap-3 mx-2 rounded-xl px-3 py-2 hover:bg-surface-container/60 focus:bg-surface-container/60 focus:outline-none" tabindex="-1">
     ${img}
-    <span class="flex-1 font-medium text-gray-800 line-clamp-2">${product.title}</span>
+    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+      <span class="line-clamp-1 text-sm font-semibold text-on-surface">${product.title}</span>
+      <span class="text-xs">${priceHtml}</span>
+    </span>
   </a>
 </li>`;
 }
 
-function renderResults(products, list, empty) {
-  if (products.length === 0) {
-    list.innerHTML = "";
-    empty.classList.remove("hidden");
-    return;
-  }
-  empty.classList.add("hidden");
-  list.innerHTML = products.map(renderItem).join("");
+// Show exactly one slot; footer always mirrors body visibility.
+function setSlot(loading, error, empty, body, footer, slot) {
+  loading.classList.toggle("hidden", slot !== "loading");
+  error.classList.toggle("hidden", slot !== "error");
+  empty.classList.toggle("hidden", slot !== "empty");
+  body.classList.toggle("hidden", slot !== "body");
+  footer.classList.toggle("hidden", slot !== "body");
 }
 
-function showResults(input, results) {
+function renderResults(
+  products,
+  query,
+  list,
+  loading,
+  error,
+  empty,
+  body,
+  footer,
+  viewAll,
+) {
+  if (products.length === 0) {
+    list.innerHTML = "";
+    setSlot(loading, error, empty, body, footer, "empty");
+    return;
+  }
+  list.innerHTML = products.map(renderItem).join("");
+  viewAll.href = `/search?q=${encodeURIComponent(query)}&type=product`;
+  setSlot(loading, error, empty, body, footer, "body");
+}
+
+function showPanel(input, results) {
   results.classList.remove("hidden");
   input.setAttribute("aria-expanded", "true");
 }
 
-function hideResults(input, results) {
+function hidePanel(input, results) {
   results.classList.add("hidden");
   input.setAttribute("aria-expanded", "false");
   clearActive(results);
@@ -64,6 +98,7 @@ function clearActive(results) {
   getItems(results).forEach((item) => {
     item.removeAttribute("data-active");
     item.setAttribute("aria-selected", "false");
+    item.querySelector("a")?.classList.remove("bg-surface-container/60");
   });
 }
 
@@ -71,6 +106,7 @@ function setActive(item, input, results) {
   clearActive(results);
   item.setAttribute("data-active", "");
   item.setAttribute("aria-selected", "true");
+  item.querySelector("a").classList.add("bg-surface-container/60");
   input.setAttribute("aria-activedescendant", item.querySelector("a").id || "");
   item.scrollIntoView({ block: "nearest" });
 }
@@ -93,12 +129,18 @@ function handleKeydown(e, input, results) {
     e.preventDefault();
     const prev = activeIndex > 0 ? activeIndex - 1 : items.length - 1;
     setActive(items[prev], input, results);
+  } else if (e.key === "Home") {
+    e.preventDefault();
+    setActive(items[0], input, results);
+  } else if (e.key === "End") {
+    e.preventDefault();
+    setActive(items[items.length - 1], input, results);
   } else if (e.key === "Enter" && activeIndex !== -1) {
     e.preventDefault();
     const link = items[activeIndex].querySelector("a");
     if (link) window.location.href = link.href;
   } else if (e.key === "Escape") {
-    hideResults(input, results);
+    hidePanel(input, results);
     input.focus();
   }
 }
@@ -110,26 +152,56 @@ export function initPredictiveSearch() {
   const input = wrapper.querySelector("[data-predictive-search-input]");
   const results = wrapper.querySelector("[data-predictive-search-results]");
   const list = wrapper.querySelector("[data-predictive-search-list]");
+  const loading = wrapper.querySelector("[data-predictive-search-loading]");
+  const error = wrapper.querySelector("[data-predictive-search-error]");
   const empty = wrapper.querySelector("[data-predictive-search-empty]");
+  const body = wrapper.querySelector("[data-predictive-search-body]");
+  const footer = wrapper.querySelector("[data-predictive-search-footer]");
+  const viewAll = wrapper.querySelector("[data-predictive-search-view-all]");
 
-  if (!input || !results || !list || !empty) return;
+  if (
+    !input ||
+    !results ||
+    !list ||
+    !loading ||
+    !error ||
+    !empty ||
+    !body ||
+    !footer ||
+    !viewAll
+  )
+    return;
 
   input.addEventListener("input", () => {
     clearTimeout(debounceTimer);
     const q = input.value.trim();
 
     if (!q) {
-      hideResults(input, results);
+      hidePanel(input, results);
       return;
     }
+
+    showPanel(input, results);
+    setSlot(loading, error, empty, body, footer, "loading");
 
     debounceTimer = setTimeout(async () => {
       try {
         const products = await fetchResults(q);
-        renderResults(products, list, empty);
-        showResults(input, results);
+        renderResults(
+          products,
+          q,
+          list,
+          loading,
+          error,
+          empty,
+          body,
+          footer,
+          viewAll,
+        );
       } catch (err) {
-        if (err.name !== "AbortError") console.error(err);
+        if (err.name !== "AbortError") {
+          setSlot(loading, error, empty, body, footer, "error");
+        }
       }
     }, 300);
   });
@@ -137,6 +209,6 @@ export function initPredictiveSearch() {
   input.addEventListener("keydown", (e) => handleKeydown(e, input, results));
 
   document.addEventListener("click", (e) => {
-    if (!wrapper.contains(e.target)) hideResults(input, results);
+    if (!wrapper.contains(e.target)) hidePanel(input, results);
   });
 }
