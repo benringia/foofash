@@ -27,6 +27,7 @@
             <article class='group flex flex-col bg-surface rounded-3xl overflow-hidden shadow-bubbly hover:-translate-y-1 hover:shadow-bubbly-lg transition-all duration-300'>
               <div class='relative aspect-video overflow-hidden'>
                 {%- if product.featured_image != blank -%}
+                  {%- assign img_alt = product.featured_image.alt | default: product.title -%}
                   {{
                     product.featured_image
                     | image_url: width: 800
@@ -34,8 +35,7 @@
                       loading: 'lazy',
                       width: 800,
                       class: 'w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700',
-                      alt: product.featured_image.alt
-                    | default: product.title
+                      alt: img_alt
                   }}
                 {%- else -%}
                   <div class='flex h-full w-full items-center justify-center bg-surface-container text-primary/20'>
@@ -56,7 +56,7 @@
 
                 <div class='flex items-center gap-2'>
                   <span class='text-lg font-extrabold text-primary'>{{ product.price | money }}</span>
-                  {%- if product.compare_at_price > product.price -%}
+                  {%- if product.compare_at_price > product.price and product.compare_at_price_varies == false -%}
                     <span class='text-sm text-on-surface-variant/60 line-through'>
                       {{- product.compare_at_price | money -}}
                     </span>
@@ -73,7 +73,7 @@
                   href='{{ product.url }}'
                   class='text-center text-sm font-semibold text-primary/60 hover:text-primary transition-colors'
                 >
-                  What's included →
+                  What's included <span aria-hidden='true'>→</span>
                 </a>
               </div>
             </article>
@@ -82,7 +82,7 @@
       </ul>
     {%- else -%}
       <ul class='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3' role='list'>
-        {%- for i in (1..3) -%}
+        {%- for i in (1..limit) -%}
           <li>
             <article class='bg-surface rounded-3xl overflow-hidden shadow-bubbly'>
               <div class='aspect-video animate-pulse bg-surface-container'></div>
@@ -95,9 +95,15 @@
           </li>
         {%- endfor -%}
       </ul>
-      <p class='mt-6 text-center text-sm text-on-surface-variant/50'>
-        No kits found — assign a Starter Kits collection in the theme editor.
-      </p>
+      {%- if kits_collection != blank -%}
+        <p class='mt-6 text-center text-sm text-on-surface-variant/50'>
+          No products in this collection yet — add products to your Starter Kits collection.
+        </p>
+      {%- else -%}
+        <p class='mt-6 text-center text-sm text-on-surface-variant/50'>
+          No kits found — assign a Starter Kits collection in the theme editor.
+        </p>
+      {%- endif -%}
     {%- endif -%}
   </div>
 </section>
