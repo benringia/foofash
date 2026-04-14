@@ -1,0 +1,142 @@
+{%- if section.blocks.size > 0 -%}
+  <section class='why-choose-us bg-surface py-24'>
+    <div class='mx-auto max-w-7xl px-6 lg:px-8'>
+      {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+        <div class='mb-16 text-center'>
+          {%- if section.settings.heading != blank -%}
+            <h2 class='font-display text-4xl font-extrabold text-primary mb-4'>{{ section.settings.heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.subheading != blank -%}
+            <p class='text-on-surface-variant font-medium max-w-xl mx-auto'>{{ section.settings.subheading }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <ul class='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4' role='list'>
+        {%- for block in section.blocks -%}
+          {%- liquid
+            case block.settings.icon
+              when 'vet-approved'
+                assign icon_bg = 'bg-medical-green'
+                assign icon_color = 'text-primary'
+              when 'shipping'
+                assign icon_bg = 'bg-medical-blue'
+                assign icon_color = 'text-primary'
+              when 'returns'
+                assign icon_bg = 'bg-orange-50'
+                assign icon_color = 'text-secondary'
+              else
+                assign icon_bg = 'bg-surface-container'
+                assign icon_color = 'text-on-surface-variant'
+            endcase
+          -%}
+          <li
+            class='flex flex-col bg-white rounded-3xl p-8 shadow-bubbly hover:-translate-y-1 transition-all duration-300'
+            {{ block.shopify_attributes }}
+          >
+            {%- if block.settings.icon != blank -%}
+              <div
+                class='w-16 h-16 {{ icon_bg }} rounded-2xl flex items-center justify-center mb-6'
+                aria-hidden='true'
+              >
+                <span class='h-8 w-8 {{ icon_color }}'>
+                  {%- render 'icon', icon: block.settings.icon -%}
+                </span>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.title != blank -%}
+              <h3 class='text-xl font-bold text-primary mb-3'>{{ block.settings.title }}</h3>
+            {%- endif -%}
+            {%- if block.settings.description != blank -%}
+              <p class='text-on-surface-variant leading-relaxed'>{{ block.settings.description }}</p>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Why Choose Us",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why Pet Parents Choose Foofash"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Care you can trust, backed by a real veterinary team"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon name",
+          "info": "Supported: vet-approved, shipping, returns, paw"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Why Choose Us",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "vet-approved",
+            "title": "Vet Approved",
+            "description": "Every product is reviewed and recommended by our in-house veterinary team"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "shipping",
+            "title": "Free Shipping",
+            "description": "Free delivery on all orders over $50 — fast, reliable, tracked"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "returns",
+            "title": "Easy Returns",
+            "description": "Changed your mind? 30-day hassle-free returns, no questions asked"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "paw",
+            "title": "Clinic-Backed Care",
+            "description": "Products chosen by vets who treat pets daily — not just sourced for the shelf"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
