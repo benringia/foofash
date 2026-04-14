@@ -10,7 +10,7 @@
 >
   <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
     {%- comment -%} ── Main two-column grid: 60 / 40 ── {%- endcomment -%}
-    <div class='grid grid-cols-1 gap-12 lg:grid-cols-[3fr_2fr] lg:items-start lg:gap-16'>
+    <div class='grid grid-cols-1 gap-8 lg:grid-cols-[3fr_2fr] lg:items-start lg:gap-16'>
       {%- comment -%}
         ══════════════════════════════════
           LEFT — product media
@@ -89,25 +89,23 @@
           RIGHT — product info
         ══════════════════════════════════
       {%- endcomment -%}
-      <div class='product-info flex flex-col gap-6'>
-        {%- comment -%} Product type {%- endcomment -%}
-        {%- if product.type != blank -%}
-          <p class='text-xs font-semibold uppercase tracking-widest text-on-surface-variant'>
-            {{ product.type }}
-          </p>
-        {%- endif -%}
-
-        {%- comment -%} Title + rating {%- endcomment -%}
+      <div class='product-info flex flex-col'>
+        {%- comment -%} ── CLUSTER 1: Eyebrow + Title + Rating ── {%- endcomment -%}
         <div class='flex flex-col gap-2'>
-          <h1 class='text-4xl font-extrabold leading-tight text-on-surface'>
+          {%- if product.type != blank -%}
+            <p class='text-xs font-semibold uppercase tracking-widest text-on-surface-variant'>
+              {{ product.type }}
+            </p>
+          {%- endif -%}
+          <h1 class='text-3xl font-extrabold leading-[1.15] text-on-surface lg:text-4xl xl:text-[2.75rem]'>
             {{ product.title }}
           </h1>
           {%- render 'rating-stars', product: product -%}
         </div>
 
-        {%- comment -%} Price + savings badge {%- endcomment -%}
-        <div class='flex flex-wrap items-baseline gap-3' data-pdp-price>
-          <div class='text-2xl'>
+        {%- comment -%} ── CLUSTER 2: Price + savings ── {%- endcomment -%}
+        <div class='mt-5 flex flex-wrap items-baseline gap-3' data-pdp-price>
+          <div class='text-3xl font-black leading-none'>
             {%- render 'price', product: product -%}
           </div>
           {%- if variant.compare_at_price > variant.price -%}
@@ -118,7 +116,7 @@
           {%- endif -%}
         </div>
 
-        {%- comment -%} Trust + urgency badges {%- endcomment -%}
+        {%- comment -%} ── CLUSTER 3: Trust + urgency badges ── {%- endcomment -%}
         {%- assign show_badges = false -%}
         {%- if product.metafields.pet.vet_approved.value == true
           or inventory_qty <= 5
@@ -128,7 +126,7 @@
           {%- assign show_badges = true -%}
         {%- endif -%}
         {%- if show_badges -%}
-          <div class='flex flex-wrap gap-2'>
+          <div class='mt-3 flex flex-wrap gap-2'>
             {%- if product.metafields.pet.vet_approved.value == true -%}
               <span class='flex items-center gap-1.5 rounded-full bg-medical-green px-3 py-1.5 text-xs font-semibold text-primary'>
                 <span class='block h-3.5 w-3.5 shrink-0' aria-hidden='true'>
@@ -153,14 +151,81 @@
           </div>
         {%- endif -%}
 
-        {%- comment -%} ── Product form ── {%- endcomment -%}
+        {%- comment -%} ── CLUSTER 4: Benefit strip (schema-controlled quick-sell points) ── {%- endcomment -%}
+        {%- assign has_benefits = false -%}
+        {%- if section.settings.benefit_1 != blank
+          or section.settings.benefit_2 != blank
+          or section.settings.benefit_3 != blank
+        -%}
+          {%- assign has_benefits = true -%}
+        {%- endif -%}
+        {%- if has_benefits -%}
+          <ul class='mt-4 flex flex-col gap-2' aria-label='Product benefits'>
+            {%- if section.settings.benefit_1 != blank -%}
+              <li class='flex items-start gap-2 text-sm text-on-surface-variant'>
+                <svg
+                  class='mt-0.5 h-4 w-4 shrink-0 text-primary'
+                  viewBox='0 0 16 16'
+                  fill='none'
+                  stroke='currentColor'
+                  stroke-width='2.5'
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  aria-hidden='true'
+                >
+                  <path d='M3 8l3.5 3.5L13 4.5'/>
+                </svg>
+                {{ section.settings.benefit_1 }}
+              </li>
+            {%- endif -%}
+            {%- if section.settings.benefit_2 != blank -%}
+              <li class='flex items-start gap-2 text-sm text-on-surface-variant'>
+                <svg
+                  class='mt-0.5 h-4 w-4 shrink-0 text-primary'
+                  viewBox='0 0 16 16'
+                  fill='none'
+                  stroke='currentColor'
+                  stroke-width='2.5'
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  aria-hidden='true'
+                >
+                  <path d='M3 8l3.5 3.5L13 4.5'/>
+                </svg>
+                {{ section.settings.benefit_2 }}
+              </li>
+            {%- endif -%}
+            {%- if section.settings.benefit_3 != blank -%}
+              <li class='flex items-start gap-2 text-sm text-on-surface-variant'>
+                <svg
+                  class='mt-0.5 h-4 w-4 shrink-0 text-primary'
+                  viewBox='0 0 16 16'
+                  fill='none'
+                  stroke='currentColor'
+                  stroke-width='2.5'
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  aria-hidden='true'
+                >
+                  <path d='M3 8l3.5 3.5L13 4.5'/>
+                </svg>
+                {{ section.settings.benefit_3 }}
+              </li>
+            {%- endif -%}
+          </ul>
+        {%- endif -%}
+
+        {%- comment -%} ── CLUSTER 5: Product form ── {%- endcomment -%}
         {%- form 'product', product, data-cart-form: '' -%}
-          <div class='flex flex-col gap-5'>
+          <div class='mt-6 flex flex-col gap-4'>
             {%- comment -%} Variant selector — pill UI backed by hidden select {%- endcomment -%}
             {%- unless product.has_only_default_variant -%}
-              <div class='flex flex-col gap-3'>
+              <div class='flex flex-col gap-2.5'>
                 <p class='text-sm font-semibold text-on-surface-variant'>
-                  {{ product.options.first }}
+                  {{ product.options.first }}:
+                  <span class='font-semibold text-on-surface' data-selected-variant-label>
+                    {{- variant.title -}}
+                  </span>
                 </p>
 
                 {%- comment -%} Hidden select preserves all existing JS contracts {%- endcomment -%}
@@ -211,7 +276,7 @@
             {%- endunless -%}
 
             {%- comment -%} Quantity stepper + ATC {%- endcomment -%}
-            <div class='flex gap-3 items-stretch'>
+            <div class='flex items-stretch gap-3'>
               {%- comment -%} Stepper {%- endcomment -%}
               <div
                 class='flex items-center overflow-hidden rounded-2xl bg-surface shadow-ambient'
@@ -253,7 +318,7 @@
                   disabled
                   aria-disabled='true'
                 {%- endunless -%}
-                class='flex-1 rounded-2xl bg-primary-gradient py-4 text-base font-bold text-on-primary transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:scale-100 disabled:cursor-not-allowed disabled:opacity-50'
+                class='flex-1 rounded-2xl bg-primary-gradient py-5 text-base font-bold text-on-primary transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:scale-100 disabled:cursor-not-allowed disabled:opacity-50'
               >
                 {%- if variant.available -%}
                   Add to Cart
@@ -263,26 +328,34 @@
               </button>
             </div>
 
-            {%- comment -%} Microcopy under CTA {%- endcomment -%}
-            <div class='flex flex-wrap gap-x-6 gap-y-2 text-sm text-on-surface-variant'>
+            {%- comment -%} Microcopy under CTA — 3 reassurance items {%- endcomment -%}
+            <div class='flex flex-wrap gap-x-5 gap-y-2 text-xs text-on-surface-variant'>
               <span class='flex items-center gap-1.5'>
-                <span class='block h-4 w-4 shrink-0' aria-hidden='true'>
+                <span class='block h-3.5 w-3.5 shrink-0' aria-hidden='true'>
                   {%- render 'icon', icon: 'shipping' -%}
                 </span>
                 Free shipping over $50
               </span>
               <span class='flex items-center gap-1.5'>
-                <span class='block h-4 w-4 shrink-0' aria-hidden='true'>
+                <span class='block h-3.5 w-3.5 shrink-0' aria-hidden='true'>
                   {%- render 'icon', icon: 'returns' -%}
                 </span>
                 Easy 30-day returns
               </span>
+              {%- if section.settings.show_urgency -%}
+                <span class='flex items-center gap-1.5'>
+                  <span class='block h-3.5 w-3.5 shrink-0' aria-hidden='true'>
+                    {%- render 'icon', icon: 'clock' -%}
+                  </span>
+                  Same-day dispatch before 3PM
+                </span>
+              {%- endif -%}
             </div>
           </div>
         {%- endform -%}
 
-        {%- comment -%} ── Accordion tabs ── {%- endcomment -%}
-        <div class='mt-2 flex flex-col divide-y divide-on-surface/8'>
+        {%- comment -%} ── CLUSTER 6: Accordion tabs ── {%- endcomment -%}
+        <div class='mt-6 flex flex-col divide-y divide-on-surface/8'>
           {%- comment -%} Description {%- endcomment -%}
           {%- if product.description != blank -%}
             <div data-accordion>
@@ -292,7 +365,21 @@
                 aria-expanded='true'
                 class='flex w-full items-center justify-between py-4 text-left text-sm font-semibold text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary'
               >
-                <span>Description</span>
+                <span class='flex items-center gap-2'>
+                  <svg
+                    class='h-4 w-4 shrink-0 text-on-surface-variant'
+                    viewBox='0 0 16 16'
+                    fill='none'
+                    stroke='currentColor'
+                    stroke-width='1.5'
+                    stroke-linecap='round'
+                    stroke-linejoin='round'
+                    aria-hidden='true'
+                  >
+                    <rect x='2' y='2' width='12' height='12' rx='2'/><path d='M5 5h6M5 8h6M5 11h4'/>
+                  </svg>
+                  Description
+                </span>
                 <span
                   class='block h-5 w-5 shrink-0 text-on-surface-variant transition-transform duration-200 [[aria-expanded=true]_&]:rotate-180'
                   aria-hidden='true'
@@ -311,7 +398,7 @@
               </button>
               <div
                 data-accordion-panel
-                class='prose prose-sm max-w-none pb-4 text-on-surface-variant'
+                class='prose prose-sm max-w-none pb-5 text-on-surface-variant'
               >
                 {{ product.description }}
               </div>
@@ -327,7 +414,21 @@
                 aria-expanded='false'
                 class='flex w-full items-center justify-between py-4 text-left text-sm font-semibold text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary'
               >
-                <span>Ingredients</span>
+                <span class='flex items-center gap-2'>
+                  <svg
+                    class='h-4 w-4 shrink-0 text-on-surface-variant'
+                    viewBox='0 0 16 16'
+                    fill='none'
+                    stroke='currentColor'
+                    stroke-width='1.5'
+                    stroke-linecap='round'
+                    stroke-linejoin='round'
+                    aria-hidden='true'
+                  >
+                    <path d='M8 2c0 0-4 3-4 7a4 4 0 008 0c0-4-4-7-4-7z'/><path d='M8 9V5'/>
+                  </svg>
+                  Ingredients
+                </span>
                 <span
                   class='block h-5 w-5 shrink-0 text-on-surface-variant transition-transform duration-200 [[aria-expanded=true]_&]:rotate-180'
                   aria-hidden='true'
@@ -347,7 +448,7 @@
               <div
                 data-accordion-panel
                 hidden
-                class='prose prose-sm max-w-none pb-4 text-on-surface-variant'
+                class='prose prose-sm max-w-none pb-5 text-on-surface-variant'
               >
                 {{ product.metafields.pet.ingredients.value }}
               </div>
@@ -362,7 +463,12 @@
               aria-expanded='false'
               class='flex w-full items-center justify-between py-4 text-left text-sm font-semibold text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary'
             >
-              <span>Shipping &amp; Returns</span>
+              <span class='flex items-center gap-2'>
+                <span class='block h-4 w-4 shrink-0 text-on-surface-variant' aria-hidden='true'>
+                  {%- render 'icon', icon: 'shipping' -%}
+                </span>
+                Shipping &amp; Returns
+              </span>
               <span
                 class='block h-5 w-5 shrink-0 text-on-surface-variant transition-transform duration-200 [[aria-expanded=true]_&]:rotate-180'
                 aria-hidden='true'
@@ -382,7 +488,7 @@
             <div
               data-accordion-panel
               hidden
-              class='pb-4 text-sm leading-relaxed text-on-surface-variant'
+              class='pb-5 text-sm leading-relaxed text-on-surface-variant'
             >
               <p>
                 Free standard shipping on orders over $50. Orders placed before 3PM on weekdays ship the same day.
@@ -399,7 +505,7 @@
     </div>
 
     {%- comment -%} ── Trust strip ── {%- endcomment -%}
-    <div class='mt-16 grid grid-cols-1 gap-4 rounded-3xl bg-surface p-8 shadow-ambient sm:grid-cols-3'>
+    <div class='mt-12 grid grid-cols-1 gap-4 rounded-3xl bg-surface p-8 shadow-ambient sm:grid-cols-3'>
       <div class='flex items-start gap-4'>
         <span
           class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-medical-green text-primary'
@@ -416,7 +522,7 @@
       </div>
       <div class='flex items-start gap-4'>
         <span
-          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-medical-green text-primary'
+          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-medical-blue text-tertiary'
           aria-hidden='true'
         >
           <span class='block h-6 w-6'>
@@ -430,7 +536,7 @@
       </div>
       <div class='flex items-start gap-4'>
         <span
-          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-medical-green text-primary'
+          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-secondary/15 text-secondary'
           aria-hidden='true'
         >
           <span class='block h-6 w-6'>
@@ -518,6 +624,32 @@
       "id": "show_urgency",
       "label": "Show order cutoff urgency message",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Quick benefits"
+    },
+    {
+      "type": "paragraph",
+      "content": "Show up to 3 short product benefits near the Add to Cart button. Leave blank to hide."
+    },
+    {
+      "type": "text",
+      "id": "benefit_1",
+      "label": "Benefit 1",
+      "placeholder": "e.g. Formulated by veterinary nutritionists"
+    },
+    {
+      "type": "text",
+      "id": "benefit_2",
+      "label": "Benefit 2",
+      "placeholder": "e.g. No artificial preservatives or fillers"
+    },
+    {
+      "type": "text",
+      "id": "benefit_3",
+      "label": "Benefit 3",
+      "placeholder": "e.g. Suitable for all life stages"
     }
   ]
 }
