@@ -17,10 +17,11 @@
           <li {{ block.shopify_attributes }}>
             <a
               href='{{ block.settings.link | default: '#' }}'
-              class='group flex flex-col items-center bg-white rounded-3xl p-6 shadow-bubbly hover:-translate-y-1 hover:shadow-bubbly-lg transition-all duration-300 cursor-pointer'
+              class='group flex flex-col items-center bg-white rounded-3xl p-6 shadow-bubbly hover:-translate-y-1 hover:shadow-bubbly-lg transition-all duration-300'
             >
               <div class='w-32 h-32 rounded-full overflow-hidden'>
                 {%- if block.settings.image != blank -%}
+                  {%- assign img_alt = block.settings.label | default: block.settings.image.alt -%}
                   {{
                     block.settings.image
                     | image_url: width: 288
@@ -29,8 +30,7 @@
                       height: 288,
                       loading: 'lazy',
                       class: 'h-full w-full object-cover',
-                      alt: block.settings.label
-                    | default: block.settings.image.alt
+                      alt: img_alt
                   }}
                 {%- else -%}
                   <div class='flex h-full w-full items-center justify-center bg-surface-container text-primary'>
