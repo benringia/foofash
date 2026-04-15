@@ -373,6 +373,47 @@
         </div>
       </div>
     {%- endif -%}
+
+    {%- comment -%} ── Who It's For + What to Expect (side-by-side on desktop) ── {%- endcomment -%}
+    {%- assign has_who_or_expect = false -%}
+    {%- if service_who_for != blank or service_expect != blank -%}
+      {%- assign has_who_or_expect = true -%}
+    {%- endif -%}
+    {%- if has_who_or_expect -%}
+      <div class='mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2'>
+        {%- if service_who_for != blank -%}
+          <div class='rounded-3xl bg-surface p-7 shadow-ambient'>
+            <div class='flex items-center gap-3'>
+              <span
+                class='flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-medical-green text-primary'
+                aria-hidden='true'
+              >
+                <span class='block h-5 w-5'>{%- render 'icon', icon: 'paw' -%}</span>
+              </span>
+              <h2 class='text-lg font-extrabold text-on-surface'>Who This Service Is For</h2>
+            </div>
+            <p class='mt-4 text-sm leading-relaxed text-on-surface-variant'>{{ service_who_for }}</p>
+          </div>
+        {%- endif -%}
+
+        {%- if service_expect != blank -%}
+          <div class='rounded-3xl bg-medical-blue/40 p-7 shadow-ambient'>
+            <div class='flex items-center gap-3'>
+              <span
+                class='flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-medical-blue text-tertiary'
+                aria-hidden='true'
+              >
+                <span class='block h-5 w-5'>{%- render 'icon', icon: 'stethoscope' -%}</span>
+              </span>
+              <h2 class='text-lg font-extrabold text-on-surface'>What to Expect</h2>
+            </div>
+            <div class='prose prose-sm mt-4 max-w-none text-on-surface-variant'>
+              {{ service_expect }}
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
   </div>
 </section>
 
