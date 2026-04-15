@@ -414,6 +414,58 @@
         {%- endif -%}
       </div>
     {%- endif -%}
+
+    {%- comment -%} ── Clinical trust strip ── {%- endcomment -%}
+    <div class='mt-12 grid grid-cols-1 gap-4 rounded-3xl bg-surface p-8 shadow-ambient sm:grid-cols-2 lg:grid-cols-4'>
+      <div class='flex items-start gap-4'>
+        <span
+          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-medical-green text-primary'
+          aria-hidden='true'
+        >
+          <span class='block h-6 w-6'>{%- render 'icon', icon: 'vet-approved' -%}</span>
+        </span>
+        <div>
+          <p class='font-semibold text-on-surface'>{{ section.settings.trust_1_title }}</p>
+          <p class='mt-0.5 text-sm text-on-surface-variant'>{{ section.settings.trust_1_desc }}</p>
+        </div>
+      </div>
+      <div class='flex items-start gap-4'>
+        <span
+          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-medical-blue text-tertiary'
+          aria-hidden='true'
+        >
+          <span class='block h-6 w-6'>{%- render 'icon', icon: 'stethoscope' -%}</span>
+        </span>
+        <div>
+          <p class='font-semibold text-on-surface'>{{ section.settings.trust_2_title }}</p>
+          <p class='mt-0.5 text-sm text-on-surface-variant'>{{ section.settings.trust_2_desc }}</p>
+        </div>
+      </div>
+      <div class='flex items-start gap-4'>
+        <span
+          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-secondary/15 text-secondary'
+          aria-hidden='true'
+        >
+          <span class='block h-6 w-6'>{%- render 'icon', icon: 'returns' -%}</span>
+        </span>
+        <div>
+          <p class='font-semibold text-on-surface'>{{ section.settings.trust_3_title }}</p>
+          <p class='mt-0.5 text-sm text-on-surface-variant'>{{ section.settings.trust_3_desc }}</p>
+        </div>
+      </div>
+      <div class='flex items-start gap-4'>
+        <span
+          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-medical-green text-primary'
+          aria-hidden='true'
+        >
+          <span class='block h-6 w-6'>{%- render 'icon', icon: 'phone' -%}</span>
+        </span>
+        <div>
+          <p class='font-semibold text-on-surface'>{{ section.settings.trust_4_title }}</p>
+          <p class='mt-0.5 text-sm text-on-surface-variant'>{{ section.settings.trust_4_desc }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
