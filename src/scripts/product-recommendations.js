@@ -2,8 +2,19 @@ export function initProductRecommendations() {
   const section = document.querySelector("[data-product-recommendations]");
   if (!section) return;
 
-  const { productId, url, limit = 4 } = section.dataset;
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      if (!entries[0].isIntersecting) return;
+      obs.disconnect();
+      loadRecommendations(section);
+    },
+    { rootMargin: "200px" },
+  );
+  observer.observe(section);
+}
 
+function loadRecommendations(section) {
+  const { productId, url, limit = 4 } = section.dataset;
   fetch(
     `${url}?section_id=product-recommendations&product_id=${productId}&limit=${limit}`,
   )

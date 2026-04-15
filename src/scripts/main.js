@@ -1,6 +1,5 @@
 import "../styles/main.css";
 
-console.log("Vite bundle loaded:", new Date().toISOString());
 import { initCartDrawer } from "./cart-drawer.js";
 import { initCartUpsell } from "./cart-upsell.js";
 import { initStickyAtc } from "./sticky-atc.js";
@@ -15,18 +14,38 @@ import { initHeader } from "./header.js";
 import { initBundle } from "./bundle.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  const template = document.body.dataset.template;
+
+  // Global — needed on every page
   initCartDrawer();
   initCartUpsell();
-  initStickyAtc();
-  initQuickView();
-  initProduct();
+  initHeader();
   initModal();
   initAccordion();
   initPredictiveSearch();
-  initCollection();
-  initProductRecommendations();
-  initHeader();
-  initBundle();
+
+  // Product pages only
+  if (template === "product") {
+    initProduct();
+    initStickyAtc();
+    initProductRecommendations();
+    initBundle();
+  }
+
+  // Collection and search pages
+  if (template === "collection" || template === "search") {
+    initCollection();
+  }
+
+  // Pages with product cards (quick view trigger)
+  if (
+    template === "index" ||
+    template === "collection" ||
+    template === "search"
+  ) {
+    initQuickView();
+  }
+
   document.querySelectorAll("[data-date-min-today]").forEach((el) => {
     el.min = new Date().toISOString().split("T")[0];
   });

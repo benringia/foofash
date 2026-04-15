@@ -93,8 +93,21 @@ export function initQuickView() {
   const overlay = document.querySelector("[data-quick-view-overlay]");
   if (!modal) return;
 
-  // Delegated trigger click
+  // Single delegated click handler for all quick-view click interactions
   document.addEventListener("click", async (e) => {
+    // Close button
+    if (e.target.closest("[data-quick-view-close]")) {
+      closeModal(modal, overlay);
+      return;
+    }
+
+    // Overlay click
+    if (e.target.matches("[data-quick-view-overlay]")) {
+      closeModal(modal, overlay);
+      return;
+    }
+
+    // Trigger
     const trigger = e.target.closest("[data-quick-view-trigger]");
     if (!trigger) return;
     e.preventDefault();
@@ -135,17 +148,6 @@ export function initQuickView() {
     } finally {
       busy = false;
     }
-  });
-
-  // Close button
-  document.addEventListener("click", (e) => {
-    if (e.target.closest("[data-quick-view-close]")) closeModal(modal, overlay);
-  });
-
-  // Overlay click
-  document.addEventListener("click", (e) => {
-    if (e.target.matches("[data-quick-view-overlay]"))
-      closeModal(modal, overlay);
   });
 
   // Escape key

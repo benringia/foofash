@@ -11,9 +11,17 @@
     <link rel='preconnect' href='https://fonts.googleapis.com'>
     <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
     <link
+      rel='preload'
       href='https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap'
-      rel='stylesheet'
+      as='style'
+      onload='this.onload=null;this.rel="stylesheet"'
     >
+    <noscript>
+      <link
+        href='https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap'
+        rel='stylesheet'
+      >
+    </noscript>
     <style>
       body {
         font-family: 'Plus Jakarta Sans', sans-serif;
@@ -30,10 +38,12 @@
     <script>
       window.__foofash = { currency: '{{ shop.currency }}' };
     </script>
+    {%- assign vite_css_url = 'main.css' | asset_url -%}
+    <link rel='preload' href='{{ vite_css_url }}' as='style'>
     {% render 'vite-assets' %}
     {{ content_for_header }}
   </head>
-  <body>
+  <body data-template='{{ request.page_type }}'>
     <a
       href='#main-content'
       class='sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:text-black'

@@ -42,7 +42,7 @@ export default {
       output: {
         entryFileNames: "main.js",
         assetFileNames: "main.css",
-        chunkFileNames: "chunk.js",
+        chunkFileNames: "chunks/[name].js",
       },
     },
   },

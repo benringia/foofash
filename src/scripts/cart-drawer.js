@@ -5,16 +5,29 @@ import { formatMoney } from "./utils.js";
 let busy = false;
 let lastToggleTrigger = null;
 
+// Stable DOM refs — populated once in initCartDrawer()
+let drawerEl = null;
+let overlayEl = null;
+let cartItemsEl = null;
+let cartEmptyEl = null;
+let cartSubtotalEls = null;
+let cartCountEls = null;
+let cartCountLabelEls = null;
+let cartCountBadgeEls = null;
+
 const REMOVE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 function trapFocus(drawer) {
-  const focusable = () => Array.from(drawer.querySelectorAll(FOCUSABLE));
+  let items = Array.from(drawer.querySelectorAll(FOCUSABLE));
+  // Exposed so callers can refresh the list after innerHTML changes
+  drawer._refreshFocusable = () => {
+    items = Array.from(drawer.querySelectorAll(FOCUSABLE));
+  };
   drawer._trapHandler = (e) => {
     if (e.key !== "Tab") return;
-    const items = focusable();
     if (!items.length) return;
     const first = items[0];
     const last = items[items.length - 1];
@@ -37,6 +50,7 @@ function releaseFocus(drawer) {
   if (drawer._trapHandler) {
     drawer.removeEventListener("keydown", drawer._trapHandler);
     drawer._trapHandler = null;
+    drawer._refreshFocusable = null;
   }
 }
 
@@ -82,32 +96,29 @@ function renderCartItem(item) {
 }
 
 function renderCart(cart) {
-  const itemsList = document.querySelector("[data-cart-items]");
-  const emptyMsg = document.querySelector("[data-cart-empty]");
-  const subtotalEls = document.querySelectorAll("[data-cart-subtotal]");
-  const countEls = document.querySelectorAll("[data-cart-count]");
-
-  if (itemsList) {
-    itemsList.innerHTML = cart.items.map(renderCartItem).join("");
+  if (cartItemsEl) {
+    cartItemsEl.innerHTML = cart.items.map(renderCartItem).join("");
+    // Refresh focus trap list after items HTML changes
+    drawerEl?._refreshFocusable?.();
   }
 
-  if (emptyMsg) {
-    emptyMsg.classList.toggle("hidden", cart.item_count > 0);
+  if (cartEmptyEl) {
+    cartEmptyEl.classList.toggle("hidden", cart.item_count > 0);
   }
 
-  subtotalEls.forEach((el) => {
+  cartSubtotalEls?.forEach((el) => {
     el.textContent = formatMoney(cart.total_price);
   });
 
-  countEls.forEach((el) => {
+  cartCountEls?.forEach((el) => {
     el.textContent = cart.item_count;
   });
 
-  document.querySelectorAll("[data-cart-count-label]").forEach((el) => {
+  cartCountLabelEls?.forEach((el) => {
     el.textContent = cart.item_count === 1 ? "item" : "items";
   });
 
-  document.querySelectorAll("[data-cart-count-badge]").forEach((el) => {
+  cartCountBadgeEls?.forEach((el) => {
     el.classList.toggle("hidden", cart.item_count === 0);
   });
 
@@ -116,36 +127,41 @@ function renderCart(cart) {
 }
 
 function openDrawer() {
-  const drawer = document.querySelector("[data-cart-drawer]");
-  const overlay = document.querySelector("[data-cart-overlay]");
-  if (!drawer) return;
+  if (!drawerEl) return;
 
-  overlay?.classList.remove("hidden");
-  drawer.classList.remove("translate-x-full");
-  drawer.setAttribute("aria-hidden", "false");
+  overlayEl?.classList.remove("hidden");
+  drawerEl.classList.remove("translate-x-full");
+  drawerEl.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
-  trapFocus(drawer);
+  trapFocus(drawerEl);
 
   // Focus the close button
-  const closeBtn = drawer.querySelector("[data-cart-close]");
+  const closeBtn = drawerEl.querySelector("[data-cart-close]");
   closeBtn?.focus();
 }
 
 function closeDrawer() {
-  const drawer = document.querySelector("[data-cart-drawer]");
-  const overlay = document.querySelector("[data-cart-overlay]");
-  if (!drawer) return;
+  if (!drawerEl) return;
 
-  overlay?.classList.add("hidden");
-  drawer.classList.add("translate-x-full");
-  drawer.setAttribute("aria-hidden", "true");
+  overlayEl?.classList.add("hidden");
+  drawerEl.classList.add("translate-x-full");
+  drawerEl.setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
-  releaseFocus(drawer);
+  releaseFocus(drawerEl);
 
   lastToggleTrigger?.focus();
 }
 
 export function initCartDrawer() {
+  drawerEl = document.querySelector("[data-cart-drawer]");
+  overlayEl = document.querySelector("[data-cart-overlay]");
+  cartItemsEl = document.querySelector("[data-cart-items]");
+  cartEmptyEl = document.querySelector("[data-cart-empty]");
+  cartSubtotalEls = document.querySelectorAll("[data-cart-subtotal]");
+  cartCountEls = document.querySelectorAll("[data-cart-count]");
+  cartCountLabelEls = document.querySelectorAll("[data-cart-count-label]");
+  cartCountBadgeEls = document.querySelectorAll("[data-cart-count-badge]");
+
   // Open drawer on cart icon click
   document.addEventListener("click", async (e) => {
     if (!e.target.closest("[data-cart-toggle]")) return;
@@ -181,8 +197,7 @@ export function initCartDrawer() {
   // Close on Escape
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
-      const drawer = document.querySelector("[data-cart-drawer]");
-      if (drawer && drawer.getAttribute("aria-hidden") === "false")
+      if (drawerEl && drawerEl.getAttribute("aria-hidden") === "false")
         closeDrawer();
     }
   });
