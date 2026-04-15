@@ -11,7 +11,9 @@
     {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
       <div class='mb-12 flex flex-col md:flex-row justify-between items-end gap-6'>
         <div>
-          <p class='mb-2 text-xs font-semibold uppercase tracking-widest text-primary/70'>Customer Favorites</p>
+          <p class='mb-2 text-xs font-semibold uppercase tracking-widest text-primary/70'>
+            {{ section.settings.eyebrow }}
+          </p>
           {%- if section.settings.heading != blank -%}
             <h2 class='font-display text-4xl font-extrabold text-primary'>{{ section.settings.heading }}</h2>
           {%- endif -%}
@@ -23,19 +25,19 @@
               <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
                 {%- render 'icon', icon: 'vet-approved' -%}
               </span>
-              Vet-approved essentials
+              {{ section.settings.trust_chip_1 }}
             </span>
             <span class='flex items-center gap-1.5 rounded-full bg-surface-container px-3 py-1.5 text-xs font-semibold text-on-surface'>
               <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
                 {%- render 'icon', icon: 'shipping' -%}
               </span>
-              Free shipping over $50
+              {{ section.settings.trust_chip_2 }}
             </span>
             <span class='flex items-center gap-1.5 rounded-full bg-surface-container px-3 py-1.5 text-xs font-semibold text-on-surface'>
               <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
                 {%- render 'icon', icon: 'returns' -%}
               </span>
-              Easy returns
+              {{ section.settings.trust_chip_3 }}
             </span>
           </div>
         </div>
@@ -54,7 +56,12 @@
       <ul class='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4' role='list'>
         {%- for product in collection.products limit: limit -%}
           <li>
-            {%- render 'product-card', product: product, homepage: true -%}
+            {%- render 'product-card',
+              product: product,
+              homepage: true,
+              badge_vet_label: settings.badge_vet_label,
+              badge_sale_label: settings.badge_sale_label
+            -%}
           </li>
         {%- endfor -%}
       </ul>
@@ -83,6 +90,12 @@
 {
   "name": "Featured Collection",
   "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "Customer Favorites"
+    },
     {
       "type": "text",
       "id": "heading",
@@ -119,6 +132,28 @@
       "max": 12,
       "step": 1,
       "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Trust chips"
+    },
+    {
+      "type": "text",
+      "id": "trust_chip_1",
+      "label": "Trust chip 1",
+      "default": "Vet-approved essentials"
+    },
+    {
+      "type": "text",
+      "id": "trust_chip_2",
+      "label": "Trust chip 2",
+      "default": "Free shipping over $50"
+    },
+    {
+      "type": "text",
+      "id": "trust_chip_3",
+      "label": "Trust chip 3",
+      "default": "Easy returns"
     }
   ],
   "presets": [

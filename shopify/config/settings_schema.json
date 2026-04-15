@@ -1,1 +1,42 @@
-[]
+[
+  {
+    "name": "Store & Trust",
+    "settings": [
+      {
+        "type": "text",
+        "id": "shipping_threshold_text",
+        "label": "Free shipping text",
+        "info": "Shown in product pages, collection trust strips, and featured collection.",
+        "default": "Free shipping over $50"
+      },
+      {
+        "type": "text",
+        "id": "returns_text",
+        "label": "Returns policy text",
+        "info": "Shown in product pages and collection trust strips.",
+        "default": "Easy 30-day returns"
+      },
+      {
+        "type": "text",
+        "id": "newsletter_cta_label",
+        "label": "Newsletter button label",
+        "info": "The submit button text in the footer newsletter form.",
+        "default": "Join the Pack"
+      },
+      {
+        "type": "text",
+        "id": "badge_vet_label",
+        "label": "\"Vet Approved\" badge label",
+        "info": "Shown on product cards.",
+        "default": "Vet Approved"
+      },
+      {
+        "type": "text",
+        "id": "badge_sale_label",
+        "label": "\"Sale\" badge label",
+        "info": "Shown on product cards when a compare-at price is set.",
+        "default": "Sale"
+      }
+    ]
+  }
+]

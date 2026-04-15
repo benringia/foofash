@@ -43,7 +43,7 @@
                   </div>
                 {%- endif -%}
                 <span class='absolute left-4 top-4 rounded-full bg-secondary px-3 py-1 text-xs font-bold text-white'>
-                  Starter Kit
+                  {{ section.settings.bundle_badge }}
                 </span>
               </div>
 
@@ -67,13 +67,14 @@
                   href='{{ product.url }}'
                   class='block w-full rounded-full bg-primary px-6 py-3 text-center font-bold text-white shadow-bubbly hover:bg-primary-dim hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
                 >
-                  Shop This Kit
+                  {{ section.settings.bundle_cta }}
                 </a>
                 <a
                   href='{{ product.url }}'
                   class='text-center text-sm font-semibold text-primary/60 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded'
                 >
-                  What's included <span aria-hidden='true'>→</span>
+                  {{ section.settings.bundle_detail_link }}
+                  <span aria-hidden='true'>→</span>
                 </a>
               </div>
             </article>
@@ -143,6 +144,28 @@
       "max": 4,
       "step": 1,
       "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Bundle card"
+    },
+    {
+      "type": "text",
+      "id": "bundle_badge",
+      "label": "Bundle badge label",
+      "default": "Starter Kit"
+    },
+    {
+      "type": "text",
+      "id": "bundle_cta",
+      "label": "Shop button label",
+      "default": "Shop This Kit"
+    },
+    {
+      "type": "text",
+      "id": "bundle_detail_link",
+      "label": "Detail link text",
+      "default": "What's included"
     }
   ],
   "presets": [

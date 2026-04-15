@@ -70,19 +70,19 @@
                   <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
                     {%- render 'icon', icon: 'vet-approved' -%}
                   </span>
-                  Vet Approved Picks
+                  {{ section.settings.trust_badge_1 | default: 'Vet Approved Picks' }}
                 </span>
                 <span class='flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 text-xs font-semibold text-on-surface shadow-ambient'>
                   <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
                     {%- render 'icon', icon: 'shipping' -%}
                   </span>
-                  Free Shipping over $50
+                  {{ section.settings.trust_badge_2 }}
                 </span>
                 <span class='flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 text-xs font-semibold text-on-surface shadow-ambient'>
                   <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
                     {%- render 'icon', icon: 'returns' -%}
                   </span>
-                  Easy Returns
+                  {{ section.settings.trust_badge_3 }}
                 </span>
               </div>
             {%- endif -%}
@@ -236,7 +236,11 @@
             >
               {%- for product in collection.products -%}
                 <li>
-                  {%- render 'product-card', product: product -%}
+                  {%- render 'product-card',
+                    product: product,
+                    badge_vet_label: settings.badge_vet_label,
+                    badge_sale_label: settings.badge_sale_label
+                  -%}
                 </li>
               {%- endfor -%}
             </ul>
@@ -434,6 +438,28 @@
       "id": "show_trust_strip",
       "label": "Show trust badges in header",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Trust badges"
+    },
+    {
+      "type": "text",
+      "id": "trust_badge_1",
+      "label": "Badge 1 text",
+      "default": "Vet Approved Picks"
+    },
+    {
+      "type": "text",
+      "id": "trust_badge_2",
+      "label": "Badge 2 text",
+      "default": "Free shipping over $50"
+    },
+    {
+      "type": "text",
+      "id": "trust_badge_3",
+      "label": "Badge 3 text",
+      "default": "Easy 30-day returns"
     }
   ]
 }

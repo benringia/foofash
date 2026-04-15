@@ -54,11 +54,13 @@
         <div class='absolute left-2.5 top-2.5 z-10 flex flex-col gap-1'>
           {%- if badge_vet -%}
             <span class='rounded-full bg-primary/90 px-2 py-0.5 text-xs font-bold leading-snug text-white'>
-              Vet Approved
+              {{ badge_vet_label | default: 'Vet Approved' }}
             </span>
           {%- endif -%}
           {%- if badge_sale -%}
-            <span class='rounded-full bg-secondary px-2 py-0.5 text-xs font-bold leading-snug text-white'> Sale </span>
+            <span class='rounded-full bg-secondary px-2 py-0.5 text-xs font-bold leading-snug text-white'>
+              {{ badge_sale_label | default: 'Sale' }}
+            </span>
           {%- endif -%}
           {%- if low_stock -%}
             <span class='rounded-full bg-secondary/90 px-2 py-0.5 text-xs font-bold leading-snug text-white'>

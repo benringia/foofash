@@ -214,7 +214,12 @@
         <ul class='grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-4' role='list'>
           {%- for product in popular_coll.products limit: section.settings.popular_count -%}
             <li>
-              {%- render 'product-card', product: product, homepage: true -%}
+              {%- render 'product-card',
+                product: product,
+                homepage: true,
+                badge_vet_label: settings.badge_vet_label,
+                badge_sale_label: settings.badge_sale_label
+              -%}
             </li>
           {%- endfor -%}
         </ul>

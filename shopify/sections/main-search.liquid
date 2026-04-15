@@ -45,7 +45,11 @@
           <div class='grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-4'>
             {%- for item in search.results -%}
               {%- if item.object_type == 'product' -%}
-                {% render 'product-card', product: item %}
+                {%- render 'product-card',
+                  product: item,
+                  badge_vet_label: settings.badge_vet_label,
+                  badge_sale_label: settings.badge_sale_label
+                -%}
               {%- endif -%}
             {%- endfor -%}
           </div>

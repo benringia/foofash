@@ -132,7 +132,7 @@
                 <span class='block h-3.5 w-3.5 shrink-0' aria-hidden='true'>
                   {%- render 'icon', icon: 'vet-approved' -%}
                 </span>
-                Vet Approved
+                {{ settings.badge_vet_label }}
               </span>
             {%- endif -%}
             {%- if inventory_qty <= 5 and inventory_qty > 0 -%}
@@ -145,7 +145,7 @@
                 <span class='block h-3.5 w-3.5 shrink-0' aria-hidden='true'>
                   {%- render 'icon', icon: 'clock' -%}
                 </span>
-                Order before 3PM for same-day dispatch
+                {{ section.settings.urgency_dispatch_text }}
               </span>
             {%- endif -%}
           </div>
@@ -334,20 +334,20 @@
                 <span class='block h-3.5 w-3.5 shrink-0' aria-hidden='true'>
                   {%- render 'icon', icon: 'shipping' -%}
                 </span>
-                Free shipping over $50
+                {{ settings.shipping_threshold_text }}
               </span>
               <span class='flex items-center gap-1.5'>
                 <span class='block h-3.5 w-3.5 shrink-0' aria-hidden='true'>
                   {%- render 'icon', icon: 'returns' -%}
                 </span>
-                Easy 30-day returns
+                {{ settings.returns_text }}
               </span>
               {%- if section.settings.show_urgency -%}
                 <span class='flex items-center gap-1.5'>
                   <span class='block h-3.5 w-3.5 shrink-0' aria-hidden='true'>
                     {%- render 'icon', icon: 'clock' -%}
                   </span>
-                  Same-day dispatch before 3PM
+                  {{ section.settings.urgency_dispatch_text }}
                 </span>
               {%- endif -%}
             </div>
@@ -490,14 +490,7 @@
               hidden
               class='pb-5 text-sm leading-relaxed text-on-surface-variant'
             >
-              <p>
-                Free standard shipping on orders over $50. Orders placed before 3PM on weekdays ship the same day.
-                Delivery typically takes 2–5 business days.
-              </p>
-              <p class='mt-2'>
-                Not happy? We offer hassle-free returns within 30 days of delivery. Simply contact our team and we'll
-                arrange a free return label.
-              </p>
+              {{ section.settings.shipping_returns_content }}
             </div>
           </div>
         </div>
@@ -516,8 +509,8 @@
           </span>
         </span>
         <div>
-          <p class='font-semibold text-on-surface'>Vet Approved</p>
-          <p class='mt-0.5 text-sm text-on-surface-variant'>Every product reviewed by our in-house veterinary team.</p>
+          <p class='font-semibold text-on-surface'>{{ section.settings.trust_1_title }}</p>
+          <p class='mt-0.5 text-sm text-on-surface-variant'>{{ section.settings.trust_1_desc }}</p>
         </div>
       </div>
       <div class='flex items-start gap-4'>
@@ -530,8 +523,8 @@
           </span>
         </span>
         <div>
-          <p class='font-semibold text-on-surface'>Free Shipping</p>
-          <p class='mt-0.5 text-sm text-on-surface-variant'>On all orders over $50. Same-day dispatch before 3PM.</p>
+          <p class='font-semibold text-on-surface'>{{ section.settings.trust_2_title }}</p>
+          <p class='mt-0.5 text-sm text-on-surface-variant'>{{ section.settings.trust_2_desc }}</p>
         </div>
       </div>
       <div class='flex items-start gap-4'>
@@ -544,8 +537,8 @@
           </span>
         </span>
         <div>
-          <p class='font-semibold text-on-surface'>Easy Returns</p>
-          <p class='mt-0.5 text-sm text-on-surface-variant'>30-day hassle-free returns. No questions asked.</p>
+          <p class='font-semibold text-on-surface'>{{ section.settings.trust_3_title }}</p>
+          <p class='mt-0.5 text-sm text-on-surface-variant'>{{ section.settings.trust_3_desc }}</p>
         </div>
       </div>
     </div>
@@ -597,6 +590,62 @@
       "id": "show_urgency",
       "label": "Show order cutoff urgency message",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Trust strip"
+    },
+    {
+      "type": "text",
+      "id": "trust_1_title",
+      "label": "Item 1 title",
+      "default": "Vet Approved"
+    },
+    {
+      "type": "text",
+      "id": "trust_1_desc",
+      "label": "Item 1 description",
+      "default": "Every product reviewed by our in-house veterinary team."
+    },
+    {
+      "type": "text",
+      "id": "trust_2_title",
+      "label": "Item 2 title",
+      "default": "Free Shipping"
+    },
+    {
+      "type": "text",
+      "id": "trust_2_desc",
+      "label": "Item 2 description",
+      "default": "On all orders over $50. Same-day dispatch before 3PM."
+    },
+    {
+      "type": "text",
+      "id": "trust_3_title",
+      "label": "Item 3 title",
+      "default": "Easy Returns"
+    },
+    {
+      "type": "text",
+      "id": "trust_3_desc",
+      "label": "Item 3 description",
+      "default": "30-day hassle-free returns. No questions asked."
+    },
+    {
+      "type": "header",
+      "content": "Messaging"
+    },
+    {
+      "type": "text",
+      "id": "urgency_dispatch_text",
+      "label": "Same-day dispatch text",
+      "default": "Order before 3PM for same-day dispatch"
+    },
+    {
+      "type": "textarea",
+      "id": "shipping_returns_content",
+      "label": "Shipping & Returns accordion content",
+      "default": "Free standard shipping on orders over $50. Orders placed before 3PM on weekdays ship the same day. Delivery typically takes 2–5 business days.\n\nNot happy? We offer hassle-free returns within 30 days of delivery. Simply contact our team and we'll arrange a free return label."
     },
     {
       "type": "header",
