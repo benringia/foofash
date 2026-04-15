@@ -215,7 +215,9 @@
                   {%- for v in product.variants -%}
                     <option
                       value='{{ v.id }}'
-                      {%- unless v.available -%}disabled{%- endunless -%}
+                      {%- unless v.available -%}
+                        disabled
+                      {%- endunless -%}
                     >
                       {{ v.title }}
                     </option>
@@ -315,7 +317,14 @@
                   class='block h-5 w-5 shrink-0 text-on-surface-variant transition-transform duration-200 [[aria-expanded=true]_&]:rotate-180'
                   aria-hidden='true'
                 >
-                  <svg viewBox='0 0 20 20' fill='none' stroke='currentColor' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'>
+                  <svg
+                    viewBox='0 0 20 20'
+                    fill='none'
+                    stroke='currentColor'
+                    stroke-width='1.75'
+                    stroke-linecap='round'
+                    stroke-linejoin='round'
+                  >
                     <path d='M5 7.5l5 5 5-5'/>
                   </svg>
                 </span>
@@ -330,11 +339,40 @@
             </div>
           </div>
         {%- endif -%}
-
       </div>
-
     </div>
-    {%- comment -%} ── Below-fold sections (Tasks 6–10) ── {%- endcomment -%}
+    {%- comment -%} ── Below-fold sections ── {%- endcomment -%}
+
+    {%- comment -%} ── What's Included ── {%- endcomment -%}
+    {%- if service_includes != blank -%}
+      {%- assign includes_lines = service_includes | split: '
+' -%}
+      <div class='mt-16'>
+        <div class='rounded-3xl bg-surface p-8 shadow-ambient lg:p-12'>
+          <h2 class='text-2xl font-extrabold text-on-surface'>What's Included</h2>
+          <p class='mt-1 text-sm text-on-surface-variant'>Everything covered in this appointment</p>
+          <ul
+            class='mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2'
+            aria-label="What's included in this service"
+          >
+            {%- for item in includes_lines -%}
+              {%- assign clean_item = item | strip -%}
+              {%- if clean_item != blank -%}
+                <li class='flex items-start gap-3'>
+                  <span
+                    class='mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-medical-green text-primary'
+                    aria-hidden='true'
+                  >
+                    <span class='block h-3 w-3'>{%- render 'icon', icon: 'check-circle' -%}</span>
+                  </span>
+                  <span class='text-sm text-on-surface'>{{ clean_item }}</span>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+    {%- endif -%}
   </div>
 </section>
 
