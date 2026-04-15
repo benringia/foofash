@@ -194,7 +194,145 @@
             </dl>
           </div>
         {%- endif -%}
+        {%- comment -%} ── Cluster 4: Booking form ── {%- endcomment -%}
+        {%- form 'product', product, data-cart-form: '' -%}
+          <div class='mt-6 flex flex-col gap-4'>
+            {%- comment -%} Variant selector — only when product has meaningful variants {%- endcomment -%}
+            {%- unless product.has_only_default_variant -%}
+              <div class='flex flex-col gap-2.5'>
+                <p class='text-sm font-semibold text-on-surface-variant'>
+                  {{ product.options.first }}:
+                  <span class='font-semibold text-on-surface' data-selected-variant-label>
+                    {{- variant.title -}}
+                  </span>
+                </p>
+                <select
+                  name='id'
+                  data-variant-selector
+                  class='sr-only'
+                  aria-label='{{ product.options.first }}'
+                >
+                  {%- for v in product.variants -%}
+                    <option
+                      value='{{ v.id }}'
+                      {%- unless v.available -%}disabled{%- endunless -%}
+                    >
+                      {{ v.title }}
+                    </option>
+                  {%- endfor -%}
+                </select>
+                <div
+                  class='flex flex-wrap gap-2'
+                  role='group'
+                  aria-label='{{ product.options.first }}'
+                >
+                  {%- for v in product.variants -%}
+                    <button
+                      type='button'
+                      data-variant-pill
+                      data-variant-id='{{ v.id }}'
+                      data-available='{{ v.available }}'
+                      aria-pressed='{% if forloop.first %}true{% else %}false{% endif %}'
+                      class='rounded-2xl px-5 py-2.5 text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 {% if forloop.first %}bg-primary text-on-primary shadow-bubbly{% else %}bg-surface text-on-surface shadow-ambient hover:bg-primary/10{% endif %} {% unless v.available %}cursor-not-allowed opacity-40{% endunless %}'
+                    >
+                      {{ v.title }}
+                    </button>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- else -%}
+              <input type='hidden' name='id' value='{{ variant.id }}'>
+            {%- endunless -%}
+
+            {%- comment -%} Primary booking CTA — full width, no qty stepper for services {%- endcomment -%}
+            <button
+              type='submit'
+              data-add-to-cart
+              data-main-atc
+              {%- unless variant.available -%}
+                disabled
+                aria-disabled='true'
+              {%- endunless -%}
+              class='w-full rounded-2xl bg-primary-gradient py-5 text-base font-bold text-on-primary transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:scale-100 disabled:cursor-not-allowed disabled:opacity-50'
+            >
+              {%- if variant.available -%}
+                {{ section.settings.cta_label | default: 'Book Appointment' }}
+              {%- else -%}
+                Unavailable
+              {%- endif -%}
+            </button>
+
+            {%- comment -%} Clinical microcopy — 3 reassurance items {%- endcomment -%}
+            <div class='flex flex-wrap gap-x-5 gap-y-2 text-xs text-on-surface-variant'>
+              <span class='flex items-center gap-1.5'>
+                <span class='block h-3.5 w-3.5 shrink-0' aria-hidden='true'>
+                  {%- render 'icon', icon: 'vet-approved' -%}
+                </span>
+                {{ section.settings.microcopy_1 | default: 'Licensed veterinary professionals' }}
+              </span>
+              <span class='flex items-center gap-1.5'>
+                <span class='block h-3.5 w-3.5 shrink-0' aria-hidden='true'>
+                  {%- render 'icon', icon: 'stethoscope' -%}
+                </span>
+                {{ section.settings.microcopy_2 | default: 'Tailored care plan for your pet' }}
+              </span>
+              <span class='flex items-center gap-1.5'>
+                <span class='block h-3.5 w-3.5 shrink-0' aria-hidden='true'>
+                  {%- render 'icon', icon: 'returns' -%}
+                </span>
+                {{ section.settings.microcopy_3 | default: 'Follow-up support included' }}
+              </span>
+            </div>
+          </div>
+        {%- endform -%}
+
+        {%- comment -%} ── Cluster 5: About this service accordion ── {%- endcomment -%}
+        {%- if product.description != blank -%}
+          <div class='mt-6 flex flex-col divide-y divide-on-surface/8'>
+            <div data-accordion>
+              <button
+                type='button'
+                data-accordion-trigger
+                aria-expanded='false'
+                class='flex w-full items-center justify-between py-4 text-left text-sm font-semibold text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary'
+              >
+                <span class='flex items-center gap-2'>
+                  <svg
+                    class='h-4 w-4 shrink-0 text-on-surface-variant'
+                    viewBox='0 0 16 16'
+                    fill='none'
+                    stroke='currentColor'
+                    stroke-width='1.5'
+                    stroke-linecap='round'
+                    stroke-linejoin='round'
+                    aria-hidden='true'
+                  >
+                    <rect x='2' y='2' width='12' height='12' rx='2'/><path d='M5 5h6M5 8h6M5 11h4'/>
+                  </svg>
+                  About this service
+                </span>
+                <span
+                  class='block h-5 w-5 shrink-0 text-on-surface-variant transition-transform duration-200 [[aria-expanded=true]_&]:rotate-180'
+                  aria-hidden='true'
+                >
+                  <svg viewBox='0 0 20 20' fill='none' stroke='currentColor' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'>
+                    <path d='M5 7.5l5 5 5-5'/>
+                  </svg>
+                </span>
+              </button>
+              <div
+                data-accordion-panel
+                hidden
+                class='prose prose-sm max-w-none pb-5 text-on-surface-variant'
+              >
+                {{ product.description }}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+
       </div>
+
     </div>
     {%- comment -%} ── Below-fold sections (Tasks 6–10) ── {%- endcomment -%}
   </div>
