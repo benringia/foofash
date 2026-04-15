@@ -1,0 +1,140 @@
+{%- comment -%}
+  Service / Clinic Product Page — main-product-service.liquid
+  Used by templates/product.service.json.
+  Differentiated from main-product.liquid by:
+    - Booking-focused CTA language
+    - Service summary card (duration, who for, availability)
+    - What's included section from service.includes metafield
+    - Clinical trust strip (licensed vets, tailored care, follow-up)
+    - What to expect / aftercare sections
+    - FAQ accordion (schema-controlled)
+    - No ecommerce patterns (no low-stock urgency, no shipping/returns copy)
+{%- endcomment -%}
+
+{%- assign variant = product.selected_or_first_available_variant -%}
+
+{%- comment -%} Service metafields {%- endcomment -%}
+{%- assign service_tagline      = product.metafields.service.tagline.value -%}
+{%- assign service_duration     = product.metafields.service.duration.value -%}
+{%- assign service_who_for      = product.metafields.service.who_for.value -%}
+{%- assign service_availability = product.metafields.service.availability_note.value -%}
+{%- assign service_price_prefix = product.metafields.service.price_prefix.value -%}
+{%- assign service_includes     = product.metafields.service.includes.value -%}
+{%- assign service_expect       = product.metafields.service.what_to_expect.value -%}
+{%- assign service_aftercare    = product.metafields.service.aftercare.value -%}
+
+<section
+  class='main-product-service bg-surface-container-low'
+  style='padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;'
+>
+  <div class='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+
+    {%- comment -%} ── Above-fold: 60/40 two-column grid ── {%- endcomment -%}
+    <div class='grid grid-cols-1 gap-8 lg:grid-cols-[3fr_2fr] lg:items-start lg:gap-16'>
+
+      {%- comment -%} ══ LEFT — service image ══ {%- endcomment -%}
+      <div class='service-media relative'>
+        {%- comment -%} Ambient glow {%- endcomment -%}
+        <div
+          class='pointer-events-none absolute -inset-8 rounded-full bg-primary/5 blur-3xl'
+          aria-hidden='true'
+        ></div>
+
+        <div class='group relative overflow-hidden rounded-[3rem] bg-surface shadow-bubbly-lg'>
+          {%- if product.featured_image != blank -%}
+            {%- assign main_img_alt = product.featured_image.alt | default: product.title -%}
+            {{
+              product.featured_image
+              | image_url: width: 900
+              | image_tag:
+                loading: 'eager',
+                fetchpriority: 'high',
+                width: 900,
+                height: 900,
+                class: 'h-full w-full object-cover transition-transform duration-700 group-hover:scale-105',
+                alt: main_img_alt,
+                data-main-image: ''
+            }}
+          {%- else -%}
+            {%- comment -%} No image fallback — stethoscope illustration {%- endcomment -%}
+            <div
+              class='flex aspect-square w-full items-center justify-center bg-medical-green text-primary/40'
+              aria-hidden='true'
+              data-main-image
+            >
+              <span class='block h-32 w-32'>
+                {%- render 'icon', icon: 'stethoscope' -%}
+              </span>
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} Service type badge overlaid on image {%- endcomment -%}
+          {%- if product.type != blank -%}
+            <div class='absolute left-4 top-4'>
+              <span class='rounded-full bg-surface/90 px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-primary shadow-bubbly backdrop-blur-sm'>
+                {{ product.type }}
+              </span>
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Thumbnail strip — only when multiple images {%- endcomment -%}
+        {%- if product.images.size > 1 -%}
+          <div
+            class='mt-4 flex gap-3 overflow-x-auto pb-2'
+            role='list'
+            aria-label='Service images'
+          >
+            {%- for image in product.images -%}
+              <button
+                type='button'
+                role='listitem'
+                data-thumbnail
+                data-image-url='{{ image | image_url: width: 900 }}'
+                class='h-20 w-20 shrink-0 cursor-pointer overflow-hidden rounded-2xl transition-all duration-200 hover:ring-2 hover:ring-primary/50 focus:outline-none focus:ring-2 focus:ring-primary {% if forloop.first %}ring-2 ring-primary{% else %}ring-2 ring-transparent{% endif %}'
+                aria-label='View image {{ forloop.index }} of {{ product.images.size }}'
+                {% if forloop.first %}aria-pressed='true'{% else %}aria-pressed='false'{% endif %}
+              >
+                {{
+                  image
+                  | image_url: width: 160
+                  | image_tag: loading: 'lazy', width: 80, height: 80, class: 'h-full w-full object-cover'
+                }}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ══ RIGHT — service info (Tasks 4 & 5) ══ {%- endcomment -%}
+      <div class='service-info flex flex-col'>
+        {{- 'service-info-placeholder' -}}
+      </div>
+
+    </div>
+    {%- comment -%} ── Below-fold sections (Tasks 6–10) ── {%- endcomment -%}
+  </div>
+</section>
+
+{%- comment -%} Variant JSON for client-side price updates {%- endcomment -%}
+<script id='product-variants-json' type='application/json'>
+  [
+    {%- for v in product.variants -%}
+      {
+        "id": {{ v.id }},
+        "price": {{ v.price }},
+        "compare_at_price": {{ v.compare_at_price | default: 0 }},
+        "available": {{ v.available }}
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ]
+</script>
+
+{%- render 'sticky-atc', product: product, cta_label: section.settings.cta_label, cta_sold_out_label: 'Unavailable' -%}
+
+{% schema %}
+{
+  "name": "Service Product",
+  "settings": []
+}
+{% endschema %}
