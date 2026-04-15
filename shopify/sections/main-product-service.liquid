@@ -466,6 +466,83 @@
         </div>
       </div>
     </div>
+
+    {%- comment -%} ── Aftercare / Follow-up (optional) ── {%- endcomment -%}
+    {%- if service_aftercare != blank -%}
+      <div class='mt-10 rounded-3xl bg-surface-container p-8 shadow-ambient lg:p-10'>
+        <div class='flex items-center gap-3'>
+          <span
+            class='flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-medical-green text-primary'
+            aria-hidden='true'
+          >
+            <span class='block h-5 w-5'>{%- render 'icon', icon: 'vet-approved' -%}</span>
+          </span>
+          <h2 class='text-lg font-extrabold text-on-surface'>Aftercare &amp; Follow-up</h2>
+        </div>
+        <div class='prose prose-sm mt-4 max-w-none text-on-surface-variant'>
+          {{ service_aftercare }}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} ── FAQ accordion (schema-controlled, up to 5 Q&A pairs) ── {%- endcomment -%}
+    {%- assign has_faq = false -%}
+    {%- if section.settings.faq_q_1 != blank
+      or section.settings.faq_q_2 != blank
+      or section.settings.faq_q_3 != blank
+      or section.settings.faq_q_4 != blank
+      or section.settings.faq_q_5 != blank
+    -%}
+      {%- assign has_faq = true -%}
+    {%- endif -%}
+
+    {%- if has_faq -%}
+      <div class='mt-12'>
+        <h2 class='text-2xl font-extrabold text-on-surface'>Frequently Asked Questions</h2>
+        <div class='mt-6 flex flex-col divide-y divide-on-surface/8 rounded-3xl bg-surface px-6 shadow-ambient'>
+          {%- assign faq_keys = 'faq_q_1,faq_q_2,faq_q_3,faq_q_4,faq_q_5' | split: ',' -%}
+          {%- for faq_key in faq_keys -%}
+            {%- assign a_key = faq_key | replace: 'faq_q_', 'faq_a_' -%}
+            {%- assign q_val = section.settings[faq_key] -%}
+            {%- assign a_val = section.settings[a_key] -%}
+            {%- if q_val != blank and a_val != blank -%}
+              <div data-accordion>
+                <button
+                  type='button'
+                  data-accordion-trigger
+                  aria-expanded='false'
+                  class='flex w-full items-center justify-between py-5 text-left text-sm font-semibold text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary'
+                >
+                  <span>{{ q_val }}</span>
+                  <span
+                    class='ml-4 block h-5 w-5 shrink-0 text-on-surface-variant transition-transform duration-200 [[aria-expanded=true]_&]:rotate-180'
+                    aria-hidden='true'
+                  >
+                    <svg
+                      viewBox='0 0 20 20'
+                      fill='none'
+                      stroke='currentColor'
+                      stroke-width='1.75'
+                      stroke-linecap='round'
+                      stroke-linejoin='round'
+                    >
+                      <path d='M5 7.5l5 5 5-5'/>
+                    </svg>
+                  </span>
+                </button>
+                <div
+                  data-accordion-panel
+                  hidden
+                  class='pb-5 text-sm leading-relaxed text-on-surface-variant'
+                >
+                  {{ a_val }}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
   </div>
 </section>
 
