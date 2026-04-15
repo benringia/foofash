@@ -7,6 +7,8 @@
 {%- endcomment -%}
 
 {%- assign variant = product.selected_or_first_available_variant -%}
+{%- assign sticky_btn_label = cta_label | default: 'Add to Cart' -%}
+{%- assign sticky_btn_sold_out = cta_sold_out_label | default: 'Sold Out' -%}
 
 <div
   data-sticky-atc
@@ -57,9 +59,9 @@
       class='shrink-0 rounded-2xl bg-primary-gradient px-6 py-2.5 text-sm font-bold text-on-primary transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:scale-100 disabled:cursor-not-allowed disabled:opacity-50'
     >
       {%- if variant.available -%}
-        Add to Cart
+        {{ sticky_btn_label }}
       {%- else -%}
-        Sold Out
+        {{ sticky_btn_sold_out }}
       {%- endif -%}
     </button>
   </div>
