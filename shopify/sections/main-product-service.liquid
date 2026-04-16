@@ -84,6 +84,7 @@
             aria-label='Service images'
           >
             {%- for image in product.images -%}
+              {%- assign thumb_alt = image.alt | default: '' -%}
               <button
                 type='button'
                 role='listitem'
@@ -100,7 +101,12 @@
                 {{
                   image
                   | image_url: width: 160
-                  | image_tag: loading: 'lazy', width: 80, height: 80, class: 'h-full w-full object-cover'
+                  | image_tag:
+                    loading: 'lazy',
+                    width: 80,
+                    height: 80,
+                    class: 'h-full w-full object-cover',
+                    alt: thumb_alt
                 }}
               </button>
             {%- endfor -%}
@@ -553,7 +559,7 @@
         {%- if section.settings.secondary_cta_subtext != blank -%}
           <p class='mt-3 text-base text-on-primary/80'>{{ section.settings.secondary_cta_subtext }}</p>
         {%- endif -%}
-        {%- form 'product', product -%}
+        {%- form 'product', product, data-cart-form: '' -%}
           {%- unless product.has_only_default_variant -%}
             <input
               type='hidden'
@@ -582,7 +588,6 @@
         {%- endform -%}
       </div>
     {%- endif -%}
-
   </div>
 </section>
 
