@@ -3,7 +3,7 @@
   Used by templates/product.service.json.
   Differentiated from main-product.liquid by:
     - Booking-focused CTA language
-    - Service summary card (duration, who for, availability)
+    - Service facts chips (duration, who for, availability)
     - What's included section from service.includes metafield
     - Clinical trust strip (licensed vets, tailored care, follow-up)
     - What to expect / aftercare sections
@@ -32,7 +32,6 @@
     <div class='grid grid-cols-1 gap-8 lg:grid-cols-[3fr_2fr] lg:items-start lg:gap-16'>
       {%- comment -%} ══ LEFT — service image ══ {%- endcomment -%}
       <div class='service-media relative'>
-        {%- comment -%} Ambient glow {%- endcomment -%}
         <div
           class='pointer-events-none absolute -inset-8 rounded-full bg-primary/5 blur-3xl'
           aria-hidden='true'
@@ -54,7 +53,6 @@
                 data-main-image: ''
             }}
           {%- else -%}
-            {%- comment -%} No image fallback — stethoscope illustration {%- endcomment -%}
             <div
               class='flex aspect-square w-full items-center justify-center bg-medical-green text-primary/40'
               aria-hidden='true'
@@ -62,15 +60,6 @@
             >
               <span class='block h-32 w-32'>
                 {%- render 'icon', icon: 'stethoscope' -%}
-              </span>
-            </div>
-          {%- endif -%}
-
-          {%- comment -%} Service type badge overlaid on image {%- endcomment -%}
-          {%- if product.type != blank -%}
-            <div class='absolute left-4 top-4'>
-              <span class='rounded-full bg-surface/90 px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-primary shadow-bubbly backdrop-blur-sm'>
-                {{ product.type }}
               </span>
             </div>
           {%- endif -%}
@@ -114,92 +103,93 @@
         {%- endif -%}
       </div>
 
-      {%- comment -%} ══ RIGHT — service info (Tasks 4 & 5) ══ {%- endcomment -%}
+      {%- comment -%} ══ RIGHT — service info ══ {%- endcomment -%}
       <div class='service-info flex flex-col'>
         {%- comment -%} ── Cluster 1: Title group ── {%- endcomment -%}
-        <div class='flex flex-col gap-2'>
+        <div class='flex flex-col gap-3'>
+          {%- comment -%} Eyebrow chip — service category {%- endcomment -%}
+          {%- if product.type != blank -%}
+            <span class='inline-flex w-fit items-center gap-1.5 rounded-full bg-primary/8 px-3 py-1 text-xs font-bold uppercase tracking-widest text-primary'>
+              <span class='h-3.5 w-3.5 shrink-0' aria-hidden='true'>{%- render 'icon', icon: 'stethoscope' -%}</span>
+              {{- product.type -}}
+            </span>
+          {%- endif -%}
+
           <h1 class='text-3xl font-extrabold leading-[1.15] text-on-surface lg:text-4xl xl:text-[2.75rem]'>
             {{ product.title }}
           </h1>
+
           {%- if service_tagline != blank -%}
-            <p class='text-base font-medium text-on-surface-variant'>{{ service_tagline }}</p>
+            <p class='text-base leading-relaxed text-on-surface-variant'>{{ service_tagline }}</p>
           {%- endif -%}
+
           {%- render 'rating-stars', product: product -%}
         </div>
 
-        {%- comment -%} ── Cluster 2: Price ── {%- endcomment -%}
-        <div class='mt-5 flex flex-wrap items-baseline gap-3' data-pdp-price>
+        {%- comment -%} ── Cluster 2: Price block ── {%- endcomment -%}
+        <div class='mt-6 rounded-2xl bg-surface px-5 py-4 shadow-ambient' data-pdp-price>
           {%- if service_price_prefix != blank -%}
-            <span class='text-sm font-semibold text-on-surface-variant'>{{ service_price_prefix }}</span>
+            <p class='mb-1 text-xs font-bold uppercase tracking-widest text-on-surface-variant'>
+              {{- service_price_prefix -}}
+            </p>
           {%- endif -%}
-          <div class='text-3xl font-black leading-none'>
-            {%- render 'price', product: product -%}
+          <div class='flex flex-wrap items-baseline gap-3'>
+            <div class='text-3xl font-black leading-none'>
+              {%- render 'price', product: product -%}
+            </div>
+            {%- if variant.compare_at_price > variant.price -%}
+              {%- assign savings = variant.compare_at_price | minus: variant.price -%}
+              <span class='rounded-full bg-secondary/15 px-3 py-1 text-sm font-bold text-secondary'>
+                Save {{ savings | money }}
+              </span>
+            {%- endif -%}
           </div>
-          {%- if variant.compare_at_price > variant.price -%}
-            {%- assign savings = variant.compare_at_price | minus: variant.price -%}
-            <span class='rounded-full bg-secondary/15 px-3 py-1 text-sm font-bold text-secondary'>
-              Save {{ savings | money }}
-            </span>
-          {%- endif -%}
+          <p class='mt-2 text-xs text-on-surface/50'>No hidden fees — price shown is per appointment</p>
         </div>
 
-        {%- comment -%} ── Cluster 3: Service summary card ── {%- endcomment -%}
-        {%- assign has_summary = false -%}
+        {%- comment -%} ── Cluster 3: Service facts chips ── {%- endcomment -%}
+        {%- assign has_facts = false -%}
         {%- if service_duration != blank or service_who_for != blank or service_availability != blank -%}
-          {%- assign has_summary = true -%}
+          {%- assign has_facts = true -%}
         {%- endif -%}
-        {%- if has_summary -%}
-          <div class='mt-5 rounded-3xl bg-surface p-5 shadow-ambient'>
-            <dl class='flex flex-col gap-4'>
-              {%- if service_duration != blank -%}
-                <div class='flex items-center gap-3'>
-                  <span
-                    class='flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-medical-green text-primary'
-                    aria-hidden='true'
-                  >
-                    <span class='block h-4 w-4'>{%- render 'icon', icon: 'clock' -%}</span>
-                  </span>
-                  <div>
-                    <dt class='text-[10px] font-bold uppercase tracking-widest text-on-surface-variant'>Duration</dt>
-                    <dd class='text-sm font-semibold text-on-surface'>{{ service_duration }}</dd>
-                  </div>
-                </div>
-              {%- endif -%}
-              {%- if service_who_for != blank -%}
-                <div class='flex items-center gap-3'>
-                  <span
-                    class='flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-medical-green text-primary'
-                    aria-hidden='true'
-                  >
-                    <span class='block h-4 w-4'>{%- render 'icon', icon: 'paw' -%}</span>
-                  </span>
-                  <div>
-                    <dt class='text-[10px] font-bold uppercase tracking-widest text-on-surface-variant'>
-                      Suitable for
-                    </dt>
-                    <dd class='text-sm font-semibold text-on-surface'>{{ service_who_for }}</dd>
-                  </div>
-                </div>
-              {%- endif -%}
-              {%- if service_availability != blank -%}
-                <div class='flex items-center gap-3'>
-                  <span
-                    class='flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-medical-blue text-tertiary'
-                    aria-hidden='true'
-                  >
-                    <span class='block h-4 w-4'>{%- render 'icon', icon: 'calendar' -%}</span>
-                  </span>
-                  <div>
-                    <dt class='text-[10px] font-bold uppercase tracking-widest text-on-surface-variant'>
-                      Availability
-                    </dt>
-                    <dd class='text-sm font-semibold text-on-surface'>{{ service_availability }}</dd>
-                  </div>
-                </div>
-              {%- endif -%}
-            </dl>
+        {%- if has_facts -%}
+          <div class='mt-4 flex flex-wrap gap-2' role='list' aria-label='Service details'>
+            {%- if service_duration != blank -%}
+              <span
+                role='listitem'
+                class='flex items-center gap-1.5 rounded-2xl bg-surface px-3 py-2 text-xs font-semibold text-on-surface shadow-ambient'
+              >
+                <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
+                  {%- render 'icon', icon: 'clock' -%}
+                </span>
+                {{- service_duration -}}
+              </span>
+            {%- endif -%}
+            {%- if service_who_for != blank -%}
+              <span
+                role='listitem'
+                class='flex items-center gap-1.5 rounded-2xl bg-surface px-3 py-2 text-xs font-semibold text-on-surface shadow-ambient'
+              >
+                <span class='h-3.5 w-3.5 shrink-0 text-primary' aria-hidden='true'>
+                  {%- render 'icon', icon: 'paw' -%}
+                </span>
+                {{- service_who_for -}}
+              </span>
+            {%- endif -%}
+            {%- if service_availability != blank -%}
+              <span
+                role='listitem'
+                class='flex items-center gap-1.5 rounded-2xl bg-surface px-3 py-2 text-xs font-semibold text-on-surface shadow-ambient'
+              >
+                <span class='h-3.5 w-3.5 shrink-0 text-tertiary' aria-hidden='true'>
+                  {%- render 'icon', icon: 'calendar' -%}
+                </span>
+                {{- service_availability -}}
+              </span>
+            {%- endif -%}
           </div>
         {%- endif -%}
+
         {%- comment -%} ── Cluster 4: Booking form ── {%- endcomment -%}
         {%- form 'product', product, data-cart-form: '' -%}
           <div class='mt-6 flex flex-col gap-4'>
@@ -224,9 +214,7 @@
                       {%- unless v.available -%}
                         disabled
                       {%- endunless -%}
-                    >
-                      {{ v.title }}
-                    </option>
+                    ></option>
                   {%- endfor -%}
                 </select>
                 <div
@@ -252,7 +240,7 @@
               <input type='hidden' name='id' value='{{ variant.id }}'>
             {%- endunless -%}
 
-            {%- comment -%} Primary booking CTA — full width, no qty stepper for services {%- endcomment -%}
+            {%- comment -%} Primary booking CTA {%- endcomment -%}
             <button
               type='submit'
               data-add-to-cart
@@ -261,6 +249,7 @@
                 disabled
                 aria-disabled='true'
               {%- endunless -%}
+              aria-label='{{ section.settings.cta_label | default: 'Book Appointment' }} — {{ product.title }}'
               class='w-full rounded-2xl bg-primary-gradient py-5 text-base font-bold text-on-primary transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:scale-100 disabled:cursor-not-allowed disabled:opacity-50'
             >
               {%- if variant.available -%}
@@ -270,93 +259,113 @@
               {%- endif -%}
             </button>
 
-            {%- comment -%} Clinical microcopy — 3 reassurance items {%- endcomment -%}
-            <div class='flex flex-wrap gap-x-5 gap-y-2 text-xs text-on-surface-variant'>
-              <span class='flex items-center gap-1.5'>
-                <span class='block h-3.5 w-3.5 shrink-0' aria-hidden='true'>
+            {%- comment -%} Clinical microcopy — 3 reassurance cards {%- endcomment -%}
+            <div class='grid grid-cols-1 gap-2 sm:grid-cols-3'>
+              <span class='flex items-center gap-2 rounded-xl bg-surface px-3 py-2.5 text-xs font-medium text-on-surface-variant shadow-ambient'>
+                <span class='h-4 w-4 shrink-0 text-primary' aria-hidden='true'>
                   {%- render 'icon', icon: 'vet-approved' -%}
                 </span>
-                {{ section.settings.microcopy_1 | default: 'Licensed veterinary professionals' }}
+                {{- section.settings.microcopy_1 | default: 'Licensed veterinary professionals' -}}
               </span>
-              <span class='flex items-center gap-1.5'>
-                <span class='block h-3.5 w-3.5 shrink-0' aria-hidden='true'>
+              <span class='flex items-center gap-2 rounded-xl bg-surface px-3 py-2.5 text-xs font-medium text-on-surface-variant shadow-ambient'>
+                <span class='h-4 w-4 shrink-0 text-primary' aria-hidden='true'>
                   {%- render 'icon', icon: 'stethoscope' -%}
                 </span>
-                {{ section.settings.microcopy_2 | default: 'Tailored care plan for your pet' }}
+                {{- section.settings.microcopy_2 | default: 'Tailored care plan for your pet' -}}
               </span>
-              <span class='flex items-center gap-1.5'>
-                <span class='block h-3.5 w-3.5 shrink-0' aria-hidden='true'>
+              <span class='flex items-center gap-2 rounded-xl bg-surface px-3 py-2.5 text-xs font-medium text-on-surface-variant shadow-ambient'>
+                <span class='h-4 w-4 shrink-0 text-primary' aria-hidden='true'>
                   {%- render 'icon', icon: 'returns' -%}
                 </span>
-                {{ section.settings.microcopy_3 | default: 'Follow-up support included' }}
+                {{- section.settings.microcopy_3 | default: 'Follow-up support included' -}}
               </span>
             </div>
           </div>
         {%- endform -%}
-
-        {%- comment -%} ── Cluster 5: About this service accordion ── {%- endcomment -%}
-        {%- if product.description != blank -%}
-          <div class='mt-6 flex flex-col divide-y divide-on-surface/8'>
-            <div data-accordion>
-              <button
-                type='button'
-                data-accordion-trigger
-                aria-expanded='false'
-                class='flex w-full items-center justify-between py-4 text-left text-sm font-semibold text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary'
-              >
-                <span class='flex items-center gap-2'>
-                  <svg
-                    class='h-4 w-4 shrink-0 text-on-surface-variant'
-                    viewBox='0 0 16 16'
-                    fill='none'
-                    stroke='currentColor'
-                    stroke-width='1.5'
-                    stroke-linecap='round'
-                    stroke-linejoin='round'
-                    aria-hidden='true'
-                  >
-                    <rect x='2' y='2' width='12' height='12' rx='2'/><path d='M5 5h6M5 8h6M5 11h4'/>
-                  </svg>
-                  About this service
-                </span>
-                <span
-                  class='block h-5 w-5 shrink-0 text-on-surface-variant transition-transform duration-200 [[aria-expanded=true]_&]:rotate-180'
-                  aria-hidden='true'
-                >
-                  <svg
-                    viewBox='0 0 20 20'
-                    fill='none'
-                    stroke='currentColor'
-                    stroke-width='1.75'
-                    stroke-linecap='round'
-                    stroke-linejoin='round'
-                  >
-                    <path d='M5 7.5l5 5 5-5'/>
-                  </svg>
-                </span>
-              </button>
-              <div
-                data-accordion-panel
-                hidden
-                class='prose prose-sm max-w-none pb-5 text-on-surface-variant'
-              >
-                {{ product.description }}
-              </div>
-            </div>
-          </div>
-        {%- endif -%}
       </div>
     </div>
-    {%- comment -%} ── Below-fold sections ── {%- endcomment -%}
 
-    {%- comment -%} ── What's Included ── {%- endcomment -%}
+    {%- comment -%}
+      Below-fold sections — ordered for maximum CRO impact:
+        1. Trust strip      (first: establishes credibility immediately)
+        2. What's Included
+        3. About this service (product description)
+        4. Who It's For + What to Expect
+        5. Aftercare & Follow-up
+        6. FAQ
+        7. Secondary CTA banner
+    {%- endcomment -%}
+
+    {%- comment -%} ── 1. Clinical trust strip — individual cards ── {%- endcomment -%}
+    <div class='mt-16 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
+      <div class='flex items-start gap-4 rounded-3xl bg-surface p-6 shadow-ambient'>
+        <span
+          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-medical-green text-primary'
+          aria-hidden='true'
+        >
+          <span class='block h-6 w-6'>{%- render 'icon', icon: 'vet-approved' -%}</span>
+        </span>
+        <div>
+          <p class='font-semibold text-on-surface'>{{ section.settings.trust_1_title }}</p>
+          <p class='mt-1 text-sm leading-relaxed text-on-surface-variant'>{{ section.settings.trust_1_desc }}</p>
+        </div>
+      </div>
+      <div class='flex items-start gap-4 rounded-3xl bg-surface p-6 shadow-ambient'>
+        <span
+          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-medical-blue text-tertiary'
+          aria-hidden='true'
+        >
+          <span class='block h-6 w-6'>{%- render 'icon', icon: 'stethoscope' -%}</span>
+        </span>
+        <div>
+          <p class='font-semibold text-on-surface'>{{ section.settings.trust_2_title }}</p>
+          <p class='mt-1 text-sm leading-relaxed text-on-surface-variant'>{{ section.settings.trust_2_desc }}</p>
+        </div>
+      </div>
+      <div class='flex items-start gap-4 rounded-3xl bg-surface p-6 shadow-ambient'>
+        <span
+          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-secondary/15 text-secondary'
+          aria-hidden='true'
+        >
+          <span class='block h-6 w-6'>{%- render 'icon', icon: 'returns' -%}</span>
+        </span>
+        <div>
+          <p class='font-semibold text-on-surface'>{{ section.settings.trust_3_title }}</p>
+          <p class='mt-1 text-sm leading-relaxed text-on-surface-variant'>{{ section.settings.trust_3_desc }}</p>
+        </div>
+      </div>
+      <div class='flex items-start gap-4 rounded-3xl bg-surface p-6 shadow-ambient'>
+        <span
+          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-medical-green text-primary'
+          aria-hidden='true'
+        >
+          <span class='block h-6 w-6'>{%- render 'icon', icon: 'phone' -%}</span>
+        </span>
+        <div>
+          <p class='font-semibold text-on-surface'>{{ section.settings.trust_4_title }}</p>
+          <p class='mt-1 text-sm leading-relaxed text-on-surface-variant'>{{ section.settings.trust_4_desc }}</p>
+        </div>
+      </div>
+    </div>
+
+    {%- comment -%} ── 2. What's Included ── {%- endcomment -%}
     {%- if service_includes != blank -%}
       {%- assign includes_lines = service_includes | split: '
 ' -%}
-      <div class='mt-16'>
+      <div class='mt-10'>
         <div class='rounded-3xl bg-surface p-8 shadow-ambient lg:p-12'>
-          <h2 class='text-2xl font-extrabold text-on-surface'>What's Included</h2>
-          <p class='mt-1 text-sm text-on-surface-variant'>Everything covered in this appointment</p>
+          <div class='flex items-center gap-3'>
+            <span
+              class='flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-medical-green text-primary'
+              aria-hidden='true'
+            >
+              <span class='block h-5 w-5'>{%- render 'icon', icon: 'check-circle' -%}</span>
+            </span>
+            <div>
+              <h2 class='text-2xl font-extrabold text-on-surface'>What's Included</h2>
+              <p class='mt-0.5 text-sm text-on-surface-variant'>Everything covered in this appointment</p>
+            </div>
+          </div>
           <ul
             class='mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2'
             aria-label="What's included in this service"
@@ -380,7 +389,37 @@
       </div>
     {%- endif -%}
 
-    {%- comment -%} ── Who It's For + What to Expect (side-by-side on desktop) ── {%- endcomment -%}
+    {%- comment -%} ── 3. About this service (product description) ── {%- endcomment -%}
+    {%- if product.description != blank -%}
+      <div class='mt-10 rounded-3xl bg-surface p-8 shadow-ambient lg:p-12'>
+        <div class='flex items-center gap-3'>
+          <span
+            class='flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-medical-blue text-tertiary'
+            aria-hidden='true'
+          >
+            <span class='block h-5 w-5'>
+              <svg
+                viewBox='0 0 16 16'
+                fill='none'
+                stroke='currentColor'
+                stroke-width='1.5'
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                aria-hidden='true'
+              >
+                <rect x='2' y='2' width='12' height='12' rx='2'/><path d='M5 5h6M5 8h6M5 11h4'/>
+              </svg>
+            </span>
+          </span>
+          <h2 class='text-2xl font-extrabold text-on-surface'>About this service</h2>
+        </div>
+        <div class='prose prose-sm mt-6 max-w-none text-on-surface-variant'>
+          {{ product.description }}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} ── 4. Who It's For + What to Expect (side-by-side on desktop) ── {%- endcomment -%}
     {%- assign has_who_or_expect = false -%}
     {%- if service_who_for != blank or service_expect != blank -%}
       {%- assign has_who_or_expect = true -%}
@@ -401,7 +440,6 @@
             <p class='mt-4 text-sm leading-relaxed text-on-surface-variant'>{{ service_who_for }}</p>
           </div>
         {%- endif -%}
-
         {%- if service_expect != blank -%}
           <div class='rounded-3xl bg-medical-blue/40 p-7 shadow-ambient'>
             <div class='flex items-center gap-3'>
@@ -421,59 +459,7 @@
       </div>
     {%- endif -%}
 
-    {%- comment -%} ── Clinical trust strip ── {%- endcomment -%}
-    <div class='mt-12 grid grid-cols-1 gap-4 rounded-3xl bg-surface p-8 shadow-ambient sm:grid-cols-2 lg:grid-cols-4'>
-      <div class='flex items-start gap-4'>
-        <span
-          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-medical-green text-primary'
-          aria-hidden='true'
-        >
-          <span class='block h-6 w-6'>{%- render 'icon', icon: 'vet-approved' -%}</span>
-        </span>
-        <div>
-          <p class='font-semibold text-on-surface'>{{ section.settings.trust_1_title }}</p>
-          <p class='mt-0.5 text-sm text-on-surface-variant'>{{ section.settings.trust_1_desc }}</p>
-        </div>
-      </div>
-      <div class='flex items-start gap-4'>
-        <span
-          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-medical-blue text-tertiary'
-          aria-hidden='true'
-        >
-          <span class='block h-6 w-6'>{%- render 'icon', icon: 'stethoscope' -%}</span>
-        </span>
-        <div>
-          <p class='font-semibold text-on-surface'>{{ section.settings.trust_2_title }}</p>
-          <p class='mt-0.5 text-sm text-on-surface-variant'>{{ section.settings.trust_2_desc }}</p>
-        </div>
-      </div>
-      <div class='flex items-start gap-4'>
-        <span
-          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-secondary/15 text-secondary'
-          aria-hidden='true'
-        >
-          <span class='block h-6 w-6'>{%- render 'icon', icon: 'returns' -%}</span>
-        </span>
-        <div>
-          <p class='font-semibold text-on-surface'>{{ section.settings.trust_3_title }}</p>
-          <p class='mt-0.5 text-sm text-on-surface-variant'>{{ section.settings.trust_3_desc }}</p>
-        </div>
-      </div>
-      <div class='flex items-start gap-4'>
-        <span
-          class='flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-medical-green text-primary'
-          aria-hidden='true'
-        >
-          <span class='block h-6 w-6'>{%- render 'icon', icon: 'phone' -%}</span>
-        </span>
-        <div>
-          <p class='font-semibold text-on-surface'>{{ section.settings.trust_4_title }}</p>
-          <p class='mt-0.5 text-sm text-on-surface-variant'>{{ section.settings.trust_4_desc }}</p>
-        </div>
-      </div>
-    </div>
-
-    {%- comment -%} ── Aftercare / Follow-up (optional) ── {%- endcomment -%}
+    {%- comment -%} ── 5. Aftercare / Follow-up ── {%- endcomment -%}
     {%- if service_aftercare != blank -%}
       <div class='mt-10 rounded-3xl bg-surface-container p-8 shadow-ambient lg:p-10'>
         <div class='flex items-center gap-3'>
@@ -491,7 +477,7 @@
       </div>
     {%- endif -%}
 
-    {%- comment -%} ── FAQ accordion (schema-controlled, up to 5 Q&A pairs) ── {%- endcomment -%}
+    {%- comment -%} ── 6. FAQ accordion ── {%- endcomment -%}
     {%- assign has_faq = false -%}
     {%- if section.settings.faq_q_1 != blank
       or section.settings.faq_q_2 != blank
@@ -501,11 +487,30 @@
     -%}
       {%- assign has_faq = true -%}
     {%- endif -%}
-
     {%- if has_faq -%}
       <div class='mt-12'>
-        <h2 class='text-2xl font-extrabold text-on-surface'>Frequently Asked Questions</h2>
-        <div class='mt-6 flex flex-col divide-y divide-on-surface/8 rounded-3xl bg-surface px-6 shadow-ambient'>
+        <div class='mb-6 flex items-center gap-3'>
+          <span
+            class='flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-primary/8 text-primary'
+            aria-hidden='true'
+          >
+            <span class='block h-5 w-5'>
+              <svg
+                viewBox='0 0 24 24'
+                fill='none'
+                stroke='currentColor'
+                stroke-width='2'
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                aria-hidden='true'
+              >
+                <circle cx='12' cy='12' r='10'/><path d='M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3'/><line x1='12' y1='17' x2='12.01' y2='17'/>
+              </svg>
+            </span>
+          </span>
+          <h2 class='text-2xl font-extrabold text-on-surface'>Frequently Asked Questions</h2>
+        </div>
+        <div class='flex flex-col divide-y divide-on-surface/8 rounded-3xl bg-surface px-6 shadow-ambient'>
           {%- assign faq_keys = 'faq_q_1,faq_q_2,faq_q_3,faq_q_4,faq_q_5' | split: ',' -%}
           {%- for faq_key in faq_keys -%}
             {%- assign a_key = faq_key | replace: 'faq_q_', 'faq_a_' -%}
@@ -550,7 +555,7 @@
       </div>
     {%- endif -%}
 
-    {%- comment -%} ── Secondary booking CTA banner ── {%- endcomment -%}
+    {%- comment -%} ── 7. Secondary booking CTA banner ── {%- endcomment -%}
     {%- if section.settings.show_secondary_cta -%}
       <div class='mt-16 overflow-hidden rounded-3xl bg-primary-gradient p-10 text-center lg:p-14'>
         <h2 class='text-2xl font-extrabold text-on-primary lg:text-3xl'>
