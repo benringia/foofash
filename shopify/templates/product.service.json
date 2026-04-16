@@ -1,0 +1,29 @@
+{
+  "sections": {
+    "main-product-service": {
+      "type": "main-product-service",
+      "settings": {
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "cta_label": "Book Appointment",
+        "microcopy_1": "Licensed veterinary professionals",
+        "microcopy_2": "Tailored care plan for your pet",
+        "microcopy_3": "Follow-up support included",
+        "trust_1_title": "Licensed Veterinary Professionals",
+        "trust_1_desc": "All services are delivered by fully qualified, registered vets.",
+        "trust_2_title": "Personalised Care Plan",
+        "trust_2_desc": "Every appointment is tailored to your pet's individual needs.",
+        "trust_3_title": "Follow-up Support Included",
+        "trust_3_desc": "We're here after your visit with advice and next steps.",
+        "trust_4_title": "Transparent Pricing",
+        "trust_4_desc": "No hidden fees. You see the full cost before you book.",
+        "show_secondary_cta": true,
+        "secondary_cta_heading": "Ready to book your appointment?",
+        "secondary_cta_subtext": "Join hundreds of pet owners who trust FOOFASH Clinic for their pet's care."
+      }
+    }
+  },
+  "order": [
+    "main-product-service"
+  ]
+}
