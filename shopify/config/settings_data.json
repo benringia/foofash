@@ -1,0 +1,87 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "sections": {
+      "header": {
+        "type": "header",
+        "blocks": {
+          "clinic_service_UTfWpg": {
+            "type": "clinic_service",
+            "settings": {
+              "service_product": "grooming",
+              "label": "",
+              "subtitle": "",
+              "icon": "scissors"
+            }
+          },
+          "clinic_service_H6LhVJ": {
+            "type": "clinic_service",
+            "settings": {
+              "service_product": "vaccination",
+              "label": "",
+              "subtitle": "",
+              "icon": "syringe"
+            }
+          },
+          "clinic_service_htT3VB": {
+            "type": "clinic_service",
+            "settings": {
+              "service_product": "dental-care",
+              "label": "",
+              "subtitle": "",
+              "icon": "tooth"
+            }
+          },
+          "clinic_service_hTK3jV": {
+            "type": "clinic_service",
+            "settings": {
+              "service_product": "general-checkup",
+              "label": "",
+              "subtitle": "",
+              "icon": "stethoscope"
+            }
+          }
+        },
+        "block_order": [
+          "clinic_service_UTfWpg",
+          "clinic_service_H6LhVJ",
+          "clinic_service_htT3VB",
+          "clinic_service_hTK3jV"
+        ],
+        "settings": {
+          "menu": "",
+          "search_placeholder": "Search products…",
+          "services_label": "Services",
+          "services_page": "",
+          "clinic_nav_label": "Clinic",
+          "clinic_cta_label": "View all clinic services",
+          "clinic_cta_url": ""
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "tagline": "Redefining pet wellness through joyful care and premium products. Join our community of healthy, happy pets.",
+          "footer_col_1_label": "Navigation",
+          "footer_col_1_menu": "footer",
+          "newsletter_heading": "Newsletter",
+          "newsletter_subtext": "Join our pack for monthly pet health tips and exclusive offers.",
+          "newsletter_placeholder": "Your email address",
+          "footer_instagram": "",
+          "footer_facebook": "",
+          "footer_twitter": "",
+          "copyright_text": ""
+        }
+      }
+    },
+    "content_for_index": []
+  }
+}

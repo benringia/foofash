@@ -106,7 +106,7 @@
         {%- comment -%} ── CLUSTER 2: Price + savings ── {%- endcomment -%}
         <div class='mt-5 flex flex-wrap items-baseline gap-3' data-pdp-price>
           <div class='text-3xl font-black leading-none'>
-            {%- render 'price', product: product -%}
+            {%- render 'price', product: product, variant: variant -%}
           </div>
           {%- if variant.compare_at_price > variant.price -%}
             {%- assign savings = variant.compare_at_price | minus: variant.price -%}

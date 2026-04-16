@@ -23,7 +23,5 @@
       }
     }
   },
-  "order": [
-    "main-product-service"
-  ]
+  "order": ["main-product-service"]
 }
