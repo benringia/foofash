@@ -1,3 +1,4 @@
+{%- assign clinic_blocks = section.blocks | where: 'type', 'clinic_service' -%}
 {%- assign nav_links = linklists[menu].links -%}
 
 {%- comment -%} Desktop navigation {%- endcomment -%}
@@ -75,6 +76,109 @@
       </a>
     {%- endif -%}
   {%- endfor -%}
+  {%- comment -%} Custom Clinic dropdown — driven by header section blocks {%- endcomment -%}
+  {%- if clinic_blocks.size > 0 -%}
+    <div class='relative' data-mega-menu>
+      <button
+        type='button'
+        aria-expanded='false'
+        aria-controls='mega-clinic'
+        data-mega-trigger
+        class='flex items-center gap-1 text-sm font-medium text-on-surface transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded'
+      >
+        {{- section.settings.clinic_nav_label | default: 'Clinic' -}}
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          width='16'
+          height='16'
+          viewBox='0 0 24 24'
+          fill='none'
+          stroke='currentColor'
+          stroke-width='2'
+          stroke-linecap='round'
+          stroke-linejoin='round'
+          aria-hidden='true'
+          class='transition-transform duration-200'
+          data-mega-chevron
+        >
+          <polyline points='6 9 12 15 18 9'></polyline>
+        </svg>
+      </button>
+
+      <div
+        id='mega-clinic'
+        class='fixed left-1/2 z-50 w-[520px] max-w-[calc(100vw-2rem)] -translate-x-1/2 translate-y-2 rounded-3xl border border-surface-high bg-white opacity-0 shadow-bubbly-lg pointer-events-none transition-all duration-200 ease-out'
+        aria-hidden='true'
+        data-mega-panel
+      >
+        {%- comment -%} Panel header {%- endcomment -%}
+        <div class='border-b border-surface-high px-6 py-5'>
+          <p class='text-xs font-bold uppercase tracking-widest text-primary'>
+            {{- section.settings.clinic_nav_label | default: 'Clinic' }} Services
+          </p>
+          <p class='mt-1 text-sm text-on-surface-variant'>Book your pet's next visit</p>
+        </div>
+
+        {%- comment -%} Service cards grid {%- endcomment -%}
+        <div class='grid grid-cols-2 gap-2 p-4'>
+          {%- for block in clinic_blocks -%}
+            {%- assign svc = block.settings.service_product -%}
+            {%- if svc != blank -%}
+              <a
+                href='{{ svc.url }}'
+                class='group flex items-start gap-3 rounded-2xl p-4 transition-all hover:bg-surface-container-low focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
+              >
+                <span
+                  class='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-primary/8 p-2 text-primary transition-transform group-hover:scale-110'
+                  aria-hidden='true'
+                >
+                  {%- render 'icon', icon: block.settings.icon | default: 'stethoscope' -%}
+                </span>
+                <div class='min-w-0'>
+                  <p class='text-sm font-semibold text-on-surface'>
+                    {{- block.settings.label | default: svc.title -}}
+                  </p>
+                  {%- if block.settings.subtitle != blank -%}
+                    <p class='mt-0.5 text-xs leading-relaxed text-on-surface-variant'>
+                      {{- block.settings.subtitle -}}
+                    </p>
+                  {%- endif -%}
+                </div>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        {%- comment -%} Panel footer CTA {%- endcomment -%}
+        {%- if section.settings.clinic_cta_url != blank -%}
+          <div class='border-t border-surface-high px-6 py-4'>
+            <a
+              href='{{ section.settings.clinic_cta_url }}'
+              class='inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded'
+            >
+              {{- section.settings.clinic_cta_label | default: 'View all clinic services' -}}
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                width='14'
+                height='14'
+                viewBox='0 0 24 24'
+                fill='none'
+                stroke='currentColor'
+                stroke-width='2'
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                aria-hidden='true'
+              >
+                <line x1='5' y1='12' x2='19' y2='12'></line>
+                <polyline points='12 5 19 12 12 19'></polyline>
+              </svg>
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
   {%- if services_page != blank -%}
     <a
       href='{{ services_page }}'
@@ -185,6 +289,61 @@
           {%- endif -%}
         </li>
       {%- endfor -%}
+      {%- comment -%} Custom Clinic accordion — driven by header section blocks {%- endcomment -%}
+      {%- if clinic_blocks.size > 0 -%}
+        <li class='border-b border-surface-high'>
+          <button
+            type='button'
+            aria-expanded='false'
+            aria-controls='mobile-accordion-clinic'
+            class='flex w-full items-center justify-between px-6 py-4 text-sm font-medium text-on-surface transition-colors hover:bg-surface-low hover:text-primary'
+            data-mobile-accordion
+          >
+            {{- section.settings.clinic_nav_label | default: 'Clinic' -}}
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              width='16'
+              height='16'
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              stroke-width='2'
+              stroke-linecap='round'
+              stroke-linejoin='round'
+              aria-hidden='true'
+              class='transition-transform duration-200'
+              data-accordion-chevron
+            >
+              <polyline points='6 9 12 15 18 9'></polyline>
+            </svg>
+          </button>
+          <ul id='mobile-accordion-clinic' class='hidden bg-surface-low'>
+            {%- for block in clinic_blocks -%}
+              {%- assign svc = block.settings.service_product -%}
+              {%- if svc != blank -%}
+                <li class='border-b border-surface-high'>
+                  <a
+                    href='{{ svc.url }}'
+                    class='block px-8 py-3 text-sm text-on-surface/70 transition-colors hover:text-primary focus:outline-none focus:ring-inset focus:ring-2 focus:ring-primary'
+                  >
+                    {{- block.settings.label | default: svc.title -}}
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if section.settings.clinic_cta_url != blank -%}
+              <li>
+                <a
+                  href='{{ section.settings.clinic_cta_url }}'
+                  class='block px-8 py-3 text-sm font-medium text-primary transition-colors hover:text-primary/80 focus:outline-none focus:ring-inset focus:ring-2 focus:ring-primary'
+                >
+                  {{- section.settings.clinic_cta_label | default: 'View all clinic services' -}}
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        </li>
+      {%- endif -%}
       {%- if services_page != blank -%}
         <li class='border-b border-surface-high'>
           <a

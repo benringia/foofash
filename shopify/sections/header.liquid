@@ -156,6 +156,68 @@
       "id": "services_page",
       "label": "Services link URL",
       "info": "Link to your main service page. Leave blank to hide."
+    },
+    {
+      "type": "header",
+      "content": "Clinic Navigation"
+    },
+    {
+      "type": "text",
+      "id": "clinic_nav_label",
+      "label": "Clinic dropdown label",
+      "default": "Clinic",
+      "info": "The label shown in the nav bar for the Clinic dropdown."
+    },
+    {
+      "type": "text",
+      "id": "clinic_cta_label",
+      "label": "Clinic CTA label",
+      "default": "View all clinic services",
+      "info": "Text for the footer link in the Clinic dropdown."
+    },
+    {
+      "type": "url",
+      "id": "clinic_cta_url",
+      "label": "Clinic CTA URL",
+      "info": "Where the footer 'View all' link points. Leave blank to hide."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "clinic_service",
+      "name": "Clinic Service",
+      "settings": [
+        {
+          "type": "product",
+          "id": "service_product",
+          "label": "Service product",
+          "info": "Must be assigned to the 'product.service' template."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Override label",
+          "info": "Leave blank to use the product title."
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Short description",
+          "placeholder": "e.g. Annual health screening"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon key",
+          "default": "stethoscope",
+          "info": "One of: stethoscope, scissors, syringe, tooth, paw, calendar, clock, vet-approved"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header"
     }
   ]
 }
