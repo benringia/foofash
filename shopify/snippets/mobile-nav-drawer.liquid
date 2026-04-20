@@ -1,0 +1,259 @@
+{%- liquid
+  assign clinic_blocks = section.blocks | where: 'type', 'clinic_service'
+  assign nav_links = linklists[menu].links
+  assign shop_featured_links = linklists[section.settings.shop_featured_menu].links
+  assign shop_categories_links = linklists[section.settings.shop_categories_menu].links
+  assign has_shop_dropdown = false
+  if shop_featured_links.size > 0 or shop_categories_links.size > 0
+    assign has_shop_dropdown = true
+  endif
+-%}
+
+<div
+  id='mobile-nav-drawer'
+  class='fixed inset-y-0 left-0 z-[70] flex w-[85vw] max-w-[360px] -translate-x-full flex-col bg-surface shadow-2xl transition-transform duration-300 ease-in-out md:hidden'
+  aria-hidden='true'
+  aria-modal='true'
+  role='dialog'
+  aria-labelledby='mobile-nav-heading'
+  data-mobile-drawer
+>
+  {%- comment -%} Drawer header {%- endcomment -%}
+  <div class='flex shrink-0 items-center justify-between px-6 py-5'>
+    <span id='mobile-nav-heading' class='font-display text-base font-bold tracking-wide text-on-surface'>
+      {{- shop.name | upcase -}}
+    </span>
+    <button
+      type='button'
+      aria-label='Close menu'
+      data-mobile-close
+      class='flex h-9 w-9 items-center justify-center rounded-full text-on-surface/50 transition-colors hover:bg-surface-container hover:text-on-surface focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary'
+    >
+      <svg
+        xmlns='http://www.w3.org/2000/svg'
+        width='20'
+        height='20'
+        viewBox='0 0 24 24'
+        fill='none'
+        stroke='currentColor'
+        stroke-width='2'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+        aria-hidden='true'
+      >
+        <line x1='18' y1='6' x2='6' y2='18'></line>
+        <line x1='6' y1='6' x2='18' y2='18'></line>
+      </svg>
+    </button>
+  </div>
+  <div class='mx-6 h-px bg-gradient-to-r from-transparent via-on-surface/10 to-transparent' aria-hidden='true'></div>
+
+  {%- comment -%} Scrollable nav body {%- endcomment -%}
+  <nav class='flex-1 overflow-y-auto py-3' aria-labelledby='mobile-nav-heading'>
+    <ul>
+      {%- for link in nav_links -%}
+        <li>
+          {%- if link.links.size > 0 -%}
+            <button
+              type='button'
+              aria-expanded='false'
+              aria-controls='mobile-accordion-{{ link.handle }}'
+              class='flex w-full items-center justify-between px-6 py-4 text-base font-semibold text-on-surface transition-colors hover:bg-surface-container hover:text-primary'
+              data-mobile-accordion
+            >
+              {{- link.title -}}
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                width='16'
+                height='16'
+                viewBox='0 0 24 24'
+                fill='none'
+                stroke='currentColor'
+                stroke-width='2'
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                aria-hidden='true'
+                class='transition-transform duration-200'
+                data-accordion-chevron
+              >
+                <polyline points='6 9 12 15 18 9'></polyline>
+              </svg>
+            </button>
+            <ul id='mobile-accordion-{{ link.handle }}' class='hidden bg-surface-container-low'>
+              {%- for child in link.links -%}
+                <li>
+                  <a
+                    href='{{ child.url }}'
+                    class='block px-8 py-3 text-sm text-on-surface/80 transition-colors hover:text-primary focus:outline-none focus:ring-inset focus:ring-2 focus:ring-primary'
+                  >
+                    {{- child.title -}}
+                  </a>
+                  {%- if child.links.size > 0 -%}
+                    <ul>
+                      {%- for grandchild in child.links -%}
+                        <li>
+                          <a
+                            href='{{ grandchild.url }}'
+                            class='block px-10 py-2 text-sm text-on-surface/50 transition-colors hover:text-primary focus:outline-none focus:ring-inset focus:ring-2 focus:ring-primary'
+                          >
+                            {{- grandchild.title -}}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- else -%}
+            <a
+              href='{{ link.url }}'
+              class='block px-6 py-4 text-base font-semibold text-on-surface transition-colors hover:bg-surface-container hover:text-primary focus:outline-none focus:ring-inset focus:ring-2 focus:ring-primary'
+            >
+              {{- link.title -}}
+            </a>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+
+      {%- if has_shop_dropdown -%}
+        <li>
+          <button
+            type='button'
+            aria-expanded='false'
+            aria-controls='mobile-accordion-shop'
+            class='flex w-full items-center justify-between px-6 py-4 text-base font-semibold text-on-surface transition-colors hover:bg-surface-container hover:text-primary'
+            data-mobile-accordion
+          >
+            {{- section.settings.shop_nav_label | default: 'Shop' -}}
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              width='16'
+              height='16'
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              stroke-width='2'
+              stroke-linecap='round'
+              stroke-linejoin='round'
+              aria-hidden='true'
+              class='transition-transform duration-200'
+              data-accordion-chevron
+            >
+              <polyline points='6 9 12 15 18 9'></polyline>
+            </svg>
+          </button>
+          <ul id='mobile-accordion-shop' class='hidden bg-surface-container-low'>
+            {%- if shop_featured_links.size > 0 -%}
+              {%- for link in shop_featured_links -%}
+                <li>
+                  <a
+                    href='{{ link.url }}'
+                    class='block px-8 py-3 text-sm {% if forloop.first %}font-semibold text-primary{% else %}text-on-surface/80{% endif %} transition-colors hover:text-primary focus:outline-none focus:ring-inset focus:ring-2 focus:ring-primary'
+                  >
+                    {{- link.title -}}
+                  </a>
+                </li>
+              {%- endfor -%}
+            {%- endif -%}
+            {%- if shop_categories_links.size > 0 -%}
+              {%- for link in shop_categories_links -%}
+                <li>
+                  <a
+                    href='{{ link.url }}'
+                    class='block px-8 py-3 text-sm text-on-surface/80 transition-colors hover:text-primary focus:outline-none focus:ring-inset focus:ring-2 focus:ring-primary'
+                  >
+                    {{- link.title -}}
+                  </a>
+                </li>
+              {%- endfor -%}
+            {%- endif -%}
+            {%- if section.settings.shop_cta_url != blank -%}
+              <li>
+                <a
+                  href='{{ section.settings.shop_cta_url }}'
+                  class='block px-8 py-3 text-sm font-medium text-primary transition-colors hover:text-primary/80 focus:outline-none focus:ring-inset focus:ring-2 focus:ring-primary'
+                >
+                  {{- section.settings.shop_cta_label | default: 'Browse all products' -}}
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        </li>
+      {%- endif -%}
+
+      {%- if clinic_blocks.size > 0 -%}
+        <li>
+          <button
+            type='button'
+            aria-expanded='false'
+            aria-controls='mobile-accordion-clinic'
+            class='flex w-full items-center justify-between px-6 py-4 text-base font-semibold text-on-surface transition-colors hover:bg-surface-container hover:text-primary'
+            data-mobile-accordion
+          >
+            {{- section.settings.clinic_nav_label | default: 'Clinic' -}}
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              width='16'
+              height='16'
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              stroke-width='2'
+              stroke-linecap='round'
+              stroke-linejoin='round'
+              aria-hidden='true'
+              class='transition-transform duration-200'
+              data-accordion-chevron
+            >
+              <polyline points='6 9 12 15 18 9'></polyline>
+            </svg>
+          </button>
+          <ul id='mobile-accordion-clinic' class='hidden bg-surface-container-low'>
+            {%- for block in clinic_blocks -%}
+              {%- assign svc = block.settings.service_product -%}
+              {%- if svc != blank -%}
+                <li>
+                  <a
+                    href='{{ svc.url }}'
+                    class='block px-8 py-3 text-sm text-on-surface/80 transition-colors hover:text-primary focus:outline-none focus:ring-inset focus:ring-2 focus:ring-primary'
+                  >
+                    {{- block.settings.label | default: svc.title -}}
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if section.settings.clinic_cta_url != blank -%}
+              <li>
+                <a
+                  href='{{ section.settings.clinic_cta_url }}'
+                  class='block px-8 py-3 text-sm font-medium text-primary transition-colors hover:text-primary/80 focus:outline-none focus:ring-inset focus:ring-2 focus:ring-primary'
+                >
+                  {{- section.settings.clinic_cta_label | default: 'View all clinic services' -}}
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        </li>
+      {%- endif -%}
+
+      {%- if services_page != blank -%}
+        <li>
+          <a
+            href='{{ services_page }}'
+            class='block px-6 py-4 text-base font-semibold text-on-surface transition-colors hover:bg-surface-container hover:text-primary focus:outline-none focus:ring-inset focus:ring-2 focus:ring-primary'
+          >
+            {{- services_label | default: 'Services' -}}
+          </a>
+        </li>
+      {%- endif -%}
+    </ul>
+  </nav>
+</div>
+
+{%- comment -%} Full-viewport backdrop — outside any backdrop-filter stacking context {%- endcomment -%}
+<div
+  class='fixed inset-0 z-[65] hidden bg-black/50 backdrop-blur-[2px]'
+  aria-hidden='true'
+  data-mobile-backdrop
+></div>

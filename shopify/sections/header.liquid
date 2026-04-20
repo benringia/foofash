@@ -124,6 +124,12 @@
   </div>
 </header>
 
+{%- render 'mobile-nav-drawer',
+  menu: section.settings.menu,
+  services_page: section.settings.services_page,
+  services_label: section.settings.services_label
+-%}
+
 {% schema %}
 {
   "name": "Header",

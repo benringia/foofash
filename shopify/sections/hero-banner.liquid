@@ -89,7 +89,7 @@
         <div class='relative w-full max-w-[520px]'>
           {%- comment -%} Depth layer 2 (back-most) — offset orange frame {%- endcomment -%}
           <div
-            class='absolute inset-0 translate-x-5 translate-y-5 rounded-3xl bg-secondary/25'
+            class='absolute inset-0 lg:translate-x-5 translate-y-5 rounded-3xl bg-secondary/25'
             aria-hidden='true'
           ></div>
           {%- comment -%} Depth layer 1 — offset green frame {%- endcomment -%}
@@ -125,7 +125,7 @@
           {%- comment -%} Floating stat card — top left {%- endcomment -%}
           {%- if section.settings.stat_1_value != blank -%}
             <div
-              class='absolute -left-6 top-8 z-20 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-bubbly ring-1 ring-primary/5'
+              class='absolute left-0 top-8 z-20 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-bubbly ring-1 ring-primary/5 lg:-left-6'
               aria-label='{{ section.settings.stat_1_label }}: {{ section.settings.stat_1_value }}'
             >
               <span class='text-xl leading-none' aria-hidden='true'>⭐</span>
@@ -139,7 +139,7 @@
           {%- comment -%} Floating stat card — bottom right {%- endcomment -%}
           {%- if section.settings.stat_2_value != blank -%}
             <div
-              class='absolute -right-6 bottom-8 z-20 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-bubbly ring-1 ring-primary/5'
+              class='absolute right-0 bottom-8 z-20 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-bubbly ring-1 ring-primary/5 lg:-right-6'
               aria-label='{{ section.settings.stat_2_label }}: {{ section.settings.stat_2_value }}'
             >
               <span class='text-xl leading-none' aria-hidden='true'>🐾</span>
