@@ -63,7 +63,14 @@
           "services_page": "",
           "clinic_nav_label": "Clinic",
           "clinic_cta_label": "View all clinic services",
-          "clinic_cta_url": ""
+          "clinic_cta_url": "",
+          "shop_nav_label": "Shop",
+          "shop_featured_menu": "shop-menu",
+          "shop_featured_label": "Featured",
+          "shop_categories_menu": "animals-shop",
+          "shop_categories_label": "Shop by pet",
+          "shop_cta_label": "Browse all products",
+          "shop_cta_url": ""
         }
       },
       "footer": {

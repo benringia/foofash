@@ -210,7 +210,7 @@
         {{- '<!-- Desktop sidebar -->' -}}
         {%- if collection.filters.size > 0 -%}
           <aside class='hidden w-60 flex-none lg:block' aria-label='Product filters'>
-            <div class='sticky top-24 space-y-4'>
+            <div class='sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto space-y-4 pb-4'>
               <p class='mb-1 text-xs font-bold uppercase tracking-wider text-primary/70'>Refine</p>
               {%- for filter in collection.filters -%}
                 {%- render 'filter-group', filter: filter -%}
