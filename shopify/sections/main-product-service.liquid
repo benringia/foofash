@@ -576,13 +576,14 @@
             <input type='hidden' name='id' value='{{ variant.id }}'>
           {%- endunless -%}
           <button
+            class='mt-6 inline-block rounded-2xl bg-surface px-10 py-4 text-base font-bold text-primary shadow-bubbly transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:scale-100 disabled:cursor-not-allowed disabled:opacity-50'
             type='submit'
             data-add-to-cart
             {%- unless variant.available -%}
               disabled
               aria-disabled='true'
             {%- endunless -%}
-            class='mt-6 inline-block rounded-2xl bg-surface px-10 py-4 text-base font-bold text-primary shadow-bubbly transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:scale-100 disabled:cursor-not-allowed disabled:opacity-50'
+            
           >
             {%- if variant.available -%}
               {{ section.settings.cta_label | default: 'Book Appointment' }}

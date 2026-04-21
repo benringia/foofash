@@ -218,27 +218,48 @@
         {%- comment -%} ── CLUSTER 5: Product form ── {%- endcomment -%}
         {%- form 'product', product, data-cart-form: '' -%}
           <div class='mt-6 flex flex-col gap-4'>
-            {%- comment -%} Variant selector — pill UI backed by hidden select {%- endcomment -%}
+            {%- comment -%} Variant selector — multi-option pill groups backed by hidden select {%- endcomment -%}
             {%- unless product.has_only_default_variant -%}
-              <div class='flex flex-col gap-2.5'>
-                <p class='text-sm font-semibold text-on-surface-variant'>
-                  {{ product.options.first }}:
-                  <span class='font-semibold text-on-surface' data-selected-variant-label>
-                    {{- variant.title -}}
-                  </span>
-                </p>
+              <div class='flex flex-col gap-4' data-option-groups>
+                {%- for option in product.options_with_values -%}
+                  {%- assign opt_index = forloop.index0 -%}
+                  <div class='flex flex-col gap-2.5'>
+                    <p class='text-sm font-semibold text-on-surface-variant'>
+                      {{ option.name }}:
+                      <span class='font-semibold text-on-surface' data-selected-option-label='{{ opt_index }}'>
+                        {{- variant.options[opt_index] -}}
+                      </span>
+                    </p>
+                    <div class='flex flex-wrap gap-2' role='group' aria-label='{{ option.name }}'>
+                      {%- for value in option.values -%}
+                        {%- assign is_selected = false -%}
+                        {%- if variant.options[opt_index] == value -%}
+                          {%- assign is_selected = true -%}
+                        {%- endif -%}
+                        <button
+                          type='button'
+                          data-option-btn
+                          data-option-index='{{ opt_index }}'
+                          data-option-value='{{ value | escape }}'
+                          aria-pressed='{{ is_selected }}'
+                          class='rounded-2xl px-5 py-2.5 text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 {% if is_selected %}bg-primary text-on-primary shadow-bubbly{% else %}bg-surface text-on-surface shadow-ambient hover:bg-primary/10{% endif %}'
+                        >
+                          {{ value }}
+                        </button>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                {%- endfor -%}
 
-                {%- comment -%} Hidden select preserves all existing JS contracts {%- endcomment -%}
-                <select
-                  name='id'
-                  data-variant-selector
-                  class='sr-only'
-                  aria-label='{{ product.options.first }}'
-                >
+                {%- comment -%} Hidden select — form submission + event bridge to sticky-atc.js {%- endcomment -%}
+                <select name='id' data-variant-selector class='sr-only' aria-label='Variant'>
                   {%- for v in product.variants -%}
                     <option
                       value='{{ v.id }}'
-                      {%- unless v.available -%}
+                      {%- if v.id == variant.id %}
+                        selected
+                      {%- endif -%}
+                      {%- unless v.available %}
                         disabled
                       {%- endunless -%}
                     >
@@ -246,50 +267,27 @@
                     </option>
                   {%- endfor -%}
                 </select>
-
-                {%- comment -%} Visual pill buttons synced to the hidden select by product.js {%- endcomment -%}
-                <div
-                  class='flex flex-wrap gap-2'
-                  role='group'
-                  aria-label='{{ product.options.first }}'
-                >
-                  {%- for v in product.variants -%}
-                    <button
-                      type='button'
-                      data-variant-pill
-                      data-variant-id='{{ v.id }}'
-                      data-available='{{ v.available }}'
-                      aria-pressed='{% if forloop.first %}true{% else %}false{% endif %}'
-                      class='rounded-2xl px-5 py-2.5 text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 {% if forloop.first %}bg-primary text-on-primary shadow-bubbly{% else %}bg-surface text-on-surface shadow-ambient hover:bg-primary/10{% endif %} {% unless v.available %}cursor-not-allowed opacity-40{% endunless %}'
-                    >
-                      {{ v.title }}
-                    </button>
-                  {%- endfor -%}
-                </div>
               </div>
             {%- else -%}
-              <input
-                type='hidden'
-                name='id'
-                value='{{ variant.id }}'
-              >
+              <input type='hidden' name='id' value='{{ product.variants.first.id }}'>
             {%- endunless -%}
 
             {%- comment -%} Quantity stepper + ATC {%- endcomment -%}
             <div class='flex items-stretch gap-3'>
               {%- comment -%} Stepper {%- endcomment -%}
               <div
-                class='flex items-center overflow-hidden rounded-2xl bg-surface shadow-ambient'
+                class='flex items-center overflow-hidden rounded-2xl bg-surface-container ring-1 ring-on-surface/10'
                 aria-label='Quantity'
               >
                 <button
                   type='button'
                   data-qty-decrease
                   aria-label='Decrease quantity'
-                  class='flex h-full w-12 cursor-pointer items-center justify-center text-xl text-on-surface transition-colors hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary'
+                  class='flex h-full w-14 cursor-pointer items-center justify-center text-lg text-on-surface transition-colors hover:bg-primary/5 active:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary'
                 >
                   <span aria-hidden='true'>&#8722;</span>
                 </button>
+                <span class='h-5 w-px shrink-0 bg-on-surface/10' aria-hidden='true'></span>
                 <input
                   id='quantity'
                   type='number'
@@ -297,13 +295,14 @@
                   value='1'
                   min='1'
                   aria-label='Quantity'
-                  class='w-12 bg-transparent text-center text-sm font-semibold text-on-surface focus:outline-none'
+                  class='w-14 bg-transparent text-center text-sm font-bold text-on-surface focus:outline-none'
                 >
+                <span class='h-5 w-px shrink-0 bg-on-surface/10' aria-hidden='true'></span>
                 <button
                   type='button'
                   data-qty-increase
                   aria-label='Increase quantity'
-                  class='flex h-full w-12 cursor-pointer items-center justify-center text-xl text-on-surface transition-colors hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary'
+                  class='flex h-full w-14 cursor-pointer items-center justify-center text-lg text-on-surface transition-colors hover:bg-primary/5 active:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary'
                 >
                   <span aria-hidden='true'>&#43;</span>
                 </button>
@@ -311,6 +310,7 @@
 
               {%- comment -%} Add to cart — also the sticky-atc.js observer target {%- endcomment -%}
               <button
+                class='flex flex-1 items-center justify-center gap-2.5 rounded-2xl bg-primary-gradient py-5 text-base font-bold text-on-primary shadow-bubbly transition-all duration-150 hover:scale-[1.02] hover:shadow-bubbly-lg active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:scale-100 disabled:cursor-not-allowed disabled:opacity-50'
                 type='submit'
                 data-add-to-cart
                 data-main-atc
@@ -318,8 +318,22 @@
                   disabled
                   aria-disabled='true'
                 {%- endunless -%}
-                class='flex-1 rounded-2xl bg-primary-gradient py-5 text-base font-bold text-on-primary transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:scale-100 disabled:cursor-not-allowed disabled:opacity-50'
+                 
               >
+                <svg
+                  class='h-5 w-5 shrink-0'
+                  viewBox='0 0 24 24'
+                  fill='none'
+                  stroke='currentColor'
+                  stroke-width='2'
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  aria-hidden='true'
+                >
+                  <path d='M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z'/>
+                  <line x1='3' y1='6' x2='21' y2='6'/>
+                  <path d='M16 10a4 4 0 01-8 0'/>
+                </svg>
                 {%- if variant.available -%}
                   Add to Cart
                 {%- else -%}
@@ -551,9 +565,12 @@
     {%- for v in product.variants -%}
       {
         "id": {{ v.id }},
+        "title": {{ v.title | json }},
         "price": {{ v.price }},
         "compare_at_price": {{ v.compare_at_price | default: 0 }},
-        "available": {{ v.available }}
+        "available": {{ v.available }},
+        "options": {{ v.options | json }},
+        "featured_image": {% if v.featured_image %}{{ v.featured_image | image_url: width: 900 | json }}{% else %}null{% endif %}
       }{%- unless forloop.last -%},{%- endunless -%}
     {%- endfor -%}
   ]
