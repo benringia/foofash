@@ -6,10 +6,10 @@
   assign limit = section.settings.products_to_show
 -%}
 
-<section class='featured-collection bg-white py-32 rounded-t-[4rem] rounded-b-[4rem] shadow-bubbly-lg'>
+<section class='featured-collection py-16 md:py-32 shadow-bubbly-lg'>
   <div class='mx-auto max-w-7xl px-6'>
     {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
-      <div class='mb-12 flex flex-col md:flex-row justify-between items-end gap-6'>
+      <div class='mb-8 md:mb-12 flex flex-col md:flex-row justify-between items-end gap-6'>
         <div>
           <p class='mb-2 text-xs font-semibold uppercase tracking-widest text-primary/70'>
             {{ section.settings.eyebrow }}
@@ -53,7 +53,7 @@
     {%- endif -%}
 
     {%- if collection != blank and collection.products_count > 0 -%}
-      <ul class='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4' role='list'>
+      <ul class='grid grid-cols-1 gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-4' role='list'>
         {%- for product in collection.products limit: limit -%}
           <li>
             {%- render 'product-card',
@@ -66,7 +66,7 @@
         {%- endfor -%}
       </ul>
     {%- else -%}
-      <ul class='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4' role='list'>
+      <ul class='grid grid-cols-1 gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-4' role='list'>
         {%- for i in (1..4) -%}
           <li>
             <article class='bg-background rounded-3xl p-6'>

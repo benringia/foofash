@@ -1,8 +1,8 @@
 {%- if section.blocks.size > 0 -%}
-  <section class='why-choose-us bg-surface py-24'>
+  <section class='why-choose-us bg-surface py-12 md:py-24'>
     <div class='mx-auto max-w-7xl px-6 lg:px-8'>
       {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
-        <div class='mb-16 text-center'>
+        <div class='mb-8 md:mb-16 text-center'>
           {%- if section.settings.heading != blank -%}
             <h2 class='font-display text-4xl font-extrabold text-primary mb-4'>{{ section.settings.heading }}</h2>
           {%- endif -%}
@@ -31,7 +31,7 @@
             endcase
           -%}
           <li
-            class='flex flex-col bg-white rounded-3xl p-8 shadow-bubbly hover:-translate-y-1 transition-all duration-300'
+            class='flex flex-col bg-white rounded-3xl p-6 md:p-8 shadow-bubbly hover:-translate-y-1 transition-all duration-300'
             {{ block.shopify_attributes }}
           >
             {%- if block.settings.icon != blank -%}

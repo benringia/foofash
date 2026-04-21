@@ -1,16 +1,16 @@
-<footer class='bg-primary-dim rounded-t-[5rem] pt-20' role='contentinfo'>
-  <div class='mx-auto max-w-7xl px-12 pb-20'>
-    <div class='grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-4'>
+<footer class='bg-primary-dim  md:pt-20 pt-10' role='contentinfo'>
+  <div class='mx-auto max-w-7xl px-6 pb-12 md:px-12 md:pb-20'>
+    <div class='grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16 lg:grid-cols-4'>
       {%- comment -%} Brand column — spans 2 cols on lg {%- endcomment -%}
       <div class='col-span-1 lg:col-span-2'>
-        <h2 class='mb-6 flex items-center gap-2 text-4xl font-extrabold text-white'>
+        <h2 class='mb-4 flex items-center gap-2 text-3xl font-extrabold text-white md:mb-6 md:text-4xl'>
           <span class='h-10 w-10 text-secondary' aria-hidden='true'>
             {%- render 'icon', icon: 'paw' -%}
           </span>
           {{ shop.name }}
         </h2>
         {%- if section.settings.tagline != blank -%}
-          <p class='mb-10 max-w-sm text-lg leading-relaxed text-white/60'>{{ section.settings.tagline }}</p>
+          <p class='mb-6 max-w-sm text-lg leading-relaxed text-white/60 md:mb-10'>{{ section.settings.tagline }}</p>
         {%- endif -%}
 
         {%- comment -%} Social icons {%- endcomment -%}
@@ -107,7 +107,7 @@
     </div>
 
     {%- comment -%} Bottom bar {%- endcomment -%}
-    <div class='mt-20 flex flex-col items-center justify-between gap-8 border-t border-white/5 pt-10 md:flex-row'>
+    <div class='mt-10 flex flex-col items-center justify-between gap-8 border-t border-white/5 pt-8 md:mt-20 md:flex-row md:pt-10'>
       <p class='text-sm font-medium text-white/40'>
         &copy; {{ 'now' | date: '%Y' }}
         {{ shop.name }}
