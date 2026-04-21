@@ -1,10 +1,4 @@
-{%- liquid
-  assign has_blocks = false
-  for block in section.blocks
-    assign has_blocks = true
-    break
-  endfor
--%}
+{%- assign has_blocks = section.blocks.size > 0 -%}
 
 <section class='clinic-services bg-surface-low py-24 rounded-t-[4rem] rounded-b-[4rem] shadow-bubbly-lg'>
   <div class='mx-auto max-w-7xl px-6 lg:px-8'>
@@ -121,7 +115,7 @@
           href='{{ section.settings.cta_url }}'
           class='inline-flex items-center gap-2 rounded-xl border border-primary px-6 py-3 text-sm font-semibold text-primary hover:bg-primary hover:text-white transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2'
         >
-          {{ section.settings.cta_label | default: 'View all services' }}
+          {{ section.settings.cta_label }}
           <span aria-hidden='true'>→</span>
         </a>
       </div>
