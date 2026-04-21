@@ -16,6 +16,7 @@
       {%- endif -%}
     </div>
 
+    {%- assign rendered_count = 0 -%}
     {%- if has_blocks -%}
       <ul class='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4' role='list'>
         {%- for block in section.blocks limit: 4 -%}
@@ -24,6 +25,7 @@
             if product == blank
               continue
             endif
+            assign rendered_count = rendered_count | plus: 1
             assign tagline = product.metafields.service.tagline
             if tagline == blank
               assign tagline = product.description | strip_html | truncate: 80
@@ -80,16 +82,18 @@
 
                 <a
                   href='{{ product.url }}'
+                  aria-label='{{ block.settings.cta_label | default: "Book Now" }} – {{ product.title }}'
                   class='mt-4 block w-full rounded-xl bg-primary-gradient py-3 text-center text-sm font-semibold text-white hover:scale-[1.02] active:scale-[0.98] transition-transform duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2'
                 >
-                  {{ block.settings.cta_label }}
+                  {{ block.settings.cta_label | default: 'Book Now' }}
                 </a>
               </div>
             </article>
           </li>
         {%- endfor -%}
       </ul>
-    {%- else -%}
+    {%- endif -%}
+    {%- if rendered_count == 0 -%}
       <ul class='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4' role='list'>
         {%- for i in (1..4) -%}
           <li>
