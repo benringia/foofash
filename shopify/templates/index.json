@@ -172,6 +172,18 @@
         "subheading": "Care you can trust, backed by a real veterinary team"
       }
     },
+    "clinic-services": {
+      "type": "clinic-services",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "eyebrow": "Our Clinic Services",
+        "heading": "Care Your Pet Deserves",
+        "subheading": "Book a clinic visit for expert care from our veterinary team.",
+        "cta_label": "View all services",
+        "cta_url": ""
+      }
+    },
     "homepage-bundles": {
       "type": "homepage-bundles",
       "settings": {
@@ -235,6 +247,7 @@
     "pet-type-nav",
     "featured-collection",
     "why-choose-us",
+    "clinic-services",
     "homepage-bundles",
     "testimonials",
     "cta"
